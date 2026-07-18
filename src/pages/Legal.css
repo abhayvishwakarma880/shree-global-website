@@ -1,0 +1,259 @@
+/* ================= LEGAL PAGES - SHARED STYLES ================= */
+nav.mainnav>ul>li>a.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+header.scrolled nav.mainnav>ul>li>a.active {
+  background: var(--sand-dk);
+  color: var(--ink);
+}
+
+.legal-hero {
+  position: relative;
+  min-height: 35vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--navy);
+  overflow: hidden;
+  padding-top: 100px;
+}
+
+.legal-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.legal-hero:hover .legal-hero-bg {
+  transform: scale(1);
+}
+
+.legal-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 30, 43, 0.92) 0%, rgba(10, 30, 43, 0.5) 50%, rgba(10, 30, 43, 0.3) 100%);
+}
+
+.legal-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+  color: #fff;
+}
+
+.legal-hero-content .sub-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  padding: 8px 24px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8FE0BE;
+  margin-bottom: 16px;
+}
+
+.legal-hero-content h1 {
+  color: #fff;
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  line-height: 1.08;
+  margin-bottom: 16px;
+}
+
+.legal-hero-content p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.legal-breadcrumb {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.legal-breadcrumb a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: 0.3s;
+}
+
+.legal-breadcrumb a:hover {
+  color: var(--cyan);
+}
+
+.legal-breadcrumb span {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Legal Content */
+.legal-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0 0px;
+}
+
+.legal-content .last-updated {
+  display: inline-block;
+  background: var(--sand);
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+
+.legal-content h2 {
+  font-size: 1.6rem;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+
+.legal-content h2:first-of-type {
+  margin-top: 0;
+}
+
+.legal-content h3 {
+  font-size: 1.2rem;
+  margin-top: 28px;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+
+.legal-content p {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.legal-content ul {
+  list-style: disc;
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+
+.legal-content ul li {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 6px;
+}
+
+.legal-content .highlight-box {
+  background: var(--sand);
+  border-radius: var(--r-m);
+  padding: 24px 28px;
+  margin: 20px 0 0 0;
+  border-left: 4px solid var(--green);
+}
+
+.legal-content .highlight-box p {
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .legal-hero {
+    min-height: 30vh;
+    padding-top: 80px;
+  }
+
+  .legal-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .legal-content h3 {
+    font-size: 1.05rem;
+  }
+
+  .legal-content p {
+    font-size: 0.92rem;
+  }
+
+  .legal-content ul li {
+    font-size: 0.88rem;
+  }
+
+  .legal-content .highlight-box {
+    padding: 18px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .legal-hero {
+    min-height: 25vh;
+    padding: 100px 0 20px 0;
+  }
+
+  .legal-content {
+    padding: 10px 0 0px;
+  }
+}
+
+/* Cancellation Table Styles */
+.cancellation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  border-radius: var(--r-m);
+  overflow: hidden;
+}
+
+.cancellation-table th {
+  background: var(--grad-brand);
+  color: #fff;
+  padding: 14px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.cancellation-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.cancellation-table tr:nth-child(even) {
+  background: var(--sand);
+}
+
+.cancellation-table tr:hover {
+  background: var(--sand-dk);
+}
+
+.refund-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.refund-badge.full {
+  background: #2ecc71;
+  color: #fff;
+}
+
+.refund-badge.partial {
+  background: #f39c12;
+  color: #fff;
+}
+
+.refund-badge.none {
+  background: #e74c3c;
+  color: #fff;
+}
+

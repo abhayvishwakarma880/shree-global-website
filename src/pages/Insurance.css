@@ -1,0 +1,305 @@
+/* ================= INSURANCE PAGE - UNIQUE STYLES ================= */
+nav.mainnav>ul>li>a.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+header.scrolled nav.mainnav>ul>li>a.active {
+  background: var(--sand-dk);
+  color: var(--ink);
+}
+
+/* ===== INSURANCE HERO ===== */
+.insurance-hero {
+  position: relative;
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--navy);
+  overflow: hidden;
+  padding-top: 100px;
+}
+
+.insurance-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.insurance-hero:hover .insurance-hero-bg {
+  transform: scale(1);
+}
+
+.insurance-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 30, 43, 0.92) 0%, rgba(10, 30, 43, 0.5) 50%, rgba(10, 30, 43, 0.3) 100%);
+}
+
+.insurance-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+  color: #fff;
+}
+
+.insurance-hero-content .sub-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  padding: 8px 24px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8FE0BE;
+  margin-bottom: 16px;
+}
+
+.insurance-hero-content h1 {
+  color: #fff;
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  line-height: 1.08;
+  margin-bottom: 16px;
+}
+
+.insurance-hero-content p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.insurance-breadcrumb {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.insurance-breadcrumb a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: 0.3s;
+}
+
+.insurance-breadcrumb a:hover {
+  color: var(--cyan);
+}
+
+.insurance-breadcrumb span {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== COVERAGE GRID ===== */
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.coverage-card {
+  background: #fff;
+  border-radius: var(--r-m);
+  padding: 30px 24px;
+  border: 1px solid var(--line);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.coverage-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-soft);
+  border-color: var(--green);
+}
+
+.coverage-card .icon {
+  font-size: 2.5rem;
+  color: var(--green-dk);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.coverage-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.coverage-card p {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ===== PLANS ===== */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 10px 0;
+}
+
+.plan-card {
+  background: #fff;
+  border-radius: var(--r-l);
+  padding: 35px 28px;
+  border: 2px solid var(--line);
+  text-align: center;
+  transition: 0.4s;
+  position: relative;
+}
+
+.plan-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sh);
+}
+
+.plan-card.popular {
+  border-color: var(--green);
+  box-shadow: var(--sh-soft);
+}
+
+.plan-card.popular .popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--grad-brand);
+  color: #fff;
+  padding: 4px 20px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.plan-card .name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.plan-card .price {
+  font-family: var(--disp);
+  font-size: 2.5rem;
+  color: var(--green-dk);
+}
+
+.plan-card .price span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.plan-card ul li {
+  padding: 6px 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.plan-card ul li:last-child {
+  border-bottom: none;
+}
+
+.plan-card ul li i {
+  color: var(--green);
+  margin-right: 8px;
+}
+
+/* ===== BENEFITS GRID (Reused) ===== */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.benefit-item {
+  text-align: center;
+  padding: 30px 20px;
+  background: #fff;
+  border-radius: var(--r-m);
+  border: 1px solid var(--line);
+  transition: 0.3s;
+}
+
+.benefit-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-soft);
+}
+
+.benefit-item .icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 1.5rem;
+  color: var(--green-dk);
+}
+
+.benefit-item h4 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.benefit-item p {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .coverage-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .plans-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .insurance-hero {
+    min-height: 35vh;
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: 640px) {
+  .insurance-hero {
+    min-height: 30vh;
+    padding: 100px 0 20px 0;
+  }
+  .coverage-grid {
+    grid-template-columns: 1fr;
+  }
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  .plan-card {
+    padding: 28px 20px;
+  }
+}

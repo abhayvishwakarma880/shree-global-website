@@ -1,0 +1,651 @@
+/* ================= FLEET PAGE - UNIQUE STYLES ================= */
+nav.mainnav>ul>li>a.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+header.scrolled nav.mainnav>ul>li>a.active {
+  background: var(--sand-dk);
+  color: var(--ink);
+}
+
+/* ===== FLEET HERO ===== */
+.fleet-hero {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--navy);
+  overflow: hidden;
+  padding-top: 100px;
+}
+
+.fleet-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+
+.fleet-hero:hover .fleet-hero-bg {
+  transform: scale(1);
+}
+
+.fleet-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 30, 43, 0.92) 0%, rgba(10, 30, 43, 0.5) 50%, rgba(10, 30, 43, 0.3) 100%);
+}
+
+.fleet-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+  color: #fff;
+}
+
+.fleet-hero-content .sub-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  padding: 8px 24px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8FE0BE;
+  margin-bottom: 16px;
+}
+
+.fleet-hero-content h1 {
+  color: #fff;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  line-height: 1.08;
+  margin-bottom: 16px;
+}
+
+.fleet-hero-content p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.fleet-breadcrumb {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.fleet-breadcrumb a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: 0.3s;
+}
+
+.fleet-breadcrumb a:hover {
+  color: var(--cyan);
+}
+
+.fleet-breadcrumb span {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== BENEFITS SECTION (Reused from Packages) ===== */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 0;
+}
+
+.benefit-item {
+  text-align: center;
+  padding: 30px 20px;
+  background: #fff;
+  border-radius: var(--r-m);
+  border: 1px solid var(--line);
+  transition: 0.3s;
+}
+
+.benefit-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sh-soft);
+}
+
+.benefit-item .icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 1.5rem;
+  color: var(--green-dk);
+}
+
+.benefit-item h4 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.benefit-item p {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ===== RESPONSIVE FOR BENEFITS ===== */
+@media (max-width: 1024px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .benefits-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .benefit-item {
+    padding: 20px 16px;
+  }
+
+  .benefit-item .icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== FLEET STATS ===== */
+.fleet-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: -40px;
+  position: relative;
+  z-index: 3;
+}
+
+.fleet-stat-card {
+  background: #fff;
+  border-radius: var(--r-m);
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px solid #065f3a;
+  transition: 0.4s;
+}
+
+.fleet-stat-card:hover {
+  border-color: var(--green);
+}
+
+.fleet-stat-card .number {
+  font-family: var(--disp);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--green-dk);
+  display: block;
+}
+
+.fleet-stat-card .label {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* ===== FLEET CATEGORY TABS ===== */
+.fleet-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 0px 0 20px;
+}
+
+.fleet-tab {
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--sand);
+  border: 1px solid transparent;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.fleet-tab:hover {
+  background: var(--sand-dk);
+  color: var(--ink);
+}
+
+.fleet-tab.active {
+  background: var(--grad-brand);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 8px 20px -8px rgba(30, 158, 85, 0.4);
+}
+
+.fleet-tab i {
+  margin-right: 8px;
+}
+
+/* ===== FLEET GRID ===== */
+.fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0;
+}
+
+.fleet-vehicle-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  transition: 0.5s cubic-bezier(.25, .46, .45, .94);
+  position: relative;
+}
+
+.fleet-vehicle-card:hover {
+  box-shadow: var(--sh);
+}
+
+.fleet-vehicle-card .image-wrap {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.fleet-vehicle-card .image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.7s;
+}
+
+.fleet-vehicle-card:hover .image-wrap img {
+  transform: scale(1.08);
+}
+
+.fleet-vehicle-card .image-wrap .badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  color: var(--green-dk);
+}
+
+.fleet-vehicle-card .image-wrap .badge.featured {
+  background: var(--gold);
+  color: #fff;
+}
+
+.fleet-vehicle-card .image-wrap .seat-count {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  padding: 6px 16px;
+  border-radius: 100px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.fleet-vehicle-card .image-wrap .seat-count i {
+  margin-right: 6px;
+  color: var(--gold);
+}
+
+.fleet-vehicle-card .image-wrap .wishlist {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.fleet-vehicle-card .image-wrap .wishlist:hover {
+  background: #e74c3c;
+  transform: scale(1.1);
+}
+
+.fleet-vehicle-card .image-wrap .wishlist.liked {
+  background: #e74c3c;
+}
+
+.fleet-vehicle-card .content {
+  padding: 22px 24px 26px;
+}
+
+.fleet-vehicle-card .content h3 {
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+
+.fleet-vehicle-card .content .subtitle {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+
+.fleet-vehicle-card .content .features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.fleet-vehicle-card .content .features span {
+  background: var(--sand);
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.fleet-vehicle-card .content .features span i {
+  margin-right: 4px;
+  color: var(--green-dk);
+}
+
+.fleet-vehicle-card .content p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.fleet-vehicle-card .content .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fleet-vehicle-card .content .footer .price {
+  font-family: var(--disp);
+  font-size: 1.2rem;
+  color: var(--green-dk);
+}
+
+.fleet-vehicle-card .content .footer .price span {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  font-family: var(--body);
+}
+
+.fleet-vehicle-card .content .footer .btn {
+  padding: 8px 20px;
+  font-size: 0.8rem;
+}
+
+/* ===== FEATURED VEHICLE BANNER ===== */
+.featured-vehicle {
+  position: relative;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  margin: 30px 0 50px;
+  min-height: 320px;
+}
+
+.featured-vehicle img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+}
+
+.featured-vehicle .ov {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 30, 43, 0.88) 0%, rgba(10, 30, 43, 0.4) 60%, rgba(10, 30, 43, 0.6) 100%);
+}
+
+.featured-vehicle .content {
+  position: relative;
+  z-index: 2;
+  padding: 50px 40px;
+  color: #fff;
+}
+
+.featured-vehicle .content .tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  padding: 5px 16px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  color: #8FE0BE;
+}
+
+.featured-vehicle .content h2 {
+  color: #fff;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  margin-bottom: 12px;
+}
+
+.featured-vehicle .content p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  max-width: 440px;
+}
+
+.featured-vehicle .content .specs {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.featured-vehicle .content .specs span {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .fleet-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fleet-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .fleet-hero {
+    min-height: 45vh;
+    padding-top: 80px;
+  }
+
+  .fleet-stats-grid {
+    margin-top: -30px;
+    gap: 14px;
+  }
+
+  .fleet-stat-card {
+    padding: 20px 16px;
+  }
+
+  .fleet-stat-card .number {
+    font-size: 1.8rem;
+  }
+
+  .fleet-tabs {
+    gap: 8px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+  }
+
+  .fleet-tab {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .fleet-vehicle-card .image-wrap {
+    height: 200px;
+  }
+
+  .featured-vehicle .content {
+    padding: 35px 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .fleet-hero {
+    min-height: 40vh;
+    padding-top: 100px;
+  }
+
+  .fleet-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    margin-top: -20px;
+    gap: 10px;
+  }
+
+  .fleet-stat-card {
+    padding: 16px 12px;
+    border-radius: var(--r-s);
+  }
+
+  .fleet-stat-card .number {
+    font-size: 1.5rem;
+  }
+
+  .fleet-stat-card .label {
+    font-size: 0.75rem;
+  }
+
+  .fleet-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .fleet-vehicle-card .image-wrap {
+    height: 200px;
+  }
+
+  .fleet-vehicle-card .content {
+    padding: 18px 18px 22px;
+  }
+
+  .fleet-vehicle-card .content h3 {
+    font-size: 1rem;
+  }
+
+  .fleet-vehicle-card .content .features span {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+  }
+
+  .fleet-vehicle-card .content p {
+    font-size: 0.85rem;
+  }
+
+  .fleet-vehicle-card .content .footer .price {
+    font-size: 1rem;
+  }
+
+  .fleet-vehicle-card .content .footer .btn {
+    padding: 6px 16px;
+    font-size: 0.75rem;
+  }
+
+  .featured-vehicle {
+    min-height: 260px;
+    border-radius: var(--r-m);
+  }
+
+  .featured-vehicle .content {
+    padding: 28px 20px;
+  }
+
+  .featured-vehicle .content h2 {
+    font-size: 1.5rem;
+  }
+
+  .featured-vehicle .content p {
+    font-size: 0.9rem;
+  }
+
+  .featured-vehicle .content .specs span {
+    font-size: 0.7rem;
+    padding: 4px 12px;
+  }
+
+  .fleet-tab {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .fleet-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .fleet-stat-card {
+    padding: 12px 8px;
+  }
+
+  .fleet-stat-card .number {
+    font-size: 1.3rem;
+  }
+
+  .fleet-stat-card .label {
+    font-size: 0.7rem;
+  }
+}

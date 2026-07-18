@@ -39,6 +39,8 @@ import Insurance from './pages/Insurance';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Cancellation from './pages/Cancellation';
+import PackageDetail from './pages/PackageDetail';
+import Reviews from './pages/Reviews';
 
 export default function App() {
   return (
@@ -52,6 +54,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/packages" element={<Packages />} />
+          <Route path="/package/:id" element={<PackageDetail />} />
           <Route path="/services" element={<Services />} />
           <Route path="/fleet" element={<Fleet />} />
           <Route path="/blog" element={<Blog />} />
@@ -64,6 +67,7 @@ export default function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cancellation" element={<Cancellation />} />
+          <Route path="/reviews" element={<Reviews />} />
         </Routes>
       </main>
       <Footer />

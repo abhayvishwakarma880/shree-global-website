@@ -977,6 +977,77 @@
       font-size: .78rem;
       color: var(--ink-soft);
     }
+
+    /* Highlight Eyebrow styling */
+    .eyebrow.highlight-eyebrow {
+      background: var(--sand-dk);
+      padding: 6px 14px;
+      border-radius: 100px;
+      color: var(--green-dk);
+      border: 1px solid var(--line);
+    }
+
+    .eyebrow.highlight-eyebrow i {
+      color: var(--green);
+    }
+
+    /* About Strengths List */
+    .about-strengths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px 28px;
+      margin: 25px 0 35px;
+    }
+
+    .strength-item {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .strength-icon {
+      font-size: 1.25rem;
+      color: var(--green);
+      background: var(--sand-dk);
+      border: 1px solid var(--line);
+      padding: 10px;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.3s, transform 0.3s, color 0.3s;
+    }
+
+    .strength-item:hover .strength-icon {
+      background: var(--green);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .strength-item h4 {
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .about-copy .strength-item p {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.45;
+      margin-bottom: 0;
+      max-width: none;
+    }
+
+    @media (max-width: 640px) {
+      .about-strengths {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
 /* Swiper Custom Styles */
 .swiper {
   padding: 0;
@@ -1693,6 +1764,220 @@
 
 .test-pagination .swiper-pagination-bullet-active {
   background: var(--green-dk);
+}
+
+/* ===== GOOGLE REVIEWS TRUST STRIP ===== */
+.google-reviews-strip {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-m);
+  padding: 20px 28px;
+  margin: 28px 0 36px;
+  box-shadow: var(--sh-soft);
+}
+
+.gr-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gr-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gr-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.gr-stars {
+  color: #fbbc04;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+}
+
+.gr-score {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex: 1;
+}
+
+.gr-rating {
+  font-family: var(--disp);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+}
+
+.gr-count {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.gr-count strong {
+  color: var(--ink);
+}
+
+.gr-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: var(--grad-brand);
+  color: #fff;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.gr-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -6px rgba(30, 158, 85, 0.5);
+}
+
+/* ===== TESTIMONIAL CARDS GRID ===== */
+.test-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.test-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-m);
+  padding: 24px;
+  box-shadow: var(--sh-soft);
+  transition: box-shadow 0.3s, transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.test-card:hover {
+  box-shadow: var(--sh);
+  transform: translateY(-4px);
+}
+
+.test-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.test-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.test-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--sand-dk);
+}
+
+.test-verified-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  background: #4285f4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.test-person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.test-person-info strong {
+  font-size: 0.98rem;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.test-date {
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+
+.test-stars {
+  color: #fbbc04;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.test-destination-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--green-dk);
+  background: rgba(30, 158, 85, 0.08);
+  border: 1px solid rgba(30, 158, 85, 0.2);
+  padding: 5px 12px;
+  border-radius: 100px;
+  width: fit-content;
+}
+
+.test-destination-tag i {
+  font-size: 0.7rem;
+}
+
+.test-body {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  font-style: italic;
+  margin: 0;
+  flex: 1;
+}
+
+/* Responsive testimonial cards */
+@media (max-width: 1024px) {
+  .test-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .test-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .google-reviews-strip {
+    gap: 16px;
+    padding: 16px 18px;
+  }
+  .gr-score {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
 
 /* Responsive */

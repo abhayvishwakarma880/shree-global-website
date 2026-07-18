@@ -46,23 +46,7 @@ export default function Header() {
       <header id="header" className={scrolled ? 'scrolled' : ''}>
         <div className="nav-row">
           <Link to="/" className="logo">
-            <svg className="mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#1E9E55" />
-                  <stop offset="1" stopColor="#0DA0C7" />
-                </linearGradient>
-              </defs>
-              <mask id="mk1">
-                <circle cx="50" cy="50" r="48" fill="#fff" />
-              </mask>
-              <g mask="url(#mk1)">
-                <rect width="100" height="100" fill="url(#lg1)" />
-                <path d="M-20 20 Q10 5 30 20 T80 20" stroke="#fff" strokeWidth="7" fill="none" opacity=".55" />
-                <path d="M-20 45 Q10 30 30 45 T80 45" stroke="#fff" strokeWidth="7" fill="none" opacity=".4" />
-                <path d="M-20 70 Q10 55 30 70 T80 70" stroke="#fff" strokeWidth="7" fill="none" opacity=".55" />
-              </g>
-            </svg>
+            <img src="/logo.png" alt="Shree Global Holidays Logo" className="mark" />
             Shree Global <span className="cyanpart">Holidays</span>
           </Link>
 

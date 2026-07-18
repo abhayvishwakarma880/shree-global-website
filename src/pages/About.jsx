@@ -189,7 +189,7 @@ export default function About() {
       </section>
 
       {/* ================= TEAM SECTION ================= */}
-      <section className="section sand tight">
+      {/* <section className="section sand tight">
         <div className="container">
           <div className="kicker-row reveal">
             <div>
@@ -265,7 +265,7 @@ export default function About() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ================= VALUES SECTION ================= */}
       <section className="section" style={{ backgroundColor: '#fff' }}>

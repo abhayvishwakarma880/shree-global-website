@@ -2420,7 +2420,8 @@
       display: grid;
        grid-template-columns: 2fr 0.8fr 0.5fr 0.8fr 0.8fr 1fr;
       gap: 30px;
-      padding: 70px 0 46px;
+      padding-top: 70px;
+      padding-bottom: 46px;
       border-bottom: 1px solid rgba(255, 255, 255, .08);
     }
 
@@ -2515,7 +2516,8 @@
     }
 
     .footer-bottom {
-      padding: 24px 0;
+      padding-top: 24px;
+      padding-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -2825,7 +2827,8 @@
 
       .footer-top {
         grid-template-columns: 1fr;
-        padding: 50px 10px 30px 10px;
+        padding-top: 50px;
+        padding-bottom: 30px;
       }
 
       .contact-form {
@@ -3034,7 +3037,7 @@
 /* Zoom Controls */
 .lightbox-zoom-controls {
   position: absolute;
-  bottom: 30px;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -3044,6 +3047,7 @@
   padding: 8px 12px;
   border-radius: 100px;
   backdrop-filter: blur(8px);
+  /* visibility: hidden; */
 }
 
 .zoom-btn {
@@ -3251,5 +3255,128 @@
 
   .blog-body {
     padding: 18px 20px 22px;
+  }
+}
+
+/* ================= INTERNATIONAL DESTINATIONS SECTION ================= */
+.intl-section {
+  background-color: var(--paper);
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.intl-section .kicker-row h2 {
+  color: var(--ink);
+}
+
+.intl-section .kicker-row > p {
+  color: var(--ink-soft);
+}
+
+.intl-dest-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.intl-dest-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+  height: 380px;
+  text-decoration: none;
+}
+
+.intl-dest-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.intl-dest-card:hover img {
+  transform: scale(1.06);
+}
+
+.intl-dest-card .intl-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+}
+
+.intl-dest-card .intl-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 20px;
+}
+
+.intl-dest-card .intl-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.intl-dest-card .intl-info h3 {
+  color: #fff;
+  font-size: 1.3rem;
+  margin: 0 0 4px;
+  font-family: var(--disp);
+}
+
+.intl-dest-card .intl-meta {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.82rem;
+}
+
+.intl-section .intl-cta {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.btn-intl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  padding: 13px 32px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+  background: transparent;
+}
+
+.btn-intl:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+@media (max-width: 1024px) {
+  .intl-dest-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .intl-dest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intl-dest-card {
+    height: 260px;
   }
 }

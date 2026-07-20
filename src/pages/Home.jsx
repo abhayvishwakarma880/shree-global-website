@@ -420,6 +420,72 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* ================= INTERNATIONAL DESTINATIONS ================= */}
+      <section className="intl-section" id="international">
+        <div className="container">
+          <div className="kicker-row reveal">
+            <div>
+              <div className="eyebrow">International Travel</div>
+              <h2>Beyond borders, <span className="italic">beyond expectations</span></h2>
+            </div>
+            <p>Handcrafted international itineraries with visa assistance, premium stays &amp; seamless transfers.</p>
+          </div>
+
+          <div className="intl-dest-grid reveal">
+
+            {/* Dubai */}
+            <Link to="/destinations#international" className="intl-dest-card">
+              <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=700" alt="Dubai skyline" />
+              <div className="intl-overlay"></div>
+              <div className="intl-info">
+                <span className="intl-badge" style={{ background: 'var(--cyan)' }}>🇦🇪 UAE</span>
+                <h3>Dubai &amp; Abu Dhabi</h3>
+                <span className="intl-meta">Burj Khalifa · Desert Safari · Luxury Shopping</span>
+              </div>
+            </Link>
+
+            {/* Bali */}
+            <Link to="/destinations#international" className="intl-dest-card">
+              <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=700" alt="Bali rice terraces" />
+              <div className="intl-overlay"></div>
+              <div className="intl-info">
+                <span className="intl-badge" style={{ background: 'var(--green)' }}>🇮🇩 Indonesia</span>
+                <h3>Bali</h3>
+                <span className="intl-meta">Rice Terraces · Temples · Beach Clubs</span>
+              </div>
+            </Link>
+
+            {/* Thailand */}
+            <Link to="/destinations#international" className="intl-dest-card">
+              <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?auto=format&fit=crop&q=80&w=700" alt="Thailand temples" />
+              <div className="intl-overlay"></div>
+              <div className="intl-info">
+                <span className="intl-badge" style={{ background: '#e05c1a' }}>🇹🇭 Thailand</span>
+                <h3>Thailand</h3>
+                <span className="intl-meta">Bangkok · Chiang Mai · Phuket Islands</span>
+              </div>
+            </Link>
+
+            {/* Singapore */}
+            <Link to="/destinations#international" className="intl-dest-card">
+              <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=700" alt="Singapore skyline" />
+              <div className="intl-overlay"></div>
+              <div className="intl-info">
+                <span className="intl-badge" style={{ background: '#b5163e' }}>🇸🇬 Singapore</span>
+                <h3>Singapore</h3>
+                <span className="intl-meta">Marina Bay · Gardens · Universal Studios</span>
+              </div>
+            </Link>
+
+          </div>
+
+          <div className="intl-cta reveal">
+            <Link to="/packages" className="btn-intl">
+              View All International Packages <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* ================= ABOUT ================= */}
       <section className="section sand" id="about">
@@ -571,7 +637,7 @@ export default function Home() {
                       <i className="fa-regular fa-clock"></i> 5D / 4N
                     </span>
                     <span>
-                      <i className="fa-regular fa-hotel"></i> 4★ Hotels
+                      <i className="fa-solid fa-hotel"></i> 4★ Hotels
                     </span>
                   </div>
                   <h3>Golden Triangle Tour</h3>
@@ -606,7 +672,7 @@ export default function Home() {
                       <i className="fa-regular fa-clock"></i> 6D / 5N
                     </span>
                     <span>
-                      <i className="fa-regular fa-hotel"></i> 5★ Resorts
+                      <i className="fa-solid fa-hotel"></i> 5★ Resorts
                     </span>
                   </div>
                   <h3>Shimla Manali Escape</h3>
@@ -641,7 +707,7 @@ export default function Home() {
                       <i className="fa-regular fa-clock"></i> 7D / 6N
                     </span>
                     <span>
-                      <i className="fa-regular fa-hotel"></i> Palace Stays
+                      <i className="fa-solid fa-hotel"></i> Palace Stays
                     </span>
                   </div>
                   <h3>Rajasthan Heritage Trail</h3>
@@ -676,7 +742,7 @@ export default function Home() {
                       <i className="fa-regular fa-clock"></i> 6D / 5N
                     </span>
                     <span>
-                      <i className="fa-regular fa-hotel"></i> Houseboats
+                      <i className="fa-solid fa-hotel"></i> Houseboats
                     </span>
                   </div>
                   <h3>Kerala Backwater Trail</h3>
@@ -711,7 +777,7 @@ export default function Home() {
                       <i className="fa-regular fa-clock"></i> 8D / 7N
                     </span>
                     <span>
-                      <i className="fa-regular fa-hotel"></i> Boutique Camps
+                      <i className="fa-solid fa-hotel"></i> Boutique Camps
                     </span>
                   </div>
                   <h3>Ladakh High-Altitude Circuit</h3>
@@ -1290,7 +1356,7 @@ export default function Home() {
                   required
                 ></textarea>
                 <button type="submit" className="btn btn-brand">
-                  <i className="fa-regular fa-arrow-right"></i> Get Free Quote
+                  <i className="fa-solid fa-arrow-right"></i> Get Free Quote
                 </button>
               </form>
             </div>

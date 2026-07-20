@@ -157,7 +157,7 @@ export default function Blog() {
         <div className="blog-hero-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=1920')" }}></div>
         <div className="blog-hero-scrim"></div>
         <div className="blog-hero-content">
-          <span className="sub-badge"><i className="fa-regular fa-newspaper"></i> Travel Journal</span>
+          {/* <span className="sub-badge"><i className="fa-regular fa-newspaper"></i> Travel Journal</span> */}
           <h1>Stories from the <span className="italic">Road</span></h1>
           <p>Insider tips, destination guides, and travel stories from our team of explorers</p>
           <div className="blog-search-box">

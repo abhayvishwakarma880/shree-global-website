@@ -12,7 +12,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
 /* ===== BLOG HERO ===== */
 .blog-hero {
   position: relative;
-  min-height: 50vh;
+  min-height: 55vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,6 +127,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
 
 .blog-breadcrumb {
   margin-top: 20px;
+  margin-bottom: 20px;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.6);
 }

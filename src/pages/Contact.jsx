@@ -38,7 +38,7 @@ export default function Contact() {
         <div className="contact-hero-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=1920')" }}></div>
         <div className="contact-hero-scrim"></div>
         <div className="contact-hero-content">
-          <span className="sub-badge"><i className="fa-solid fa-headset"></i> Contact Us</span>
+          {/* <span className="sub-badge"><i className="fa-solid fa-headset"></i> Contact Us</span> */}
           <h1>Let's Start <span className="italic">Planning</span></h1>
           <p>Have questions or ready to book? Reach out to our travel specialists today.</p>
           <div className="contact-breadcrumb">

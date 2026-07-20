@@ -288,6 +288,7 @@ export default function Packages() {
   const [sort, setSort] = useState('popular');
   const [maxPrice, setMaxPrice] = useState(35000);
   const [wishlist, setWishlist] = useState([]);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const itemsPerPage = 6;
 
@@ -444,14 +445,24 @@ export default function Packages() {
 
           <div className="packages-page-layout reveal" style={{ marginTop: '30px' }}>
             
+            {/* Mobile Filter Backdrop */}
+            {isMobileFilterOpen && (
+              <div className="mobile-filter-backdrop" onClick={() => setIsMobileFilterOpen(false)}></div>
+            )}
+            
             {/* LEFT SIDEBAR: STICKY FILTERS */}
-            <aside className="packages-sidebar">
+            <aside className={`packages-sidebar ${isMobileFilterOpen ? 'show-mobile' : ''}`}>
               <div className="sticky-filter-card">
                 <div className="filter-header-row">
                   <h3>Filter & Sort</h3>
-                  <button className="clear-filters-btn" onClick={clearFilters}>
-                    <i className="fa-solid fa-arrow-rotate-left"></i> Reset
-                  </button>
+                  <div className="filter-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button className="clear-filters-btn" onClick={clearFilters}>
+                      <i className="fa-solid fa-arrow-rotate-left"></i> Reset
+                    </button>
+                    <button className="close-mobile-filter-btn" onClick={() => setIsMobileFilterOpen(false)} aria-label="Close Filters">
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
                 </div>
                 
                 {/* Search Box */}
@@ -659,6 +670,9 @@ export default function Packages() {
             <div className="packages-content-col">
               <div className="results-strip">
                 <span>Showing <strong>{sorted.length}</strong> packages found</span>
+                <button className="mobile-filter-trigger" onClick={() => setIsMobileFilterOpen(true)}>
+                  <i className="fa-solid fa-filter"></i> Filters
+                </button>
               </div>
 
               {sorted.length === 0 ? (
@@ -744,11 +758,40 @@ export default function Packages() {
             <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1200" alt="Golden Triangle" />
             <div className="ov"></div>
             <div className="content">
-              <span className="tag">⭐ Best Seller</span>
-              <span className="offer">🔥 Limited Time Offer - 20% Off</span>
-              <h2>Luxury Golden Triangle Tour</h2>
-              <p>Experience the magic of Delhi, Agra, and Jaipur with 5-star stays, private guides, and exclusive experiences. Book now and save ₹3,600!</p>
-              <Link to="/contact" className="btn btn-brand"><i className="fa-regular fa-calendar-check"></i> Book Now - ₹14,500</Link>
+              <div className="featured-package-grid">
+                <div className="featured-main-info">
+                  <span className="tag">Best Seller</span>
+                  <span className="offer">Limited Time Offer - 20% Off</span>
+                  <h2>Luxury Golden Triangle Tour</h2>
+                  <p style={{ maxWidth: '100%' }}>Experience the magic of Delhi, Agra, and Jaipur with 5-star stays, private guides, and exclusive experiences. Book now and save ₹3,600!</p>
+                  <Link to="/contact" className="btn btn-brand" style={{ marginTop: '10px' }}>
+                    <i className="fa-solid fa-calendar-check"></i> Book Now - ₹14,500
+                  </Link>
+                </div>
+                
+                <div className="featured-details-box">
+                  <div className="featured-details-col inclusions">
+                    <h4><i className="fa-solid fa-circle-check"></i> Inclusions</h4>
+                    <ul className="featured-details-list">
+                      <li><i className="fa-solid fa-check"></i> 5-Star Hotel Stay</li>
+                      <li><i className="fa-solid fa-check"></i> Private AC SUV Sedan</li>
+                      <li><i className="fa-solid fa-check"></i> Private Tour Guide</li>
+                      <li><i className="fa-solid fa-check"></i> Daily Buffet Breakfasts</li>
+                      <li><i className="fa-solid fa-check"></i> Monument Entry Fees</li>
+                    </ul>
+                  </div>
+                  <div className="featured-details-col exclusions">
+                    <h4><i className="fa-solid fa-circle-xmark"></i> Exclusions</h4>
+                    <ul className="featured-details-list">
+                      <li><i className="fa-solid fa-xmark"></i> Airfare or Train tickets</li>
+                      <li><i className="fa-solid fa-xmark"></i> Lunch &amp; Dinner meals</li>
+                      <li><i className="fa-solid fa-xmark"></i> Tips and Gratuities</li>
+                      <li><i className="fa-solid fa-xmark"></i> Camera fees at sites</li>
+                      <li><i className="fa-solid fa-xmark"></i> Personal Expenses</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

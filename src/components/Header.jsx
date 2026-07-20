@@ -87,15 +87,13 @@ export default function Header() {
                       </ul>
                     </div>
                     <div className="mega-col">
-                      <div className="mega-feature">
-                        <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=700" alt="Ladakh mountains" />
-                        <div className="ov"></div>
-                        <div className="cap">
-                          <span className="tag">New for 2026</span>
-                          <h4>Ladakh High-Altitude Circuit</h4>
-                          <span className="arrow">Explore route <i className="fa-solid fa-arrow-right"></i></span>
-                        </div>
-                      </div>
+                      <h5>International</h5>
+                      <ul>
+                        <li><Link to="/destinations#international"><span className="dot"></span>Dubai &amp; Abu Dhabi</Link></li>
+                        <li><Link to="/destinations#international"><span className="dot"></span>Bali, Indonesia</Link></li>
+                        <li><Link to="/destinations#international"><span className="dot"></span>Thailand</Link></li>
+                        <li><Link to="/destinations#international"><span className="dot"></span>Singapore</Link></li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -104,7 +102,7 @@ export default function Header() {
               {/* Main Navigation Links */}
               <li><NavLink to="/packages" className={({ isActive }) => isActive ? 'active' : ''}>Packages</NavLink></li>
               <li><NavLink to="/services" className={({ isActive }) => isActive ? 'active' : ''}>Services</NavLink></li>
-              <li><NavLink to="/fleet" className={({ isActive }) => isActive ? 'active' : ''}>Fleet</NavLink></li>
+              {/* <li><NavLink to="/fleet" className={({ isActive }) => isActive ? 'active' : ''}>Fleet</NavLink></li> */}
               <li><NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''}>About</NavLink></li>
               <li><NavLink to="/blog" className={({ isActive }) => isActive ? 'active' : ''}>Blog</NavLink></li>
               <li><NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contact</NavLink></li>

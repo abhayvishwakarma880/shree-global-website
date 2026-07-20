@@ -12,7 +12,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
 /* ===== SERVICES HERO ===== */
 .services-hero {
   position: relative;
-  min-height: 45vh;
+  min-height: 55vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,7 +78,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
 }
 
 .services-breadcrumb {
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.6);
 }

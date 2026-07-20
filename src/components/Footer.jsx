@@ -6,18 +6,8 @@ export default function Footer() {
       <div className="container footer-top">
         <div className="footer-brand">
           <Link to="/" className="logo">
-            <svg className="mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <mask id="mk2">
-                <circle cx="50" cy="50" r="48" fill="#fff" />
-              </mask>
-              <g mask="url(#mk2)">
-                <rect width="100" height="100" fill="url(#lg1)" />
-                <path d="M-20 20 Q10 5 30 20 T80 20" stroke="#fff" strokeWidth="7" fill="none" opacity=".55" />
-                <path d="M-20 45 Q10 30 30 45 T80 45" stroke="#fff" strokeWidth="7" fill="none" opacity=".4" />
-                <path d="M-20 70 Q10 55 30 70 T80 70" stroke="#fff" strokeWidth="7" fill="none" opacity=".55" />
-              </g>
-            </svg>
-            Shree Global<span className="cyanpart">Holidays</span>
+            <img src="/logo.png" alt="Shree Global Holidays Logo" className="mark" />
+            Shree Global <span className="cyanpart">Holidays</span>
           </Link>
           <p>A premier luxury travel agency based in New Delhi, crafting seamless, unforgettable journeys across India since 2010.</p>
           <div className="footer-social">
@@ -34,7 +24,7 @@ export default function Footer() {
             <li><Link to="/destinations">Destinations</Link></li>
             <li><Link to="/packages">Tour Packages</Link></li>
             <li><Link to="/services">Services</Link></li>
-            <li><Link to="/fleet">Luxury Rentals</Link></li>
+            {/* <li><Link to="/fleet">Luxury Rentals</Link></li> */}
             <li><Link to="/gallery">Gallery</Link></li>
           </ul>
         </div>
@@ -44,7 +34,7 @@ export default function Footer() {
           <ul>
             <li><Link to="/about">About Us</Link></li>
             <li><Link to="/contact">Contact</Link></li>
-            <li><Link to="/careers">Careers</Link></li>
+            {/* <li><Link to="/careers">Careers</Link></li> */}
             <li><Link to="/blog">Blog</Link></li>
           </ul>
         </div>

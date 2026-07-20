@@ -98,7 +98,7 @@ export default function Fleet() {
         <div className="fleet-hero-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1920')" }}></div>
         <div className="fleet-hero-scrim"></div>
         <div className="fleet-hero-content">
-          <span className="sub-badge"><i className="fa-solid fa-car"></i> Premium Fleet</span>
+          {/* <span className="sub-badge"><i className="fa-solid fa-car"></i> Premium Fleet</span> */}
           <h1>Comfort for <span className="italic">Every Group Size</span></h1>
           <p>Meticulously maintained, sanitised and driven by locals who know the route</p>
           <div className="fleet-breadcrumb">

@@ -45,7 +45,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
 .fleet-hero-content {
   position: relative;
   z-index: 2;
-  max-width: 800px;
+  max-width: 900px;
   padding: 0 20px;
   color: #fff;
 }

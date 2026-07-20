@@ -9,7 +9,7 @@ export default function Services() {
         <div className="services-hero-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524230507669-5ff97982bb5e?auto=format&fit=crop&q=80&w=1920')" }}></div>
         <div className="services-hero-scrim"></div>
         <div className="services-hero-content">
-          <span className="sub-badge"><i className="fa-regular fa-star"></i> Premium Services</span>
+          {/* <span className="sub-badge"><i className="fa-regular fa-star"></i> Premium Services</span> */}
           <h1>Every Detail, <span className="italic">Sorted</span></h1>
           <p>From airport pickup to the last night's dinner reservation — we handle it all</p>
           <div className="services-breadcrumb">

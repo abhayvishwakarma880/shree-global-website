@@ -6,6 +6,7 @@ export default function Header() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -26,12 +27,20 @@ export default function Header() {
   useEffect(() => {
     setMobileMenuOpen(false);
     setMegaMenuOpen(false);
+    setServicesMenuOpen(false);
   }, [location]);
 
   const handleDestinationsClick = (e) => {
     if (window.innerWidth <= 860) {
       e.preventDefault();
       setMegaMenuOpen(!megaMenuOpen);
+    }
+  };
+
+  const handleServicesClick = (e) => {
+    if (window.innerWidth <= 860) {
+      e.preventDefault();
+      setServicesMenuOpen(!servicesMenuOpen);
     }
   };
 
@@ -101,7 +110,19 @@ export default function Header() {
 
               {/* Main Navigation Links */}
               <li><NavLink to="/packages" className={({ isActive }) => isActive ? 'active' : ''}>Packages</NavLink></li>
-              <li><NavLink to="/services" className={({ isActive }) => isActive ? 'active' : ''}>Services</NavLink></li>
+              <li className={`has-dropdown ${servicesMenuOpen ? 'open' : ''}`}>
+                <Link to="/services" onClick={handleServicesClick}>
+                  Services <i className="fa-solid fa-chevron-down"></i>
+                </Link>
+                <ul className="dropdown-menu">
+                  <li><Link to="/service/group-tours"><span className="dot"></span>Group Tours</Link></li>
+                  <li><Link to="/service/mice"><span className="dot"></span>MICE</Link></li>
+                  <li><Link to="/service/incentive-tours"><span className="dot"></span>Incentive Tours</Link></li>
+                  <li><Link to="/service/visa-assistance"><span className="dot"></span>Visa Assistance</Link></li>
+                  <li><Link to="/service/cruise-management"><span className="dot"></span>Cruise Management</Link></li>
+                  <li><Link to="/service/crisis-management"><span className="dot"></span>Crisis Management</Link></li>
+                </ul>
+              </li>
               {/* <li><NavLink to="/fleet" className={({ isActive }) => isActive ? 'active' : ''}>Fleet</NavLink></li> */}
               <li><NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''}>About</NavLink></li>
               <li><NavLink to="/blog" className={({ isActive }) => isActive ? 'active' : ''}>Blog</NavLink></li>

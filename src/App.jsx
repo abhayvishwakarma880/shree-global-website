@@ -28,6 +28,7 @@ import About from './pages/About';
 import Destinations from './pages/Destinations';
 import Packages from './pages/Packages';
 import Services from './pages/Services';
+import ServiceDetail from './pages/ServiceDetail';
 import Fleet from './pages/Fleet';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
@@ -56,6 +57,7 @@ export default function App() {
           <Route path="/packages" element={<Packages />} />
           <Route path="/package/:id" element={<PackageDetail />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/service/:slug" element={<ServiceDetail />} />
           <Route path="/fleet" element={<Fleet />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogDetail />} />

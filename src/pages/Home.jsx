@@ -813,80 +813,8 @@ export default function Home() {
             </p>
           </div>
           <div className="svc-grid reveal">
-            <div
-              className="svc-card"
-              style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800')",
-              }}
-            >
-              <div className="svc-overlay"></div>
-              <div className="svc-content">
-                <span className="svc-num">01</span>
-                <div className="svc-i">
-                  <i className="fa-solid fa-car"></i>
-                </div>
-                <h4>Luxury Rentals</h4>
-                <p>
-                  Premium sedans, SUVs and Tempo Travellers with verified
-                  chauffeurs.
-                </p>
-              </div>
-            </div>
-            <div
-              className="svc-card"
-              style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800')",
-              }}
-            >
-              <div className="svc-overlay"></div>
-              <div className="svc-content">
-                <span className="svc-num">02</span>
-                <div className="svc-i">
-                  <i className="fa-solid fa-hotel"></i>
-                </div>
-                <h4>Heritage Stays</h4>
-                <p>
-                  Handpicked 4★ &amp; 5★ hotels, palaces and boutique resorts.
-                </p>
-              </div>
-            </div>
-            <div
-              className="svc-card"
-              style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800')",
-              }}
-            >
-              <div className="svc-overlay"></div>
-              <div className="svc-content">
-                <span className="svc-num">03</span>
-                <div className="svc-i">
-                  <i className="fa-solid fa-route"></i>
-                </div>
-                <h4>Custom Itineraries</h4>
-                <p>Travel plans shaped around your pace and interests.</p>
-              </div>
-            </div>
-            <div
-              className="svc-card"
-              style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800')",
-              }}
-            >
-              <div className="svc-overlay"></div>
-              <div className="svc-content">
-                <span className="svc-num">04</span>
-                <div className="svc-i">
-                  <i className="fa-solid fa-plane-departure"></i>
-                </div>
-                <h4>Airport Transfers</h4>
-                <p>Reliable pick-up and drop across major Indian airports.</p>
-              </div>
-            </div>
-            <div
+            <Link
+              to="/service/group-tours"
               className="svc-card"
               style={{
                 backgroundImage:
@@ -895,31 +823,116 @@ export default function Home() {
             >
               <div className="svc-overlay"></div>
               <div className="svc-content">
-                <span className="svc-num">05</span>
+                <span className="svc-num">01</span>
                 <div className="svc-i">
                   <i className="fa-solid fa-people-group"></i>
                 </div>
-                <h4>Group &amp; Corporate</h4>
-                <p>Exclusive packages for families, retreats and weddings.</p>
+                <h4>Group Tours</h4>
+                <p>
+                  Specially curated itineraries for families, friends and social groups.
+                </p>
               </div>
-            </div>
-            <div
+            </Link>
+            <Link
+              to="/service/mice"
               className="svc-card"
               style={{
                 backgroundImage:
-                  "url('https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&q=80&w=800')",
+                  "url('https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800')",
+              }}
+            >
+              <div className="svc-overlay"></div>
+              <div className="svc-content">
+                <span className="svc-num">02</span>
+                <div className="svc-i">
+                  <i className="fa-solid fa-handshake"></i>
+                </div>
+                <h4>MICE</h4>
+                <p>
+                  End-to-end corporate event planning, logistics and execution.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/service/incentive-tours"
+              className="svc-card"
+              style={{
+                backgroundImage:
+                  "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800')",
+              }}
+            >
+              <div className="svc-overlay"></div>
+              <div className="svc-content">
+                <span className="svc-num">03</span>
+                <div className="svc-i">
+                  <i className="fa-solid fa-award"></i>
+                </div>
+                <h4>Incentive Tours</h4>
+                <p>
+                  Curated luxury travel rewards for top performers and partners.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/service/visa-assistance"
+              className="svc-card"
+              style={{
+                backgroundImage:
+                  "url('https://images.unsplash.com/photo-1544016768-982d1554f0b9?auto=format&fit=crop&q=80&w=800')",
+              }}
+            >
+              <div className="svc-overlay"></div>
+              <div className="svc-content">
+                <span className="svc-num">04</span>
+                <div className="svc-i">
+                  <i className="fa-solid fa-passport"></i>
+                </div>
+                <h4>Visa Assistance</h4>
+                <p>
+                  Hassle-free visa documentation, guidance and submission support.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/service/cruise-management"
+              className="svc-card"
+              style={{
+                backgroundImage:
+                  "url('https://images.unsplash.com/photo-1599640842229-0064a523595e?auto=format&fit=crop&q=80&w=800')",
+              }}
+            >
+              <div className="svc-overlay"></div>
+              <div className="svc-content">
+                <span className="svc-num">05</span>
+                <div className="svc-i">
+                  <i className="fa-solid fa-ship"></i>
+                </div>
+                <h4>Cruise Management</h4>
+                <p>
+                  Luxury ocean and river cruise bookings with custom excursions.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/service/crisis-management"
+              className="svc-card"
+              style={{
+                backgroundImage:
+                  "url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800')",
               }}
             >
               <div className="svc-overlay"></div>
               <div className="svc-content">
                 <span className="svc-num">06</span>
                 <div className="svc-i">
-                  <i className="fa-solid fa-hand-holding-heart"></i>
+                  <i className="fa-solid fa-shield-halved"></i>
                 </div>
-                <h4>Pilgrimage Support</h4>
-                <p>End-to-end arrangements for Char Dham and Vaishno Devi.</p>
+                <h4>Crisis Management</h4>
+                <p>
+                  24/7 travel emergency support, rebooking and contingency planning.
+                </p>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -1325,8 +1338,7 @@ export default function Home() {
                     <i className="fa-solid fa-phone"></i> +91 98110 22334
                   </div>
                   <div>
-                    <i className="fa-solid fa-envelope"></i> hello@Shree Global
-                    Holidays.com
+                    <i className="fa-solid fa-envelope"></i> hello@shreeglobal.com
                   </div>
                   <div>
                     <i className="fa-solid fa-location-dot"></i> Connaught

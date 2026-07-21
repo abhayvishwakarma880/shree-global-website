@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import companyLogo from '../assets/companyLogo.png'
 
 export default function Footer() {
   return (
@@ -75,6 +76,9 @@ export default function Footer() {
 
       <div className="container footer-bottom">
         <span>© 2026 Shree Global Holidays. All rights reserved.</span>
+        <div className="designer-info">
+          Designed & Developed by <a target='_blank' rel="noopener noreferrer" href="https://codecrafter.co.in/"><img src={companyLogo} alt="Code Crafter" /></a>
+        </div>
         <div className="payment-badges">
           <i className="fa-brands fa-cc-visa"></i>
           <i className="fa-brands fa-cc-mastercard"></i>

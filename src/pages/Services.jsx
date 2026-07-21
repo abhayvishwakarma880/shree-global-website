@@ -54,92 +54,104 @@ export default function Services() {
           <div className="services-grid reveal">
             {/* Service 1 */}
             <div className="service-card">
-              <div className="icon-wrap"><i className="fa-solid fa-car"></i></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-people-group"></i></div>
               <span className="number-badge">01</span>
-              <h3>Luxury Rentals</h3>
-              <p>Premium sedans, SUVs, and Tempo Travellers with verified chauffeurs for every group size.</p>
+              <h3>Group Tours</h3>
+              <p>Specially curated itineraries for families, friends, and social groups looking to explore destinations together.</p>
               <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Air-conditioned vehicles</li>
-                <li><i className="fa-solid fa-check"></i> Verified chauffeurs</li>
-                <li><i className="fa-solid fa-check"></i> GPS tracking</li>
-                <li><i className="fa-solid fa-check"></i> 24/7 roadside support</li>
+                <li><i className="fa-solid fa-check"></i> Custom group itineraries</li>
+                <li><i className="fa-solid fa-check"></i> Tour managers &amp; local guides</li>
+                <li><i className="fa-solid fa-check"></i> Shared transport arrangements</li>
+                <li><i className="fa-solid fa-check"></i> Special group rates &amp; inclusions</li>
               </ul>
-              <Link to="/fleet" className="btn btn-dark btn-sm">Explore Fleet</Link>
+              <Link to="/service/group-tours" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
 
             {/* Service 2 */}
             <div className="service-card">
-              <div className="icon-wrap"><i className="fa-solid fa-hotel"></i></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-handshake"></i></div>
               <span className="number-badge">02</span>
-              <h3>Heritage Stays</h3>
-              <p>Handpicked 4★ &amp; 5★ hotels, palaces, and boutique resorts across India.</p>
+              <h3>MICE</h3>
+              <p>End-to-end corporate event planning, logistics, venue sourcing, and execution tailored to your business objectives.</p>
               <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Curated hotel selection</li>
-                <li><i className="fa-solid fa-check"></i> Palace &amp; heritage stays</li>
-                <li><i className="fa-solid fa-check"></i> Best price guarantee</li>
-                <li><i className="fa-solid fa-check"></i> Exclusive amenities</li>
+                <li><i className="fa-solid fa-check"></i> Venue sourcing &amp; negotiation</li>
+                <li><i className="fa-solid fa-check"></i> State-of-the-art AV setup</li>
+                <li><i className="fa-solid fa-check"></i> Delegate travel &amp; stays</li>
+                <li><i className="fa-solid fa-check"></i> Gala dinners &amp; team-building</li>
               </ul>
-              <Link to="/packages" className="btn btn-dark btn-sm">View Packages</Link>
+              <Link to="/service/mice" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
 
             {/* Service 3 */}
             <div className="service-card">
-              <div className="icon-wrap"><i className="fa-solid fa-route"></i></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-award"></i></div>
               <span className="number-badge">03</span>
-              <h3>Custom Itineraries</h3>
-              <p>Travel plans shaped around your pace, interests, and budget for a truly personalized experience.</p>
+              <h3>Incentive Tours</h3>
+              <p>Reward your top performers, partners, and employees with curated luxury travel experiences across domestic and international destinations.</p>
               <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Personalized planning</li>
-                <li><i className="fa-solid fa-check"></i> Flexible schedules</li>
-                <li><i className="fa-solid fa-check"></i> Private guides</li>
-                <li><i className="fa-solid fa-check"></i> Unique experiences</li>
+                <li><i className="fa-solid fa-check"></i> Ultra-luxury accommodations</li>
+                <li><i className="fa-solid fa-check"></i> Exclusive local experiences</li>
+                <li><i className="fa-solid fa-check"></i> Branded merchandise &amp; themes</li>
+                <li><i className="fa-solid fa-check"></i> Seamless transfer logistics</li>
               </ul>
-              <Link to="/contact" className="btn btn-dark btn-sm">Plan Your Trip</Link>
+              <Link to="/service/incentive-tours" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
 
             {/* Service 4 */}
             <div className="service-card">
-              <div className="icon-wrap"><i className="fa-solid fa-plane-departure"></i></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544016768-982d1554f0b9?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-passport"></i></div>
               <span className="number-badge">04</span>
-              <h3>Airport Transfers</h3>
-              <p>Reliable pick-up and drop services across all major Indian airports with real-time flight tracking.</p>
+              <h3>Visa Assistance</h3>
+              <p>Hassle-free visa documentation, application guidance, appointment booking, and submission services for major destinations.</p>
               <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Flight tracking</li>
-                <li><i className="fa-solid fa-check"></i> Meet &amp; greet service</li>
-                <li><i className="fa-solid fa-check"></i> Luggage assistance</li>
-                <li><i className="fa-solid fa-check"></i> 24/7 availability</li>
+                <li><i className="fa-solid fa-check"></i> Document checklist verification</li>
+                <li><i className="fa-solid fa-check"></i> Appointment slot booking</li>
+                <li><i className="fa-solid fa-check"></i> Embassy updates &amp; follow-ups</li>
+                <li><i className="fa-solid fa-check"></i> High visa success rate</li>
               </ul>
-              <Link to="/contact" className="btn btn-dark btn-sm">Book Transfer</Link>
+              <Link to="/service/visa-assistance" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
 
             {/* Service 5 */}
             <div className="service-card">
-              <div className="icon-wrap"><i className="fa-solid fa-people-group"></i></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1599640842229-0064a523595e?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-ship"></i></div>
               <span className="number-badge">05</span>
-              <h3>Group &amp; Corporate</h3>
-              <p>Exclusive packages for families, corporate retreats, weddings, and large group travel.</p>
+              <h3>Cruise Management</h3>
+              <p>Book luxury ocean cruises and river cruises worldwide, complete with pre/post-cruise stays and shore excursions.</p>
               <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Custom group packages</li>
-                <li><i className="fa-solid fa-check"></i> Corporate retreats</li>
-                <li><i className="fa-solid fa-check"></i> Event management</li>
-                <li><i className="fa-solid fa-check"></i> Bulk discounts</li>
+                <li><i className="fa-solid fa-check"></i> Top global cruise partnerships</li>
+                <li><i className="fa-solid fa-check"></i> Customized cabin selections</li>
+                <li><i className="fa-solid fa-check"></i> Shore excursions planning</li>
+                <li><i className="fa-solid fa-check"></i> Group bookings &amp; charters</li>
               </ul>
-              <Link to="/contact" className="btn btn-dark btn-sm">Inquire Now</Link>
+              <Link to="/service/cruise-management" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
 
             {/* Service 6 */}
             <div className="service-card">
-              <div className="icon-wrap"><i className="fa-solid fa-hand-holding-heart"></i></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-shield-halved"></i></div>
               <span className="number-badge">06</span>
-              <h3>Pilgrimage Support</h3>
-              <p>End-to-end arrangements for Char Dham, Vaishno Devi, and other spiritual journeys across India.</p>
+              <h3>Crisis Management</h3>
+              <p>24/7 travel emergency support, itinerary rerouting, medical coordination, and contingency planning to keep you safe.</p>
               <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Spiritual guides</li>
-                <li><i className="fa-solid fa-check"></i> Accommodation</li>
-                <li><i className="fa-solid fa-check"></i> Transport arrangements</li>
-                <li><i className="fa-solid fa-check"></i> VIP darshan</li>
+                <li><i className="fa-solid fa-check"></i> 24/7 dedicated helpline</li>
+                <li><i className="fa-solid fa-check"></i> Emergency flight rebooking</li>
+                <li><i className="fa-solid fa-check"></i> Local coordination support</li>
+                <li><i className="fa-solid fa-check"></i> Travel insurance facilitation</li>
               </ul>
-              <Link to="/contact" className="btn btn-dark btn-sm">Plan Pilgrimage</Link>
+              <Link to="/service/crisis-management" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
           </div>
         </div>
@@ -193,7 +205,7 @@ export default function Services() {
             <p>Three easy steps to your perfect Indian journey.</p>
           </div>
 
-          <div className="process-grid reveal">
+          <div className="services-process-grid reveal">
             <div className="process-item">
               <span className="step">1</span>
               <h4>Tell Us Your Dream</h4>

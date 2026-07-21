@@ -150,6 +150,34 @@ header.scrolled nav.mainnav>ul>li>a.active {
   position: relative;
   overflow: hidden;
   text-align: center;
+  z-index: 1;
+}
+
+.service-card .card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
+  opacity: 0;
+  transform: scale(1.1);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.service-card .card-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 30, 43, 0.88) 0%, rgba(10, 30, 43, 0.96) 100%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.service-card > *:not(.card-bg):not(.card-hover-overlay) {
+  position: relative;
+  z-index: 2;
+  transition: color 0.4s ease, opacity 0.4s ease, border-color 0.4s ease, background 0.4s ease;
 }
 
 .service-card::before {
@@ -170,7 +198,51 @@ header.scrolled nav.mainnav>ul>li>a.active {
 }
 
 .service-card:hover {
-  border-color: var(--green);
+  border-color: transparent;
+  transform: translateY(-5px);
+  box-shadow: var(--sh);
+}
+
+.service-card:hover .card-bg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.service-card:hover .card-hover-overlay {
+  opacity: 1;
+}
+
+.service-card:hover h3 {
+  color: #fff;
+}
+
+.service-card:hover p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.service-card:hover .features-list li {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.service-card:hover .features-list li i {
+  color: var(--cyan);
+}
+
+.service-card:hover .number-badge {
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.service-card:hover .btn-dark {
+  background: #fff;
+  color: var(--navy);
+  border-color: #fff;
+}
+
+.service-card:hover .btn-dark:hover {
+  background: var(--cyan);
+  color: #fff;
+  border-color: var(--cyan);
 }
 
 .service-card .icon-wrap {
@@ -319,7 +391,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
 }
 
 /* ===== PROCESS SECTION ===== */
-.process-grid {
+.services-process-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
@@ -470,10 +542,6 @@ header.scrolled nav.mainnav>ul>li>a.active {
     grid-template-columns: 1fr;
   }
 
-  .process-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .testimonial-snippet {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -506,6 +574,10 @@ header.scrolled nav.mainnav>ul>li>a.active {
 
   .service-card {
     padding: 28px 20px 24px;
+  }
+
+  .services-process-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .process-item .arrow-line {
@@ -569,7 +641,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
     font-size: 1.1rem;
   }
 
-  .process-grid {
+  .services-process-grid {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
@@ -626,7 +698,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
     font-size: 0.7rem;
   }
 
-  .process-grid {
+  .services-process-grid {
     grid-template-columns: 1fr;
   }
 

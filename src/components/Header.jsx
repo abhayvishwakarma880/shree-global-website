@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import shreeGlobalLogo from '../assets/shreeGlobalLogo.jpeg';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -55,8 +56,7 @@ export default function Header() {
       <header id="header" className={scrolled ? 'scrolled' : ''}>
         <div className="nav-row">
           <Link to="/" className="logo">
-            <img src="/logo.png" alt="Shree Global Holidays Logo" className="mark" />
-            Shree Global <span className="cyanpart">Holidays</span>
+            <img src={shreeGlobalLogo} alt="Shree Global Holidays" className="mark" />
           </Link>
 
           <nav className={`mainnav ${mobileMenuOpen ? 'show' : ''}`}>

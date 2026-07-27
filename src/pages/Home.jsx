@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Lightbox from "../components/Lightbox";
+import { useWishlist } from "../context/WishlistContext";
 
 export default function Home() {
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
   // Hero Slider State
   const [heroActiveIndex, setHeroActiveIndex] = useState(0);
   const heroSlides = [
@@ -22,6 +25,78 @@ export default function Home() {
 
   // FAQ State
   const [faqOpenIndex, setFaqOpenIndex] = useState(0);
+
+  // Offers State & Data
+  const [copiedCode, setCopiedCode] = useState("");
+  const handleCopyCode = (code) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+    }
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(""), 2500);
+  };
+
+  const offersData = [
+    {
+      id: 1,
+      badge: "20% OFF",
+      tag: "EARLY BIRD DEAL",
+      title: "Golden Triangle & Rajasthan Special",
+      desc: "Book your luxury tour 30 days in advance and get flat 20% discount on all private car & guide packages.",
+      code: "EARLY20",
+      validity: "Valid till end of month",
+      icon: "fa-solid fa-plane-departure",
+      image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&q=80&w=800",
+    },
+    {
+      id: 2,
+      badge: "FLAT ₹5,000 OFF",
+      tag: "MONSOON ESCAPE",
+      title: "Kerala Backwaters & Houseboat Package",
+      desc: "Experience luxury houseboats & Munnar tea gardens with flat ₹5,000 off on 5N/6D packages.",
+      code: "KERALA5K",
+      validity: "Limited slots available",
+      icon: "fa-solid fa-water",
+      image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800",
+    },
+    {
+      id: 3,
+      badge: "15% OFF",
+      tag: "HIMALAYAN ADVENTURE",
+      title: "Himachal & Ladakh Circuit",
+      desc: "Get 15% discount + Complimentary airport pickup for group bookings over 4 people.",
+      code: "HIMALAYA15",
+      validity: "Seasonal Offer",
+      icon: "fa-solid fa-mountain",
+      image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
+    },
+    {
+      id: 4,
+      badge: "10% OFF FLEET",
+      tag: "LUXURY FLEET DEAL",
+      title: "Tempo Traveler & Luxury Bus Rentals",
+      desc: "Planning a family trip or corporate outing? Enjoy 10% off on all luxury bus and tempo traveler hires.",
+      code: "FLEET10",
+      validity: "Valid on all bookings",
+      icon: "fa-solid fa-bus-simple",
+      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800",
+    },
+  ];
+
+  // Tour Search State & Navigation
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedDuration, setSelectedDuration] = useState("All");
+
+  const handleHeroSearchSubmit = (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.set("query", searchQuery.trim());
+    if (selectedCategory && selectedCategory !== "All") params.set("category", selectedCategory);
+    if (selectedDuration && selectedDuration !== "All") params.set("duration", selectedDuration);
+    navigate(`/search?${params.toString()}`);
+  };
 
   // Gallery Lightbox State
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -237,41 +312,115 @@ export default function Home() {
         <div className="hero-side-label">Since 2010 · New Delhi</div>
 
         <div className="hero-body">
-          <div className="hero-copy">
-            <div className="eyebrow on-dark">Handcrafted Indian Journeys</div>
-            <h1>
-              Travel deeper into <span className="italic">India's</span> story
-            </h1>
-            <p>
-              Private guides, heritage stays and a premium fleet — itineraries
-              built around the way you actually like to travel.
-            </p>
-            <div className="hero-actions">
-              <a href="#packages" className="btn btn-brand">
-                <i className="fa-regular fa-compass"></i> View Packages
-              </a>
-              <a href="#contact" className="btn btn-line">
-                <i className="fa-regular fa-message"></i> Talk to an Expert
-              </a>
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <div className="eyebrow on-dark">Handcrafted Indian Journeys</div>
+              <h1>
+                Travel deeper into <span className="italic">India's</span> story
+              </h1>
+              <p>
+                Private guides, heritage stays and a premium fleet — itineraries
+                built around the way you actually like to travel.
+              </p>
+              <div className="hero-actions">
+                <a href="#packages" className="btn btn-brand">
+                  <i className="fa-regular fa-compass"></i> View Packages
+                </a>
+                <a href="#contact" className="btn btn-line">
+                  <i className="fa-regular fa-message"></i> Talk to an Expert
+                </a>
+              </div>
+              <div className="hero-stats">
+                <div>
+                  <strong>4.9★</strong>
+                  <span>Google Rating</span>
+                </div>
+                <div>
+                  <strong>8,000+</strong>
+                  <span>Travelers</span>
+                </div>
+                <div>
+                  <strong>100+</strong>
+                  <span>Destinations</span>
+                </div>
+                <div>
+                  <strong>24×7</strong>
+                  <span>Concierge</span>
+                </div>
+              </div>
             </div>
-            <div className="hero-stats">
-              <div>
-                <strong>4.9★</strong>
-                <span>Google Rating</span>
+
+            {/* Right Side Tour Search Card - Submits to dedicated /search page */}
+            <form className="hero-search-card" onSubmit={handleHeroSearchSubmit}>
+              <div className="search-card-header">
+                <span className="search-badge">
+                  <i className="fa-solid fa-compass"></i> Quick Tour Finder
+                </span>
+                <h3>Search &amp; Explore Tours</h3>
+                <p>Find luxury packages, heritage trips &amp; custom itineraries</p>
               </div>
-              <div>
-                <strong>8,000+</strong>
-                <span>Travelers</span>
+
+              <div className="search-card-body">
+                {/* Location / Keyword Input */}
+                <div className="search-field">
+                  <label><i className="fa-solid fa-location-dot"></i> Destination or Package</label>
+                  <div className="search-input-wrap">
+                    <input
+                      type="text"
+                      placeholder="e.g. Rajasthan, Kerala, Delhi..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        className="search-clear-btn"
+                        onClick={() => setSearchQuery("")}
+                      >
+                        <i className="fa-solid fa-xmark"></i>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Filters Grid */}
+                <div className="search-filters-grid">
+                  <div className="search-field">
+                    <label><i className="fa-solid fa-layer-group"></i> Category</label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                      <option value="All">All Categories</option>
+                      <option value="Golden Triangle">Golden Triangle</option>
+                      <option value="Rajasthan & Royal">Rajasthan &amp; Royal</option>
+                      <option value="Kerala & South India">Kerala &amp; South India</option>
+                      <option value="Himalayan Escapes">Himalayan Escapes</option>
+                      <option value="Pilgrimage Journeys">Pilgrimage &amp; Spiritual</option>
+                      <option value="Wildlife & Safaris">Wildlife &amp; Safaris</option>
+                    </select>
+                  </div>
+
+                  <div className="search-field">
+                    <label><i className="fa-regular fa-clock"></i> Duration</label>
+                    <select
+                      value={selectedDuration}
+                      onChange={(e) => setSelectedDuration(e.target.value)}
+                    >
+                      <option value="All">Any Duration</option>
+                      <option value="short">1 - 4 Days</option>
+                      <option value="medium">5 - 7 Days</option>
+                      <option value="long">8+ Days</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Submit Search Button */}
+                <button type="submit" className="btn-hero-search">
+                  <i className="fa-solid fa-magnifying-glass"></i> Search Tours
+                </button>
               </div>
-              <div>
-                <strong>100+</strong>
-                <span>Destinations</span>
-              </div>
-              <div>
-                <strong>24×7</strong>
-                <span>Concierge</span>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
 
@@ -328,6 +477,79 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ================= OFFERS SECTION ================= */}
+      <section className="offers-section" id="offers">
+        <div className="container">
+          <div className="section-header text-center">
+            <div className="eyebrow">Exclusive Deals & Savings</div>
+            <h2>
+              Special Travel <span className="highlight-gold">Offers</span> for You
+            </h2>
+            <p className="section-subtitle">
+              Grab our limited-time promotional deals and enjoy premium luxury travel at unbeatable prices.
+            </p>
+          </div>
+
+          <div className="offers-grid">
+            {offersData.map((offer) => (
+              <div key={offer.id} className="offer-card">
+                <div className="offer-image-wrap">
+                  <img src={offer.image} alt={offer.title} className="offer-image" />
+                  <div className="offer-image-overlay"></div>
+                  <span className="offer-badge">{offer.badge}</span>
+                  <div className="offer-icon-floating">
+                    <i className={offer.icon}></i>
+                  </div>
+                </div>
+                <div className="offer-card-body">
+                  <div className="offer-tag">{offer.tag}</div>
+                  <h3 className="offer-title">{offer.title}</h3>
+                  <p className="offer-desc">{offer.desc}</p>
+
+                  <div className="offer-footer">
+                    <div className="promo-box">
+                      <span className="promo-label">PROMO CODE</span>
+                      <span className="promo-code">{offer.code}</span>
+                    </div>
+                    <button
+                      className={`btn-claim ${copiedCode === offer.code ? "copied" : ""}`}
+                      onClick={() => handleCopyCode(offer.code)}
+                      title="Click to copy promo code"
+                    >
+                      {copiedCode === offer.code ? (
+                        <>
+                          <i className="fa-solid fa-check"></i> Copied!
+                        </>
+                      ) : (
+                        <>
+                          <i className="fa-regular fa-copy"></i>Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <div className="offer-validity">
+                    <i className="fa-regular fa-clock"></i> {offer.validity}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="offers-banner">
+            <div className="banner-content">
+              <i className="fa-solid fa-gift banner-icon"></i>
+              <div>
+                <h4>Looking for a Customized Tour Package Deal?</h4>
+                <p>Contact our travel specialists today and get a personalized discount for your group or honeymoon trip!</p>
+              </div>
+            </div>
+            <a href="#contact" className="btn btn-gold">
+              <i className="fa-solid fa-phone-volume"></i> Claim Custom Offer
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ================= DESTINATIONS BENTO ================= */}
       <section
         className="section"
@@ -379,6 +601,18 @@ export default function Home() {
                 <span className="tag">Heritage</span>
                 <h3>Jaipur — Pink City</h3>
                 <span className="meta">Forts, palaces &amp; royal culture</span>
+              </div>
+            </Link>
+            <Link to="/destinations#north" className="b3">
+              <img
+                src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=700"
+                alt="Kashmir valley Shikara"
+              />
+              <div className="ov"></div>
+              <div className="info">
+                <span className="tag">Paradise</span>
+                <h3>Kashmir Valley</h3>
+                <span className="meta">Gulmarg, Pahalgam &amp; Dal Lake</span>
               </div>
             </Link>
             <Link to="/destinations#south" className="b4">
@@ -595,7 +829,6 @@ export default function Home() {
         style={{
           paddingLeft: 0,
           paddingRight: 0,
-          backgroundImage: "url(images/pattern-bg.png)",
         }}
       >
         <div className="container">
@@ -627,9 +860,24 @@ export default function Home() {
                 <div className="ov"></div>
                 <div className="top">
                   <span className="badge">Best Seller</span>
-                  <span className="fav">
-                    <i className="fa-regular fa-heart"></i>
-                  </span>
+                  <button
+                    className={`fav-btn ${isInWishlist(1) ? "liked" : ""}`}
+                    onClick={() =>
+                      toggleWishlist({
+                        id: 1,
+                        title: "Golden Triangle Tour",
+                        price: "₹14,500",
+                        image:
+                          "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=700",
+                      })
+                    }
+                    title={isInWishlist(1) ? "Remove from Wishlist" : "Add to Wishlist"}
+                  >
+                    <i
+                      className={isInWishlist(1) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      style={{ color: isInWishlist(1) ? "#EF4444" : "#FFFFFF" }}
+                    ></i>
+                  </button>
                 </div>
                 <div className="bottom">
                   <div className="meta">
@@ -662,9 +910,24 @@ export default function Home() {
                 <div className="ov"></div>
                 <div className="top">
                   <span className="badge">Honeymoon</span>
-                  <span className="fav">
-                    <i className="fa-regular fa-heart"></i>
-                  </span>
+                  <button
+                    className={`fav-btn ${isInWishlist(2) ? "liked" : ""}`}
+                    onClick={() =>
+                      toggleWishlist({
+                        id: 2,
+                        title: "Shimla Manali Escape",
+                        price: "₹18,900",
+                        image:
+                          "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=700",
+                      })
+                    }
+                    title={isInWishlist(2) ? "Remove from Wishlist" : "Add to Wishlist"}
+                  >
+                    <i
+                      className={isInWishlist(2) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      style={{ color: isInWishlist(2) ? "#EF4444" : "#FFFFFF" }}
+                    ></i>
+                  </button>
                 </div>
                 <div className="bottom">
                   <div className="meta">
@@ -697,9 +960,24 @@ export default function Home() {
                 <div className="ov"></div>
                 <div className="top">
                   <span className="badge">Royal</span>
-                  <span className="fav">
-                    <i className="fa-regular fa-heart"></i>
-                  </span>
+                  <button
+                    className={`fav-btn ${isInWishlist(3) ? "liked" : ""}`}
+                    onClick={() =>
+                      toggleWishlist({
+                        id: 3,
+                        title: "Rajasthan Heritage Trail",
+                        price: "₹22,400",
+                        image:
+                          "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=700",
+                      })
+                    }
+                    title={isInWishlist(3) ? "Remove from Wishlist" : "Add to Wishlist"}
+                  >
+                    <i
+                      className={isInWishlist(3) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      style={{ color: isInWishlist(3) ? "#EF4444" : "#FFFFFF" }}
+                    ></i>
+                  </button>
                 </div>
                 <div className="bottom">
                   <div className="meta">
@@ -732,9 +1010,24 @@ export default function Home() {
                 <div className="ov"></div>
                 <div className="top">
                   <span className="badge">Coastal</span>
-                  <span className="fav">
-                    <i className="fa-regular fa-heart"></i>
-                  </span>
+                  <button
+                    className={`fav-btn ${isInWishlist(4) ? "liked" : ""}`}
+                    onClick={() =>
+                      toggleWishlist({
+                        id: 4,
+                        title: "Kerala Backwater Trail",
+                        price: "₹19,600",
+                        image:
+                          "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=700",
+                      })
+                    }
+                    title={isInWishlist(4) ? "Remove from Wishlist" : "Add to Wishlist"}
+                  >
+                    <i
+                      className={isInWishlist(4) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      style={{ color: isInWishlist(4) ? "#EF4444" : "#FFFFFF" }}
+                    ></i>
+                  </button>
                 </div>
                 <div className="bottom">
                   <div className="meta">
@@ -767,9 +1060,24 @@ export default function Home() {
                 <div className="ov"></div>
                 <div className="top">
                   <span className="badge">New</span>
-                  <span className="fav">
-                    <i className="fa-regular fa-heart"></i>
-                  </span>
+                  <button
+                    className={`fav-btn ${isInWishlist(5) ? "liked" : ""}`}
+                    onClick={() =>
+                      toggleWishlist({
+                        id: 5,
+                        title: "Ladakh High-Altitude Circuit",
+                        price: "₹27,300",
+                        image:
+                          "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=700",
+                      })
+                    }
+                    title={isInWishlist(5) ? "Remove from Wishlist" : "Add to Wishlist"}
+                  >
+                    <i
+                      className={isInWishlist(5) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      style={{ color: isInWishlist(5) ? "#EF4444" : "#FFFFFF" }}
+                    ></i>
+                  </button>
                 </div>
                 <div className="bottom">
                   <div className="meta">
@@ -938,7 +1246,7 @@ export default function Home() {
       </section>
 
       {/* ================= FLEET ================= */}
-      <section className="section" id="fleet">
+      {/* <section className="section" id="fleet">
         <div className="container">
           <div className="kicker-row reveal">
             <div>
@@ -953,7 +1261,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Fleet Swiper */}
           <div className="swiper fleetSwiper reveal">
             <div className="swiper-wrapper">
               <div className="swiper-slide">
@@ -1018,7 +1325,7 @@ export default function Home() {
             <div className="swiper-pagination fleet-pagination"></div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ================= GALLERY ================= */}
       <section className="section sand tight" id="gallery">

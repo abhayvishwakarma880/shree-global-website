@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import shreeGlobalLogo from '../assets/shreeGlobalLogo.jpeg';
+import { useWishlist } from '../context/WishlistContext';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -8,7 +9,12 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+  const [headerSearch, setHeaderSearch] = useState('');
+  const [wishlistDrawerOpen, setWishlistDrawerOpen] = useState(false);
+
+  const { wishlist, wishlistCount, removeFromWishlist } = useWishlist();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +51,16 @@ export default function Header() {
     }
   };
 
+  const handleHeaderSearchSubmit = (e) => {
+    e.preventDefault();
+    if (headerSearch.trim()) {
+      navigate(`/search?query=${encodeURIComponent(headerSearch.trim())}`);
+      setHeaderSearch('');
+    } else {
+      navigate('/search');
+    }
+  };
+
   return (
     <>
       <div 
@@ -58,6 +74,20 @@ export default function Header() {
           <Link to="/" className="logo">
             <img src={shreeGlobalLogo} alt="Shree Global Holidays" className="mark" />
           </Link>
+
+          {/* Header Search Bar (Mobile & Desktop Middle Space) */}
+          <form className="header-search-bar" onSubmit={handleHeaderSearchSubmit}>
+            <i className="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              type="text"
+              placeholder="Search tours..."
+              value={headerSearch}
+              onChange={(e) => setHeaderSearch(e.target.value)}
+            />
+            <button type="submit" aria-label="Search Tours">
+              <i className="fa-solid fa-arrow-right"></i>
+            </button>
+          </form>
 
           <nav className={`mainnav ${mobileMenuOpen ? 'show' : ''}`}>
             <ul>
@@ -109,18 +139,19 @@ export default function Header() {
               </li>
 
               {/* Main Navigation Links */}
+              {/* <li><NavLink to="/search" className={({ isActive }) => isActive ? 'active' : ''}><i className="fa-solid fa-magnifying-glass" style={{ fontSize: '0.82rem', marginRight: '4px' }}></i> Search</NavLink></li> */}
               <li><NavLink to="/packages" className={({ isActive }) => isActive ? 'active' : ''}>Packages</NavLink></li>
               <li className={`has-dropdown ${servicesMenuOpen ? 'open' : ''}`}>
                 <Link to="/services" onClick={handleServicesClick}>
                   Services <i className="fa-solid fa-chevron-down"></i>
                 </Link>
                 <ul className="dropdown-menu">
-                  <li><Link to="/service/group-tours"><span className="dot"></span>Group Tours</Link></li>
-                  <li><Link to="/service/mice"><span className="dot"></span>MICE</Link></li>
-                  <li><Link to="/service/incentive-tours"><span className="dot"></span>Incentive Tours</Link></li>
-                  <li><Link to="/service/visa-assistance"><span className="dot"></span>Visa Assistance</Link></li>
-                  <li><Link to="/service/cruise-management"><span className="dot"></span>Cruise Management</Link></li>
-                  <li><Link to="/service/crisis-management"><span className="dot"></span>Crisis Management</Link></li>
+                  <li><Link to="/service/group-tours"><i className="fa-solid fa-users service-icon"></i> Group Tours</Link></li>
+                  <li><Link to="/service/mice"><i className="fa-solid fa-briefcase service-icon"></i> MICE</Link></li>
+                  <li><Link to="/service/incentive-tours"><i className="fa-solid fa-trophy service-icon"></i> Incentive Tours</Link></li>
+                  <li><Link to="/service/visa-assistance"><i className="fa-solid fa-passport service-icon"></i> Visa Assistance</Link></li>
+                  <li><Link to="/service/cruise-management"><i className="fa-solid fa-ship service-icon"></i> Cruise Management</Link></li>
+                  <li><Link to="/service/crisis-management"><i className="fa-solid fa-shield-halved service-icon"></i> Crisis Management</Link></li>
                 </ul>
               </li>
               {/* <li><NavLink to="/fleet" className={({ isActive }) => isActive ? 'active' : ''}>Fleet</NavLink></li> */}
@@ -131,9 +162,85 @@ export default function Header() {
           </nav>
 
           <div className="header-actions">
-            <a href="tel:+919811022334" className="tel">
-              <i className="fa-solid fa-phone"></i> <span>+91 98110 22334</span>
-            </a>
+            <div className="wishlist-header-box">
+              {/* <button
+                className="header-wishlist-btn"
+                onClick={() => setWishlistDrawerOpen(!wishlistDrawerOpen)}
+                title="View Saved Wishlist Packages"
+              >
+                <i className="fa-solid fa-heart wishlist-icon"></i>
+                <span className="wishlist-label">Wishlist</span>
+                {wishlistCount > 0 && (
+                  <span className="wishlist-badge-count">{wishlistCount}</span>
+                )}
+              </button> */}
+
+              {/* Header Search Button (Search Icon + Label, navigates to /search) */}
+              <Link to="/search" className="header-search-btn" title="Search Tours">
+                <i className="fa-solid fa-magnifying-glass search-icon"></i>
+                <span className="search-label">Search</span>
+              </Link>
+
+              {/* Wishlist Dropdown Drawer */}
+              {wishlistDrawerOpen && (
+                <div className="wishlist-dropdown-drawer">
+                  <div className="wishlist-drawer-header">
+                    <h4>
+                      <i className="fa-solid fa-heart"></i> Saved Wishlist ({wishlistCount})
+                    </h4>
+                    <button
+                      className="close-drawer-btn"
+                      onClick={() => setWishlistDrawerOpen(false)}
+                    >
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+
+                  <div className="wishlist-drawer-body">
+                    {wishlist.length > 0 ? (
+                      wishlist.map((item) => (
+                        <div key={item.id} className="wishlist-item-card">
+                          {item.image && (
+                            <img src={item.image} alt={item.title} className="wishlist-item-img" />
+                          )}
+                          <div className="wishlist-item-info">
+                            <h5>{item.title}</h5>
+                            <span className="wishlist-item-price">{item.price}</span>
+                          </div>
+                          <button
+                            className="remove-wishlist-btn"
+                            onClick={() => removeFromWishlist(item.id)}
+                            title="Remove from wishlist"
+                          >
+                            <i className="fa-solid fa-trash-can"></i>
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="wishlist-empty">
+                        <i className="fa-regular fa-heart empty-heart"></i>
+                        <p>Your Wishlist is empty</p>
+                        <span>Tap the heart icon on any tour package to save it here!</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {wishlist.length > 0 && (
+                    <div className="wishlist-drawer-footer">
+                      <Link
+                        to="/packages"
+                        className="btn btn-brand btn-sm"
+                        style={{ width: '100%', justifyContent: 'center' }}
+                        onClick={() => setWishlistDrawerOpen(false)}
+                      >
+                        Explore Packages
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             <Link to="/contact" className="btn btn-brand btn-sm">
               <i className="fa-regular fa-paper-plane"></i> Plan My Trip
             </Link>

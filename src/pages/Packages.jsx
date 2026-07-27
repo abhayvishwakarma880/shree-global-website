@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Packages.css';
+import { useWishlist } from '../context/WishlistContext';
 
 const allPackages = [
   { 
@@ -278,6 +279,7 @@ const allPackages = [
 ];
 
 export default function Packages() {
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDestination, setSelectedDestination] = useState('all');
@@ -287,16 +289,9 @@ export default function Packages() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sort, setSort] = useState('popular');
   const [maxPrice, setMaxPrice] = useState(35000);
-  const [wishlist, setWishlist] = useState([]);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const itemsPerPage = 6;
-
-  const toggleWishlist = (id) => {
-    setWishlist((prev) => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
-  };
 
   const toggleCategory = (cat) => {
     setSelectedCategories((prev) =>
@@ -693,11 +688,17 @@ export default function Packages() {
                           {p.discount && <span className="pkg-discount">-{p.discount}</span>}
                           <span className="pkg-rating"><i className="fa-solid fa-star"></i> {p.rating} ({p.reviews})</span>
                           <span 
-                            className={`pkg-wishlist ${wishlist.includes(p.id) ? 'liked' : ''}`}
-                            onClick={() => toggleWishlist(p.id)}
-                            style={{ background: wishlist.includes(p.id) ? '#e74c3c' : 'rgba(255,255,255,0.2)' }}
+                            className={`pkg-wishlist ${isInWishlist(p.id) ? 'liked' : ''}`}
+                            onClick={() => toggleWishlist({
+                              id: p.id,
+                              title: p.name,
+                              price: `₹${p.price.toLocaleString()}`,
+                              image: p.image
+                            })}
+                            style={{ background: isInWishlist(p.id) ? '#EF4444' : 'rgba(255,255,255,0.25)', cursor: 'pointer' }}
+                            title={isInWishlist(p.id) ? "Remove from Wishlist" : "Add to Wishlist"}
                           >
-                            <i className={wishlist.includes(p.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i>
+                            <i className={isInWishlist(p.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i>
                           </span>
                         </div>
                         <div className="pkg-card-content">

@@ -11,10 +11,10 @@ export default function Footer() {
           </Link>
           <p>A premier luxury travel agency based in New Delhi, crafting seamless, unforgettable journeys across India since 2010.</p>
           <div className="footer-social">
-            <a href="#" aria-label="Facebook"><i className="fa-brands fa-facebook-f"></i></a>
-            <a href="#" aria-label="Instagram"><i className="fa-brands fa-instagram"></i></a>
-            <a href="#" aria-label="YouTube"><i className="fa-brands fa-youtube"></i></a>
-            <a href="#" aria-label="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://www.facebook.com/shreeglobalholidays/" target='_blank' rel="noopener noreferrer" aria-label="Facebook"><i className="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/shreeglobalholidays/" target='_blank' rel="noopener noreferrer" aria-label="Instagram"><i className="fa-brands fa-instagram"></i></a>
+            <a href="https://x.com/GlobalShree" target='_blank' rel="noopener noreferrer" aria-label="Twitter"><i className="fa-brands fa-x-twitter"></i></a>
+            <a href="http://linkedin.com/in/shreeglobalholidays/" target='_blank' rel="noopener noreferrer" aria-label="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
           </div>
         </div>
 
@@ -74,16 +74,17 @@ export default function Footer() {
       </div>
 
       <div className="container footer-bottom">
-        <span>© 2026 Shree Global Holidays. All rights reserved.</span>
+
         <div className="designer-info">
-          Designed & Developed by <a target='_blank' rel="noopener noreferrer" href="https://codecrafter.co.in/"><img src={shreeGlobalLogo} alt="Code Crafter" /></a>
+          Designed & Developed by <a target='_blank' rel="noopener noreferrer" href="https://codecrafter.co.in/"><img src="	https://codecrafter.co.in/assets/logo-XYhh9XQT.webp" alt="Code Crafter" /></a>
         </div>
-        <div className="payment-badges">
+        <span>© 2026 Shree Global Holidays. All rights reserved.</span>
+        {/* <div className="payment-badges">
           <i className="fa-brands fa-cc-visa"></i>
           <i className="fa-brands fa-cc-mastercard"></i>
           <i className="fa-brands fa-cc-paypal"></i>
           <i className="fa-brands fa-google-pay"></i>
-        </div>
+        </div> */}
       </div>
     </footer>
   );

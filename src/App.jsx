@@ -42,38 +42,44 @@ import Terms from './pages/Terms';
 import Cancellation from './pages/Cancellation';
 import PackageDetail from './pages/PackageDetail';
 import Reviews from './pages/Reviews';
+import TourSearch from './pages/TourSearch';
+
+import { WishlistProvider } from './context/WishlistContext';
 
 export default function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <RevealObserver />
-      <Header />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/destinations" element={<Destinations />} />
-          <Route path="/packages" element={<Packages />} />
-          <Route path="/package/:id" element={<PackageDetail />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/service/:slug" element={<ServiceDetail />} />
-          <Route path="/fleet" element={<Fleet />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogDetail />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/insurance" element={<Insurance />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/cancellation" element={<Cancellation />} />
-          <Route path="/reviews" element={<Reviews />} />
-        </Routes>
-      </main>
-      <Footer />
-      <FloatActions />
-    </Router>
+    <WishlistProvider>
+      <Router>
+        <ScrollToTop />
+        <RevealObserver />
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<TourSearch />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/destinations" element={<Destinations />} />
+            <Route path="/packages" element={<Packages />} />
+            <Route path="/package/:id" element={<PackageDetail />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/service/:slug" element={<ServiceDetail />} />
+            <Route path="/fleet" element={<Fleet />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/insurance" element={<Insurance />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/cancellation" element={<Cancellation />} />
+            <Route path="/reviews" element={<Reviews />} />
+          </Routes>
+        </main>
+        <Footer />
+        <FloatActions />
+      </Router>
+    </WishlistProvider>
   );
 }

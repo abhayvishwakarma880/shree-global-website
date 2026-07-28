@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import shreeGlobalLogo from '../assets/shreeGlobalLogo.jpeg';
+import whitelogo from '../assets/whitelogo.png'
 
 export default function Footer() {
   return (
@@ -76,7 +77,7 @@ export default function Footer() {
       <div className="container footer-bottom">
 
         <div className="designer-info">
-          Designed & Developed by <a target='_blank' rel="noopener noreferrer" href="https://codecrafter.co.in/"><img src="	https://codecrafter.co.in/assets/logo-XYhh9XQT.webp" alt="Code Crafter" /></a>
+          Designed & Developed by <a target='_blank' rel="noopener noreferrer" href="https://codecrafter.co.in/"><img src={whitelogo} alt="Code Crafter" /></a>
         </div>
         <span>© 2026 Shree Global Holidays. All rights reserved.</span>
         {/* <div className="payment-badges">

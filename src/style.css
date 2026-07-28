@@ -290,7 +290,7 @@ header.scrolled .nav-row {
   box-shadow: none;
   transition: all 0.35s ease;
   margin-right: 20px;
-  z-index: 1050;
+  z-index: 100;
   align-self: flex-start;
   margin-top: -4px;
 }
@@ -926,7 +926,7 @@ header.scrolled .hamburger span,
   opacity: 0;
   visibility: hidden;
   transition: .25s ease;
-  z-index: 950;
+  z-index: 2000;
   list-style: none;
   margin: 0;
 }
@@ -1000,7 +1000,7 @@ header.scrolled .dropdown-menu {
   visibility: hidden;
   transform: translateY(-8px);
   transition: .25s ease;
-  z-index: 900;
+  z-index: 2000;
 }
 
 header.scrolled .mega {

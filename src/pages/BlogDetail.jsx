@@ -130,6 +130,9 @@ export default function BlogDetail() {
         <div className="blog-detail-hero-content">
           <span className="category"><i className="fa-solid fa-location-dot"></i> {post.category}</span>
           <h1>{post.title}</h1>
+          <div className="blog-detail-breadcrumbs">
+            <Link to="/">Home</Link> / <Link to="/blog">Blog</Link> / <span>Article</span>
+          </div>
           <div className="meta">
             <span className="author">
               <img src={post.authorImg} alt={post.author} />
@@ -151,10 +154,12 @@ export default function BlogDetail() {
             {/* Share */}
             <div className="share-section">
               <span>Share this article:</span>
-              <a href="#" className="fb" onClick={(e) => e.preventDefault()}><i className="fa-brands fa-facebook-f"></i></a>
-              <a href="#" className="tw" onClick={(e) => e.preventDefault()}><i className="fa-brands fa-twitter"></i></a>
-              <a href="#" className="wa" onClick={(e) => e.preventDefault()}><i className="fa-brands fa-whatsapp"></i></a>
-              <a href="#" className="ln" onClick={(e) => e.preventDefault()}><i className="fa-brands fa-linkedin-in"></i></a>
+              <div className="share-icons">
+                <a href="#" className="fb" onClick={(e) => e.preventDefault()} aria-label="Facebook"><i className="fa-brands fa-facebook-f"></i></a>
+                <a href="#" className="tw" onClick={(e) => e.preventDefault()} aria-label="X"><i className="fa-brands fa-x-twitter"></i></a>
+                <a href="#" className="wa" onClick={(e) => e.preventDefault()} aria-label="WhatsApp"><i className="fa-brands fa-whatsapp"></i></a>
+                <a href="#" className="ln" onClick={(e) => e.preventDefault()} aria-label="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
+              </div>
             </div>
           </div>
         </div>

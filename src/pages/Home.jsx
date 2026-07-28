@@ -46,7 +46,8 @@ export default function Home() {
       code: "EARLY20",
       validity: "Valid till end of month",
       icon: "fa-solid fa-plane-departure",
-      image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&q=80&w=800",
+      image:
+        "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&q=80&w=800",
     },
     {
       id: 2,
@@ -57,7 +58,8 @@ export default function Home() {
       code: "KERALA5K",
       validity: "Limited slots available",
       icon: "fa-solid fa-water",
-      image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800",
+      image:
+        "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800",
     },
     {
       id: 3,
@@ -68,7 +70,8 @@ export default function Home() {
       code: "HIMALAYA15",
       validity: "Seasonal Offer",
       icon: "fa-solid fa-mountain",
-      image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
+      image:
+        "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
     },
     {
       id: 4,
@@ -79,7 +82,8 @@ export default function Home() {
       code: "FLEET10",
       validity: "Valid on all bookings",
       icon: "fa-solid fa-bus-simple",
-      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800",
+      image:
+        "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800",
     },
   ];
 
@@ -93,8 +97,10 @@ export default function Home() {
     e.preventDefault();
     const params = new URLSearchParams();
     if (searchQuery.trim()) params.set("query", searchQuery.trim());
-    if (selectedCategory && selectedCategory !== "All") params.set("category", selectedCategory);
-    if (selectedDuration && selectedDuration !== "All") params.set("duration", selectedDuration);
+    if (selectedCategory && selectedCategory !== "All")
+      params.set("category", selectedCategory);
+    if (selectedDuration && selectedDuration !== "All")
+      params.set("duration", selectedDuration);
     navigate(`/search?${params.toString()}`);
   };
 
@@ -139,6 +145,7 @@ export default function Home() {
   const packageSwiperRef = useRef(null);
   const fleetSwiperRef = useRef(null);
   const testimonialSwiperRef = useRef(null);
+  const intlSwiperRef = useRef(null);
 
   // Hero Slider Timer
   useEffect(() => {
@@ -224,6 +231,26 @@ export default function Home() {
             1024: { slidesPerView: 1, spaceBetween: 0 },
           },
         });
+
+        // International Travel Swiper
+        intlSwiperRef.current = new window.Swiper(".intlSwiper", {
+          slidesPerView: 1,
+          spaceBetween: 20,
+          loop: true,
+          autoplay: {
+            delay: 4500,
+            disableOnInteraction: false,
+          },
+          pagination: {
+            el: ".intl-pagination",
+            clickable: true,
+          },
+          breakpoints: {
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 24 },
+            1280: { slidesPerView: 4, spaceBetween: 24 },
+          },
+        });
       }
     }, 100);
 
@@ -246,6 +273,12 @@ export default function Home() {
         typeof testimonialSwiperRef.current.destroy === "function"
       ) {
         testimonialSwiperRef.current.destroy();
+      }
+      if (
+        intlSwiperRef.current &&
+        typeof intlSwiperRef.current.destroy === "function"
+      ) {
+        intlSwiperRef.current.destroy();
       }
     };
   }, []);
@@ -351,19 +384,27 @@ export default function Home() {
             </div>
 
             {/* Right Side Tour Search Card - Submits to dedicated /search page */}
-            <form className="hero-search-card" onSubmit={handleHeroSearchSubmit}>
+            <form
+              className="hero-search-card"
+              onSubmit={handleHeroSearchSubmit}
+            >
               <div className="search-card-header">
                 <span className="search-badge">
                   <i className="fa-solid fa-compass"></i> Quick Tour Finder
                 </span>
                 <h3>Search &amp; Explore Tours</h3>
-                <p>Find luxury packages, heritage trips &amp; custom itineraries</p>
+                <p>
+                  Find luxury packages, heritage trips &amp; custom itineraries
+                </p>
               </div>
 
               <div className="search-card-body">
                 {/* Location / Keyword Input */}
                 <div className="search-field">
-                  <label><i className="fa-solid fa-location-dot"></i> Destination or Package</label>
+                  <label>
+                    <i className="fa-solid fa-location-dot"></i> Destination or
+                    Package
+                  </label>
                   <div className="search-input-wrap">
                     <input
                       type="text"
@@ -386,23 +427,37 @@ export default function Home() {
                 {/* Filters Grid */}
                 <div className="search-filters-grid">
                   <div className="search-field">
-                    <label><i className="fa-solid fa-layer-group"></i> Category</label>
+                    <label>
+                      <i className="fa-solid fa-layer-group"></i> Category
+                    </label>
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
                     >
                       <option value="All">All Categories</option>
                       <option value="Golden Triangle">Golden Triangle</option>
-                      <option value="Rajasthan & Royal">Rajasthan &amp; Royal</option>
-                      <option value="Kerala & South India">Kerala &amp; South India</option>
-                      <option value="Himalayan Escapes">Himalayan Escapes</option>
-                      <option value="Pilgrimage Journeys">Pilgrimage &amp; Spiritual</option>
-                      <option value="Wildlife & Safaris">Wildlife &amp; Safaris</option>
+                      <option value="Rajasthan & Royal">
+                        Rajasthan &amp; Royal
+                      </option>
+                      <option value="Kerala & South India">
+                        Kerala &amp; South India
+                      </option>
+                      <option value="Himalayan Escapes">
+                        Himalayan Escapes
+                      </option>
+                      <option value="Pilgrimage Journeys">
+                        Pilgrimage &amp; Spiritual
+                      </option>
+                      <option value="Wildlife & Safaris">
+                        Wildlife &amp; Safaris
+                      </option>
                     </select>
                   </div>
 
                   <div className="search-field">
-                    <label><i className="fa-regular fa-clock"></i> Duration</label>
+                    <label>
+                      <i className="fa-regular fa-clock"></i> Duration
+                    </label>
                     <select
                       value={selectedDuration}
                       onChange={(e) => setSelectedDuration(e.target.value)}
@@ -483,10 +538,12 @@ export default function Home() {
           <div className="section-header text-center">
             <div className="eyebrow">Exclusive Deals & Savings</div>
             <h2>
-              Special Travel <span className="highlight-gold">Offers</span> for You
+              Special Travel <span className="highlight-gold">Offers</span> for
+              You
             </h2>
             <p className="section-subtitle">
-              Grab our limited-time promotional deals and enjoy premium luxury travel at unbeatable prices.
+              Grab our limited-time promotional deals and enjoy premium luxury
+              travel at unbeatable prices.
             </p>
           </div>
 
@@ -494,7 +551,11 @@ export default function Home() {
             {offersData.map((offer) => (
               <div key={offer.id} className="offer-card">
                 <div className="offer-image-wrap">
-                  <img src={offer.image} alt={offer.title} className="offer-image" />
+                  <img
+                    src={offer.image}
+                    alt={offer.title}
+                    className="offer-image"
+                  />
                   <div className="offer-image-overlay"></div>
                   <span className="offer-badge">{offer.badge}</span>
                   <div className="offer-icon-floating">
@@ -540,7 +601,10 @@ export default function Home() {
               <i className="fa-solid fa-gift banner-icon"></i>
               <div>
                 <h4>Looking for a Customized Tour Package Deal?</h4>
-                <p>Contact our travel specialists today and get a personalized discount for your group or honeymoon trip!</p>
+                <p>
+                  Contact our travel specialists today and get a personalized
+                  discount for your group or honeymoon trip!
+                </p>
               </div>
             </div>
             <a href="#contact" className="btn btn-gold">
@@ -660,62 +724,165 @@ export default function Home() {
           <div className="kicker-row reveal">
             <div>
               <div className="eyebrow">International Travel</div>
-              <h2>Beyond borders, <span className="italic">beyond expectations</span></h2>
+              <h2>
+                Beyond borders,{" "}
+                <span className="italic">beyond expectations</span>
+              </h2>
             </div>
-            <p>Handcrafted international itineraries with visa assistance, premium stays &amp; seamless transfers.</p>
+            <p>
+              Handcrafted international itineraries with visa assistance,
+              premium stays &amp; seamless transfers.
+            </p>
           </div>
 
-          <div className="intl-dest-grid reveal">
-
-            {/* Dubai */}
-            <Link to="/destinations#international" className="intl-dest-card">
-              <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=700" alt="Dubai skyline" />
-              <div className="intl-overlay"></div>
-              <div className="intl-info">
-                <span className="intl-badge" style={{ background: 'var(--cyan)' }}>🇦🇪 UAE</span>
-                <h3>Dubai &amp; Abu Dhabi</h3>
-                <span className="intl-meta">Burj Khalifa · Desert Safari · Luxury Shopping</span>
+          <div className="swiper intlSwiper reveal">
+            <div className="swiper-wrapper">
+              {/* Dubai */}
+              <div className="swiper-slide">
+                <Link to="/destination/13" className="intl-dest-card">
+                  <img
+                    src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=700"
+                    alt="Dubai skyline"
+                  />
+                  <div className="intl-overlay"></div>
+                  <div className="intl-info">
+                    <span
+                      className="intl-badge"
+                      style={{ background: "var(--cyan)" }}
+                    >
+                      🇦🇪 UAE
+                    </span>
+                    <h3>Dubai &amp; Abu Dhabi</h3>
+                    <span className="intl-meta">
+                      Burj Khalifa · Desert Safari · Luxury Shopping
+                    </span>
+                  </div>
+                </Link>
               </div>
-            </Link>
 
-            {/* Bali */}
-            <Link to="/destinations#international" className="intl-dest-card">
-              <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=700" alt="Bali rice terraces" />
-              <div className="intl-overlay"></div>
-              <div className="intl-info">
-                <span className="intl-badge" style={{ background: 'var(--green)' }}>🇮🇩 Indonesia</span>
-                <h3>Bali</h3>
-                <span className="intl-meta">Rice Terraces · Temples · Beach Clubs</span>
+              {/* Bali */}
+              <div className="swiper-slide">
+                <Link to="/destination/14" className="intl-dest-card">
+                  <img
+                    src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=700"
+                    alt="Bali rice terraces"
+                  />
+                  <div className="intl-overlay"></div>
+                  <div className="intl-info">
+                    <span
+                      className="intl-badge"
+                      style={{ background: "var(--green)" }}
+                    >
+                      🇮🇩 Indonesia
+                    </span>
+                    <h3>Bali</h3>
+                    <span className="intl-meta">
+                      Rice Terraces · Temples · Beach Clubs
+                    </span>
+                  </div>
+                </Link>
               </div>
-            </Link>
 
-            {/* Thailand */}
-            <Link to="/destinations#international" className="intl-dest-card">
-              <img src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?auto=format&fit=crop&q=80&w=700" alt="Thailand temples" />
-              <div className="intl-overlay"></div>
-              <div className="intl-info">
-                <span className="intl-badge" style={{ background: '#e05c1a' }}>🇹🇭 Thailand</span>
-                <h3>Thailand</h3>
-                <span className="intl-meta">Bangkok · Chiang Mai · Phuket Islands</span>
+              {/* Thailand */}
+              <div className="swiper-slide">
+                <Link to="/destination/15" className="intl-dest-card">
+                  <img
+                    src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?auto=format&fit=crop&q=80&w=700"
+                    alt="Thailand temples"
+                  />
+                  <div className="intl-overlay"></div>
+                  <div className="intl-info">
+                    <span
+                      className="intl-badge"
+                      style={{ background: "#e05c1a" }}
+                    >
+                      🇹🇭 Thailand
+                    </span>
+                    <h3>Thailand</h3>
+                    <span className="intl-meta">
+                      Bangkok · Chiang Mai · Phuket Islands
+                    </span>
+                  </div>
+                </Link>
               </div>
-            </Link>
 
-            {/* Singapore */}
-            <Link to="/destinations#international" className="intl-dest-card">
-              <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=700" alt="Singapore skyline" />
-              <div className="intl-overlay"></div>
-              <div className="intl-info">
-                <span className="intl-badge" style={{ background: '#b5163e' }}>🇸🇬 Singapore</span>
-                <h3>Singapore</h3>
-                <span className="intl-meta">Marina Bay · Gardens · Universal Studios</span>
+              {/* Singapore */}
+              <div className="swiper-slide">
+                <Link to="/destination/16" className="intl-dest-card">
+                  <img
+                    src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=700"
+                    alt="Singapore skyline"
+                  />
+                  <div className="intl-overlay"></div>
+                  <div className="intl-info">
+                    <span
+                      className="intl-badge"
+                      style={{ background: "#b5163e" }}
+                    >
+                      🇸🇬 Singapore
+                    </span>
+                    <h3>Singapore</h3>
+                    <span className="intl-meta">
+                      Marina Bay · Gardens · Universal Studios
+                    </span>
+                  </div>
+                </Link>
               </div>
-            </Link>
 
+              {/* Maldives */}
+              <div className="swiper-slide">
+                <Link to="/destination/17" className="intl-dest-card">
+                  <img
+                    src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&q=80&w=700"
+                    alt="Maldives Overwater Bungalows"
+                  />
+                  <div className="intl-overlay"></div>
+                  <div className="intl-info">
+                    <span
+                      className="intl-badge"
+                      style={{ background: "#00a8ff" }}
+                    >
+                      🇲🇻 Maldives
+                    </span>
+                    <h3>Maldives</h3>
+                    <span className="intl-meta">
+                      Overwater Villas · Coral Reefs · Sunset Cruises
+                    </span>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Switzerland */}
+              <div className="swiper-slide">
+                <Link to="/destination/18" className="intl-dest-card">
+                  <img
+                    src="https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&q=80&w=700"
+                    alt="Swiss Alps"
+                  />
+                  <div className="intl-overlay"></div>
+                  <div className="intl-info">
+                    <span
+                      className="intl-badge"
+                      style={{ background: "#e74c3c" }}
+                    >
+                      🇨🇭 Switzerland
+                    </span>
+                    <h3>Switzerland</h3>
+                    <span className="intl-meta">
+                      Swiss Alps · Jungfraujoch · Scenic Trains
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            <div className="swiper-pagination intl-pagination"></div>
           </div>
 
           <div className="intl-cta reveal">
             <Link to="/packages" className="btn-intl">
-              View All International Packages <i className="fa-solid fa-arrow-right"></i>
+              View All International Packages{" "}
+              <i className="fa-solid fa-arrow-right"></i>
             </Link>
           </div>
         </div>
@@ -766,7 +933,10 @@ export default function Home() {
                 </div>
                 <div>
                   <h4>15+ Years Ground Expertise</h4>
-                  <p>Every route is personally mapped and verified by our travel team.</p>
+                  <p>
+                    Every route is personally mapped and verified by our travel
+                    team.
+                  </p>
                 </div>
               </div>
               <div className="strength-item">
@@ -775,7 +945,9 @@ export default function Home() {
                 </div>
                 <div>
                   <h4>Premium Verified Fleet</h4>
-                  <p>Meticulously maintained, sanitised luxury SUVs and sedans.</p>
+                  <p>
+                    Meticulously maintained, sanitised luxury SUVs and sedans.
+                  </p>
                 </div>
               </div>
               <div className="strength-item">
@@ -784,7 +956,10 @@ export default function Home() {
                 </div>
                 <div>
                   <h4>Professional Chauffeurs</h4>
-                  <p>Experienced local drivers who double as friendly trip guides.</p>
+                  <p>
+                    Experienced local drivers who double as friendly trip
+                    guides.
+                  </p>
                 </div>
               </div>
               <div className="strength-item">
@@ -793,7 +968,10 @@ export default function Home() {
                 </div>
                 <div>
                   <h4>24/7 Live Assistance</h4>
-                  <p>Dedicated round-the-clock concierge support during your travel.</p>
+                  <p>
+                    Dedicated round-the-clock concierge support during your
+                    travel.
+                  </p>
                 </div>
               </div>
             </div>
@@ -871,10 +1049,18 @@ export default function Home() {
                           "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=700",
                       })
                     }
-                    title={isInWishlist(1) ? "Remove from Wishlist" : "Add to Wishlist"}
+                    title={
+                      isInWishlist(1)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"
+                    }
                   >
                     <i
-                      className={isInWishlist(1) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      className={
+                        isInWishlist(1)
+                          ? "fa-solid fa-heart"
+                          : "fa-regular fa-heart"
+                      }
                       style={{ color: isInWishlist(1) ? "#EF4444" : "#FFFFFF" }}
                     ></i>
                   </button>
@@ -921,10 +1107,18 @@ export default function Home() {
                           "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=700",
                       })
                     }
-                    title={isInWishlist(2) ? "Remove from Wishlist" : "Add to Wishlist"}
+                    title={
+                      isInWishlist(2)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"
+                    }
                   >
                     <i
-                      className={isInWishlist(2) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      className={
+                        isInWishlist(2)
+                          ? "fa-solid fa-heart"
+                          : "fa-regular fa-heart"
+                      }
                       style={{ color: isInWishlist(2) ? "#EF4444" : "#FFFFFF" }}
                     ></i>
                   </button>
@@ -971,10 +1165,18 @@ export default function Home() {
                           "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=700",
                       })
                     }
-                    title={isInWishlist(3) ? "Remove from Wishlist" : "Add to Wishlist"}
+                    title={
+                      isInWishlist(3)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"
+                    }
                   >
                     <i
-                      className={isInWishlist(3) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      className={
+                        isInWishlist(3)
+                          ? "fa-solid fa-heart"
+                          : "fa-regular fa-heart"
+                      }
                       style={{ color: isInWishlist(3) ? "#EF4444" : "#FFFFFF" }}
                     ></i>
                   </button>
@@ -1021,10 +1223,18 @@ export default function Home() {
                           "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=700",
                       })
                     }
-                    title={isInWishlist(4) ? "Remove from Wishlist" : "Add to Wishlist"}
+                    title={
+                      isInWishlist(4)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"
+                    }
                   >
                     <i
-                      className={isInWishlist(4) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      className={
+                        isInWishlist(4)
+                          ? "fa-solid fa-heart"
+                          : "fa-regular fa-heart"
+                      }
                       style={{ color: isInWishlist(4) ? "#EF4444" : "#FFFFFF" }}
                     ></i>
                   </button>
@@ -1071,10 +1281,18 @@ export default function Home() {
                           "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=700",
                       })
                     }
-                    title={isInWishlist(5) ? "Remove from Wishlist" : "Add to Wishlist"}
+                    title={
+                      isInWishlist(5)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"
+                    }
                   >
                     <i
-                      className={isInWishlist(5) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                      className={
+                        isInWishlist(5)
+                          ? "fa-solid fa-heart"
+                          : "fa-regular fa-heart"
+                      }
                       style={{ color: isInWishlist(5) ? "#EF4444" : "#FFFFFF" }}
                     ></i>
                   </button>
@@ -1137,7 +1355,8 @@ export default function Home() {
                 </div>
                 <h4>Group Tours</h4>
                 <p>
-                  Specially curated itineraries for families, friends and social groups.
+                  Specially curated itineraries for families, friends and social
+                  groups.
                 </p>
               </div>
             </Link>
@@ -1197,7 +1416,8 @@ export default function Home() {
                 </div>
                 <h4>Visa Assistance</h4>
                 <p>
-                  Hassle-free visa documentation, guidance and submission support.
+                  Hassle-free visa documentation, guidance and submission
+                  support.
                 </p>
               </div>
             </Link>
@@ -1237,7 +1457,8 @@ export default function Home() {
                 </div>
                 <h4>Crisis Management</h4>
                 <p>
-                  24/7 travel emergency support, rebooking and contingency planning.
+                  24/7 travel emergency support, rebooking and contingency
+                  planning.
                 </p>
               </div>
             </Link>
@@ -1356,19 +1577,41 @@ export default function Home() {
           <div className="kicker-row reveal">
             <div>
               <div className="eyebrow">Testimonials</div>
-              <h2>Stories from the <span className="italic">back seat</span></h2>
+              <h2>
+                Stories from the <span className="italic">back seat</span>
+              </h2>
             </div>
-            <p>Real experiences from real travelers — unfiltered and straight from the road.</p>
+            <p>
+              Real experiences from real travelers — unfiltered and straight
+              from the road.
+            </p>
           </div>
 
           {/* Google Reviews Trust Strip */}
           <div className="google-reviews-strip reveal">
             <div className="gr-logo">
-              <svg viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
-                <path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"/>
-                <path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"/>
-                <path d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z" fill="#fbbc04"/>
-                <path d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z" fill="#ea4335"/>
+              <svg
+                viewBox="0 0 533.5 544.3"
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+              >
+                <path
+                  d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
+                  fill="#4285f4"
+                />
+                <path
+                  d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z"
+                  fill="#34a853"
+                />
+                <path
+                  d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z"
+                  fill="#fbbc04"
+                />
+                <path
+                  d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
+                  fill="#ea4335"
+                />
               </svg>
               <div className="gr-text">
                 <span className="gr-label">Google Reviews</span>
@@ -1383,19 +1626,17 @@ export default function Home() {
             </div>
             <div className="gr-score">
               <span className="gr-rating">4.9</span>
-              <span className="gr-count">Based on <strong>1,200+</strong> Google Reviews</span>
+              <span className="gr-count">
+                Based on <strong>1,200+</strong> Google Reviews
+              </span>
             </div>
-            <Link
-              to="/reviews"
-              className="gr-cta"
-            >
+            <Link to="/reviews" className="gr-cta">
               <i className="fa-brands fa-google"></i> See All Reviews
             </Link>
           </div>
 
           {/* Testimonial Cards Grid */}
           <div className="test-cards-grid reveal">
-
             {/* Card 1 */}
             <div className="test-card">
               <div className="test-card-header">
@@ -1413,17 +1654,23 @@ export default function Home() {
                   <strong>Ritu Malhotra</strong>
                   <span className="test-date">October 2024</span>
                   <div className="test-stars">
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </div>
               <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Golden Triangle — Delhi · Agra · Jaipur
+                <i className="fa-solid fa-location-dot"></i> Golden Triangle —
+                Delhi · Agra · Jaipur
               </div>
               <p className="test-body">
-                "Our Golden Triangle trip was planned down to the hour — punctual driver, gorgeous heritage hotels, and a guide who clearly loved the history he was sharing. Absolutely worth every rupee!"
+                "Our Golden Triangle trip was planned down to the hour —
+                punctual driver, gorgeous heritage hotels, and a guide who
+                clearly loved the history he was sharing. Absolutely worth every
+                rupee!"
               </p>
             </div>
 
@@ -1444,17 +1691,23 @@ export default function Home() {
                   <strong>Vikram Singh</strong>
                   <span className="test-date">August 2024</span>
                   <div className="test-stars">
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </div>
               <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Ladakh High-Altitude Circuit
+                <i className="fa-solid fa-location-dot"></i> Ladakh
+                High-Altitude Circuit
               </div>
               <p className="test-body">
-                "The Ladakh trip was life-changing! Our driver knew every twist and turn of those mountain roads. The campsites were breathtaking and the local guides were incredibly knowledgeable."
+                "The Ladakh trip was life-changing! Our driver knew every twist
+                and turn of those mountain roads. The campsites were
+                breathtaking and the local guides were incredibly
+                knowledgeable."
               </p>
             </div>
 
@@ -1475,17 +1728,22 @@ export default function Home() {
                   <strong>Priya Sharma</strong>
                   <span className="test-date">November 2024</span>
                   <div className="test-stars">
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </div>
               <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Kerala Backwaters — Alleppey
+                <i className="fa-solid fa-location-dot"></i> Kerala Backwaters —
+                Alleppey
               </div>
               <p className="test-body">
-                "The houseboat experience in Alleppey was magical! The team arranged everything perfectly — from the welcome drink to the sunset cruise. Pure luxury and tranquility."
+                "The houseboat experience in Alleppey was magical! The team
+                arranged everything perfectly — from the welcome drink to the
+                sunset cruise. Pure luxury and tranquility."
               </p>
             </div>
 
@@ -1506,17 +1764,22 @@ export default function Home() {
                   <strong>Amit Patel</strong>
                   <span className="test-date">December 2024</span>
                   <div className="test-stars">
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </div>
               <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Rajasthan Heritage — Jaipur · Udaipur
+                <i className="fa-solid fa-location-dot"></i> Rajasthan Heritage
+                — Jaipur · Udaipur
               </div>
               <p className="test-body">
-                "Staying in palaces and exploring forts — this was a dream come true! The attention to detail in every heritage hotel was impeccable. Thank you for this royal experience."
+                "Staying in palaces and exploring forts — this was a dream come
+                true! The attention to detail in every heritage hotel was
+                impeccable. Thank you for this royal experience."
               </p>
             </div>
 
@@ -1537,17 +1800,22 @@ export default function Home() {
                   <strong>Sneha Reddy</strong>
                   <span className="test-date">January 2025</span>
                   <div className="test-stars">
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </div>
               <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Varanasi Pilgrimage Tour
+                <i className="fa-solid fa-location-dot"></i> Varanasi Pilgrimage
+                Tour
               </div>
               <p className="test-body">
-                "The Ganga Aarti experience was deeply spiritual. Our guide arranged the best boat and we had a front-row view. Everything was handled with such care and respect."
+                "The Ganga Aarti experience was deeply spiritual. Our guide
+                arranged the best boat and we had a front-row view. Everything
+                was handled with such care and respect."
               </p>
             </div>
 
@@ -1568,32 +1836,32 @@ export default function Home() {
                   <strong>Rohan Mehta</strong>
                   <span className="test-date">March 2025</span>
                   <div className="test-stars">
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
+                    <i className="fa-solid fa-star"></i>
                     <i className="fa-solid fa-star"></i>
                   </div>
                 </div>
               </div>
               <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Shimla Manali Honeymoon Escape
+                <i className="fa-solid fa-location-dot"></i> Shimla Manali
+                Honeymoon Escape
               </div>
               <p className="test-body">
-                "Planned our honeymoon with Shree Global and it was absolutely perfect. Every detail was taken care of — from the candle-light dinners to the cozy mountain resorts. Highly recommend!"
+                "Planned our honeymoon with Shree Global and it was absolutely
+                perfect. Every detail was taken care of — from the candle-light
+                dinners to the cozy mountain resorts. Highly recommend!"
               </p>
             </div>
-
           </div>
 
           {/* View More CTA */}
-          <div style={{ textAlign: 'center', marginTop: '36px' }}>
-            <Link
-              to="/reviews"
-              className="btn btn-dark"
-            >
+          <div style={{ textAlign: "center", marginTop: "36px" }}>
+            <Link to="/reviews" className="btn btn-dark">
               <i className="fa-solid fa-star"></i> Read All 1,200+ Reviews
             </Link>
           </div>
-
         </div>
       </section>
 
@@ -1645,7 +1913,8 @@ export default function Home() {
                     <i className="fa-solid fa-phone"></i> +91 98110 22334
                   </div>
                   <div>
-                    <i className="fa-solid fa-envelope"></i> hello@shreeglobal.com
+                    <i className="fa-solid fa-envelope"></i>{" "}
+                    hello@shreeglobal.com
                   </div>
                   <div>
                     <i className="fa-solid fa-location-dot"></i> Connaught

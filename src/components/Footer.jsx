@@ -9,8 +9,8 @@ export default function Footer() {
           <Link to="/" className="logo">
             <img src={shreeGlobalLogo} alt="Shree Global Holidays" className="mark" />
           </Link>
-          <p>A premier luxury travel agency based in New Delhi, crafting seamless, unforgettable journeys across India since 2010.</p>
           <div className="footer-social">
+            <a href="https://wa.me/919811022334" target='_blank' rel="noopener noreferrer" aria-label="WhatsApp"><i className="fa-brands fa-whatsapp"></i></a>
             <a href="https://www.facebook.com/shreeglobalholidays/" target='_blank' rel="noopener noreferrer" aria-label="Facebook"><i className="fa-brands fa-facebook-f"></i></a>
             <a href="https://www.instagram.com/shreeglobalholidays/" target='_blank' rel="noopener noreferrer" aria-label="Instagram"><i className="fa-brands fa-instagram"></i></a>
             <a href="https://x.com/GlobalShree" target='_blank' rel="noopener noreferrer" aria-label="Twitter"><i className="fa-brands fa-x-twitter"></i></a>
@@ -63,7 +63,7 @@ export default function Footer() {
           
           <div className="footer-map">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.234567890123!2d77.216721!3d28.613939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce24e8d8b8b8b%3A0x8b8b8b8b8b8b8b8b!2sConnaught%20Place%2C%20New%20Delhi!5e0!3m2!1sen!2sin!4v1700000000000" 
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d911289.6458478066!2d80.942513!3d26.848692!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfd991f32b16b%3A0x93ccba8909978be7!2sLucknow%2C%20Uttar%20Pradesh%2C%20India!5e0!3m2!1sen!2sus!4v1785215005860!5m2!1sen!2sus" 
               allowFullScreen={true} 
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"

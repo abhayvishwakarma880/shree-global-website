@@ -61,7 +61,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #8FE0BE;
+  color: var(--cyan);
   margin-bottom: 16px;
 }
 
@@ -81,11 +81,11 @@ header.scrolled nav.mainnav>ul>li>a.active {
 .about-breadcrumb {
   margin-top: 20px;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 1);
 }
 
 .about-breadcrumb a {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 1);
   transition: 0.3s;
 }
 
@@ -94,7 +94,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
 }
 
 .about-breadcrumb span {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* ===== ABOUT INTRO SECTION ===== */
@@ -121,6 +121,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
   font-size: 1.02rem;
   line-height: 1.8;
   margin-bottom: 15px;
+  text-align: justify;
 }
 
 .about-intro-text .highlight {

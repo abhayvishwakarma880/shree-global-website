@@ -11,6 +11,7 @@ export default function Header() {
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
   const [headerSearch, setHeaderSearch] = useState('');
   const [wishlistDrawerOpen, setWishlistDrawerOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const { wishlist, wishlistCount, removeFromWishlist } = useWishlist();
   const location = useLocation();
@@ -35,6 +36,7 @@ export default function Header() {
     setMobileMenuOpen(false);
     setMegaMenuOpen(false);
     setServicesMenuOpen(false);
+    setMobileSearchOpen(false);
   }, [location]);
 
   const handleDestinationsClick = (e) => {
@@ -101,27 +103,27 @@ export default function Header() {
                     <div className="mega-col">
                       <h5>North &amp; Himalayas</h5>
                       <ul>
-                        <li><Link to="/destinations#north"><span className="dot"></span>Manali &amp; Shimla</Link></li>
-                        <li><Link to="/destinations#north"><span className="dot"></span>Ladakh &amp; Leh</Link></li>
-                        <li><Link to="/destinations#north"><span className="dot"></span>Rishikesh</Link></li>
-                        <li><Link to="/destinations#north"><span className="dot"></span>Kashmir Valley</Link></li>
+                        <li><Link to="/destination/2"><span className="dot"></span>Manali &amp; Shimla</Link></li>
+                        <li><Link to="/destination/1"><span className="dot"></span>Ladakh &amp; Leh</Link></li>
+                        <li><Link to="/destination/10"><span className="dot"></span>Rishikesh</Link></li>
+                        <li><Link to="/destination/15"><span className="dot"></span>Kashmir Valley</Link></li>
                       </ul>
                     </div>
                     <div className="mega-col">
                       <h5>Heritage &amp; Royal</h5>
                       <ul>
-                        <li><Link to="/destinations#west"><span className="dot"></span>Jaipur — Pink City</Link></li>
-                        <li><Link to="/destinations#west"><span className="dot"></span>Udaipur Lakes</Link></li>
-                        <li><Link to="/destinations#north"><span className="dot"></span>Agra &amp; Taj Mahal</Link></li>
-                        <li><Link to="/destinations#west"><span className="dot"></span>Jodhpur — Blue City</Link></li>
+                        <li><Link to="/destination/4"><span className="dot"></span>Jaipur — Pink City</Link></li>
+                        <li><Link to="/destination/5"><span className="dot"></span>Udaipur Lakes</Link></li>
+                        <li><Link to="/destination/11"><span className="dot"></span>Agra &amp; Taj Mahal</Link></li>
+                        <li><Link to="/destination/6"><span className="dot"></span>Jodhpur — Blue City</Link></li>
                       </ul>
                     </div>
                     <div className="mega-col">
                       <h5>Coast &amp; South</h5>
                       <ul>
-                        <li><Link to="/destinations#south"><span className="dot"></span>Kerala Backwaters</Link></li>
-                        <li><Link to="/destinations#south"><span className="dot"></span>Goa Beaches</Link></li>
-                        <li><Link to="/destinations#east"><span className="dot"></span>Varanasi Ghats</Link></li>
+                        <li><Link to="/destination/7"><span className="dot"></span>Kerala Backwaters</Link></li>
+                        <li><Link to="/destination/8"><span className="dot"></span>Goa Beaches</Link></li>
+                        <li><Link to="/destination/9"><span className="dot"></span>Varanasi Ghats</Link></li>
                         <li><Link to="/destinations#south"><span className="dot"></span>Andaman Islands</Link></li>
                       </ul>
                     </div>
@@ -244,17 +246,52 @@ export default function Header() {
             <Link to="/contact" className="btn btn-brand btn-sm">
               <i className="fa-regular fa-paper-plane"></i> Plan My Trip
             </Link>
-            <div 
-              className={`hamburger ${mobileMenuOpen ? 'active' : ''}`} 
-              id="hamburger"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <span></span>
-              <span></span>
-              <span></span>
+
+            <div className="mobile-header-actions">
+              <button 
+                type="button"
+                className={`mobile-search-trigger ${mobileSearchOpen ? 'active' : ''}`}
+                onClick={() => {
+                  setMobileSearchOpen(!mobileSearchOpen);
+                  if (mobileMenuOpen) setMobileMenuOpen(false);
+                }}
+                aria-label="Toggle Search"
+              >
+                <i className={`fa-solid ${mobileSearchOpen ? 'fa-xmark' : 'fa-magnifying-glass'}`}></i>
+              </button>
+
+              <div 
+                className={`hamburger ${mobileMenuOpen ? 'active' : ''}`} 
+                id="hamburger"
+                onClick={() => {
+                  setMobileMenuOpen(!mobileMenuOpen);
+                  if (!mobileMenuOpen) setMobileSearchOpen(false);
+                }}
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Mobile Search Dropdown Field */}
+        <form className={`mobile-search-drawer ${mobileSearchOpen ? 'open' : ''}`} onSubmit={handleHeaderSearchSubmit}>
+          <div className="mobile-search-inner">
+            <i className="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              type="text"
+              placeholder="Search tours, packages..."
+              value={headerSearch}
+              onChange={(e) => setHeaderSearch(e.target.value)}
+              autoFocus={mobileSearchOpen}
+            />
+            <button type="submit" aria-label="Search Tours">
+              <i className="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </form>
       </header>
     </>
   );

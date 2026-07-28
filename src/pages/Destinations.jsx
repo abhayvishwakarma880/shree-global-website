@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Destinations.css';
 
@@ -36,6 +36,22 @@ export default function Destinations() {
   const [faqOpenIndex, setFaqOpenIndex] = useState(0);
 
   const itemsPerPage = 6;
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const element = document.querySelector('.destinations-grid') || document.querySelector('.dest-layout');
+    if (element) {
+      const yOffset = -90;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentPage]);
 
   // React to hash route modifications
   useEffect(() => {
@@ -219,7 +235,9 @@ export default function Destinations() {
             {pageItems.map((d) => (
               <div key={d.id} className="dest-card">
                 <div className="dest-card-image">
-                  <img src={d.image} alt={d.name} loading="lazy" />
+                  <Link to={`/destination/${d.id}`}>
+                    <img src={d.image} alt={d.name} loading="lazy" />
+                  </Link>
                   <span className="dest-card-badge">{d.badge}</span>
                   <span className="dest-card-rating"><i className="fa-solid fa-star"></i> {d.rating}</span>
                   <span 
@@ -231,7 +249,7 @@ export default function Destinations() {
                   </span>
                 </div>
                 <div className="dest-card-content">
-                  <h3><Link to="/packages">{d.name}</Link></h3>
+                  <h3><Link to={`/destination/${d.id}`}>{d.name}</Link></h3>
                   <div className="dest-card-meta">
                     <span>
                       <i className="fa-solid fa-location-dot"></i> 
@@ -242,7 +260,7 @@ export default function Destinations() {
                   <p>{d.description}</p>
                   <div className="dest-card-footer">
                     <span className="dest-card-price">₹{d.price.toLocaleString()} <span>/ person</span></span>
-                    <Link to="/packages" className="dest-card-link">Explore <i className="fa-solid fa-arrow-right"></i></Link>
+                    <Link to={`/destination/${d.id}`} className="dest-card-link">Explore <i className="fa-solid fa-arrow-right"></i></Link>
                   </div>
                 </div>
               </div>

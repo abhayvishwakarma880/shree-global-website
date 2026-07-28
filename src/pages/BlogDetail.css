@@ -43,17 +43,22 @@ header.scrolled nav.mainnav>ul>li>a.active {
   margin: 0 auto;
 }
 .blog-detail-hero-content .category {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(4px);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(46, 204, 113, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(46, 204, 113, 0.45);
   padding: 6px 18px;
   border-radius: 100px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #8FE0BE;
+  color: #2ecc71;
   margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(46, 204, 113, 0.15);
 }
 .blog-detail-hero-content h1 {
   color: #fff;
@@ -63,12 +68,21 @@ header.scrolled nav.mainnav>ul>li>a.active {
 }
 .blog-detail-hero-content .meta {
   display: flex;
+  align-items: center;
   gap: 20px;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.85);
   flex-wrap: wrap;
 }
-.blog-detail-hero-content .meta i { margin-right: 4px; }
+.blog-detail-hero-content .meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.blog-detail-hero-content .meta i {
+  margin-right: 2px;
+  color: #2ecc71;
+}
 .blog-detail-hero-content .meta .author { display: flex; align-items: center; gap: 10px; }
 .blog-detail-hero-content .meta .author img {
   width: 36px;
@@ -98,6 +112,7 @@ header.scrolled nav.mainnav>ul>li>a.active {
   font-size: 1rem;
   line-height: 1.9;
   margin-bottom: 18px;
+  text-align: justify;
 }
 .blog-detail-content ul {
   list-style: disc;
@@ -117,7 +132,10 @@ header.scrolled nav.mainnav>ul>li>a.active {
   margin: 24px 0;
   border-left: 4px solid var(--green);
 }
-.blog-detail-content .highlight-box p { margin-bottom: 0; }
+.blog-detail-content .highlight-box p {
+  margin-bottom: 0;
+  text-align: justify;
+}
 .blog-detail-content .featured-image {
   border-radius: var(--r-m);
   overflow: hidden;
@@ -128,29 +146,41 @@ header.scrolled nav.mainnav>ul>li>a.active {
 /* Share */
 .share-section {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 20px 0 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px 0 10px;
   border-top: 1px solid var(--line);
   margin-top: 30px;
-  flex-wrap: wrap;
 }
-.share-section span { font-weight: 600; color: var(--ink); }
-.share-section a {
-  width: 40px;
-  height: 40px;
+.share-section span {
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.95rem;
+}
+.share-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+.share-icons a {
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  transition: 0.3s;
+  font-size: 1.05rem;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-.share-section a:hover { transform: scale(1.1); }
-.share-section a.fb { background: #3b5998; }
-.share-section a.tw { background: #1da1f2; }
-.share-section a.wa { background: #25d366; }
-.share-section a.ln { background: #0077b5; }
+.share-icons a:hover { transform: translateY(-3px) scale(1.08); }
+.share-icons a.fb { background: #1877F2; }
+.share-icons a.tw { background: #000000; }
+.share-icons a.wa { background: #25D366; }
+.share-icons a.ln { background: #0A66C2; }
 
 /* Related Posts */
 .related-grid {

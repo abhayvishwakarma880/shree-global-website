@@ -26,6 +26,7 @@ function RevealObserver() {
 import Home from './pages/Home';
 import About from './pages/About';
 import Destinations from './pages/Destinations';
+import DestinationDetail from './pages/DestinationDetail';
 import Packages from './pages/Packages';
 import Services from './pages/Services';
 import ServiceDetail from './pages/ServiceDetail';
@@ -59,6 +60,7 @@ export default function App() {
             <Route path="/search" element={<TourSearch />} />
             <Route path="/about" element={<About />} />
             <Route path="/destinations" element={<Destinations />} />
+            <Route path="/destination/:id" element={<DestinationDetail />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="/package/:id" element={<PackageDetail />} />
             <Route path="/services" element={<Services />} />

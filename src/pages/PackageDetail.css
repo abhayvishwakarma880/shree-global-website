@@ -290,15 +290,24 @@ header.scrolled nav.mainnav>ul>li>a.active {
 .exclusions-card li i { color: #e74c3c; margin-top: 3px; }
 
 /* Sticky Booking Card */
+.pkg-detail-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 100px;
+  align-self: start;
+  z-index: 20;
+}
+
 .booking-sticky-card {
   position: -webkit-sticky;
   position: sticky;
-  top: 110px;
+  top: 100px;
   background: #fff;
   border-radius: var(--r-l);
   border: 1px solid var(--line);
   box-shadow: var(--sh);
   overflow: hidden;
+  z-index: 20;
 }
 
 .price-header {

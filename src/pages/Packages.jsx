@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./Packages.css";
 import { useWishlist } from "../context/WishlistContext";
+import { BASE_URL } from "../api/http.js";
 
 const allPackages = [
   {
@@ -319,18 +320,111 @@ export default function Packages() {
   const [selectedType, setSelectedType] = useState("all");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sort, setSort] = useState("popular");
-  const [maxPrice, setMaxPrice] = useState(35000);
+  const [maxPrice, setMaxPrice] = useState(50000);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  const itemsPerPage = 6;
+  // Server-side State
+  const [serverPackages, setServerPackages] = useState([]);
+  const [destinationsList, setDestinationsList] = useState([]);
+  const [mostBookedPackage, setMostBookedPackage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [paginationInfo, setPaginationInfo] = useState({
+    page: 1,
+    limit: 6,
+    totalPages: 1,
+    totalCount: 0
+  });
+
   const isInitialMount = useRef(true);
 
+  // Fetch most booked package (#1 by PackageBook count)
+  useEffect(() => {
+    const fetchMostBooked = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/package/most-booked`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          setMostBookedPackage(data.data);
+        }
+      } catch (err) {
+        console.error('Error fetching most booked package:', err);
+      }
+    };
+    fetchMostBooked();
+  }, []);
+
+  // Fetch dynamic destinations for dropdown
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/destination?status=active&limit=100`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setDestinationsList(data.data);
+        }
+      } catch (err) {
+        console.error('Error fetching destinations:', err);
+      }
+    };
+    fetchDestinations();
+  }, []);
+
+  // Fetch Server-side Packages with full query filters & pagination
+  useEffect(() => {
+    const fetchPackagesFromServer = async () => {
+      setIsLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.append('status', 'active');
+        params.append('page', currentPage);
+        params.append('limit', 6);
+
+        if (searchQuery.trim() !== '') params.append('search', searchQuery.trim());
+        if (selectedType !== 'all') params.append('regionType', selectedType);
+        if (selectedCategories.length > 0) params.append('packageTag', selectedCategories.join(','));
+        if (selectedDestination !== 'all') params.append('destinationId', selectedDestination);
+        if (selectedMonth !== 'all') params.append('travelMonth', selectedMonth);
+        if (maxPrice) params.append('maxPrice', maxPrice);
+        if (sort) params.append('sort', sort);
+
+        const res = await fetch(`${BASE_URL}/api/package?${params.toString()}`);
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.data)) {
+          setServerPackages(data.data);
+          if (data.pagination) {
+            setPaginationInfo(data.pagination);
+          }
+        } else {
+          setServerPackages([]);
+        }
+      } catch (err) {
+        console.error('Error fetching server-side packages:', err);
+        setServerPackages([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPackagesFromServer();
+  }, [
+    currentPage,
+    searchQuery,
+    selectedType,
+    selectedCategories,
+    selectedDestination,
+    selectedMonth,
+    maxPrice,
+    sort
+  ]);
+
+  // Scroll to top on page change
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
-    const element = document.querySelector('.pkg-layout') || document.querySelector('.pkg-main');
+    const element = document.querySelector('.packages-page-layout') || document.querySelector('.pkg-hero');
     if (element) {
       const yOffset = -90;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -354,79 +448,12 @@ export default function Packages() {
     setSelectedMonth("all");
     setSelectedType("all");
     setSelectedCategories([]);
-    setMaxPrice(35000);
+    setMaxPrice(50000);
     setCurrentPage(1);
   };
 
-  // Filter, price filter, and sorting logic
-  let filtered = allPackages.filter((pkg) => {
-    // Search Query
-    if (searchQuery.trim() !== "") {
-      const q = searchQuery.toLowerCase();
-      const matchName = pkg.name.toLowerCase().includes(q);
-      const matchDesc = pkg.description.toLowerCase().includes(q);
-      if (!matchName && !matchDesc) return false;
-    }
-
-    // Destination select dropdown
-    if (selectedDestination !== "all") {
-      const dest = selectedDestination.toLowerCase();
-      const matchName = pkg.name.toLowerCase().includes(dest);
-      const matchDesc = pkg.description.toLowerCase().includes(dest);
-      if (!matchName && !matchDesc) return false;
-    }
-
-    // Region Type (Domestic / International)
-    if (selectedType !== "all" && pkg.type !== selectedType) return false;
-
-    // Budget Limit slider
-    if (pkg.price > maxPrice) return false;
-
-    // Duration filter
-    if (selectedDuration !== "all") {
-      const days = parseInt(pkg.duration) || 0;
-      if (selectedDuration === "short" && days > 4) return false;
-      if (selectedDuration === "medium" && (days < 5 || days > 6)) return false;
-      if (selectedDuration === "long" && days < 7) return false;
-    }
-
-    // Month filter
-    if (selectedMonth !== "all") {
-      const mNum = parseInt(selectedMonth);
-      if (!pkg.months || !pkg.months.includes(mNum)) return false;
-    }
-
-    // Categories checked tags
-    if (selectedCategories.length > 0) {
-      if (!selectedCategories.includes(pkg.category)) return false;
-    }
-
-    return true;
-  });
-
-  // Sorting
-  const sorted = [...filtered].sort((a, b) => {
-    switch (sort) {
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
-      case "duration":
-        const aDays = parseInt(a.duration) || 0;
-        const bDays = parseInt(b.duration) || 0;
-        return aDays - bDays;
-      case "rating":
-        return b.rating - a.rating;
-      case "popular":
-      default:
-        return b.reviews - a.reviews;
-    }
-  });
-
   // Pagination logic
-  const totalPages = Math.ceil(sorted.length / itemsPerPage);
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const pageItems = sorted.slice(startIdx, startIdx + itemsPerPage);
+  const totalPages = paginationInfo.totalPages || 1;
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -617,23 +644,16 @@ export default function Packages() {
 
                 {/* Destination Dropdown */}
                 <div className="filter-group">
-                  <label>Destination</label>
+                  <label className="filter-label">Destination</label>
                   <select
-                    className="filter-select"
                     value={selectedDestination}
                     onChange={(e) => {
                       setSelectedDestination(e.target.value);
                       setCurrentPage(1);
                     }}
+                    className="filter-select"
                   >
                     <option value="all">All Destinations</option>
-                    <option value="delhi">Delhi &amp; Agra</option>
-                    <option value="shimla">Shimla &amp; Manali</option>
-                    <option value="rajasthan">
-                      Rajasthan (Jaipur/Udaipur)
-                    </option>
-                    <option value="kerala">Kerala Backwaters</option>
-                    <option value="ladakh">Ladakh</option>
                     <option value="goa">Goa Beaches</option>
                     <option value="kashmir">Kashmir</option>
                     <option value="darjeeling">Darjeeling &amp; Gangtok</option>
@@ -764,7 +784,7 @@ export default function Packages() {
             <div className="packages-content-col">
               <div className="results-strip">
                 <span>
-                  Showing <strong>{sorted.length}</strong> packages found
+                  Showing <strong>{paginationInfo.totalCount}</strong> packages found
                 </span>
                 <button
                   className="mobile-filter-trigger"
@@ -774,7 +794,12 @@ export default function Packages() {
                 </button>
               </div>
 
-              {sorted.length === 0 ? (
+              {isLoading ? (
+                <div style={{ textAlign: "center", padding: "60px 20px" }}>
+                  <i className="fa-solid fa-circle-notch fa-spin text-2xl text-[#002D71]"></i>
+                  <p style={{ marginTop: "12px", color: "var(--ink-soft)" }}>Fetching packages from server...</p>
+                </div>
+              ) : serverPackages.length === 0 ? (
                 <div
                   className="no-results-found"
                   style={{ textAlign: "center", padding: "60px 20px" }}
@@ -798,99 +823,102 @@ export default function Packages() {
               ) : (
                 <>
                   <div className="pkg-grid">
-                    {pageItems.map((p) => (
-                      <div key={p.id} className="pkg-card">
-                        <div className="pkg-card-image">
-                          <img src={p.image} alt={p.name} loading="lazy" />
-                          <span
-                            className={`pkg-badge ${p.badge.toLowerCase().replace(" ", "-")}`}
-                          >
-                            {p.badge}
-                          </span>
-                          {p.discount && (
-                            <span className="pkg-discount">{p.discount} OFF</span>
-                          )}
-                          <span className="pkg-rating">
-                            <i className="fa-solid fa-star"></i> {p.rating} (
-                            {p.reviews})
-                          </span>
-                          <span
-                            className={`pkg-wishlist ${isInWishlist(p.id) ? "liked" : ""}`}
-                            onClick={() =>
-                              toggleWishlist({
-                                id: p.id,
-                                title: p.name,
-                                price: `₹${p.price.toLocaleString()}`,
-                                image: p.image,
-                              })
-                            }
-                            style={{
-                              background: isInWishlist(p.id)
-                                ? "#EF4444"
-                                : "rgba(255,255,255,0.25)",
-                              cursor: "pointer",
-                            }}
-                            title={
-                              isInWishlist(p.id)
-                                ? "Remove from Wishlist"
-                                : "Add to Wishlist"
-                            }
-                          >
-                            <i
-                              className={
-                                isInWishlist(p.id)
-                                  ? "fa-solid fa-heart"
-                                  : "fa-regular fa-heart"
+                    {serverPackages.map((p) => {
+                      const isOffer = p.isOffer && p.offerPercentage > 0;
+                      const finalPrice = isOffer 
+                        ? Math.round(p.pricePerPerson - (p.pricePerPerson * p.offerPercentage) / 100)
+                        : p.pricePerPerson;
+
+                      return (
+                        <div key={p._id} className="pkg-card">
+                          <div className="pkg-card-image">
+                            <img src={p.image || "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=600"} alt={p.title} loading="lazy" />
+                            <span className="pkg-badge" style={{ backgroundColor: isOffer ? '#DA9F27' : '#002D71', color: '#FFF' }}>
+                              {isOffer ? `${p.offerPercentage}% OFF` : (p.packageTag || 'Tour')}
+                            </span>
+                            {isOffer && (
+                              <span className="pkg-discount">{p.offerPercentage}% OFF</span>
+                            )}
+                            <span className="pkg-rating">
+                              <i className="fa-solid fa-star"></i> 4.9 (48)
+                            </span>
+                            <span
+                              className={`pkg-wishlist ${isInWishlist(p._id) ? "liked" : ""}`}
+                              onClick={() =>
+                                toggleWishlist({
+                                  id: p._id,
+                                  title: p.title,
+                                  price: `₹${finalPrice.toLocaleString()}`,
+                                  image: p.image,
+                                })
                               }
-                            ></i>
-                          </span>
-                        </div>
-                        <div className="pkg-card-content">
-                          <h3>
-                            <Link to={`/package/${p.id}`}>{p.name}</Link>
-                          </h3>
-                          <div className="pkg-meta">
-                            <span>
-                              <i className="fa-regular fa-clock"></i>{" "}
-                              {p.duration}
-                            </span>
-                            <span>
-                              <i className="fa-regular fa-user"></i>{" "}
-                              {p.category.charAt(0).toUpperCase() +
-                                p.category.slice(1)}
-                            </span>
-                          </div>
-                          <p>{p.description}</p>
-                          <div className="pkg-inclusions">
-                            {p.inclusions.map((inc, i) => (
-                              <span key={i}>{inc}</span>
-                            ))}
-                          </div>
-                          <div className="pkg-card-footer">
-                            <div className="pkg-price">
-                              {p.originalPrice && (
-                                <span className="original">
-                                  ₹{p.originalPrice.toLocaleString()}
-                                </span>
-                              )}
-                              <span className="current">
-                                ₹{p.price.toLocaleString()}
-                              </span>
-                              <span className="per">/ person</span>
-                            </div>
-                            <Link
-                              to="/contact"
-                              className="btn btn-brand btn-sm"
+                              style={{
+                                background: isInWishlist(p._id)
+                                  ? "#EF4444"
+                                  : "rgba(255,255,255,0.25)",
+                                cursor: "pointer",
+                              }}
+                              title={
+                                isInWishlist(p._id)
+                                  ? "Remove from Wishlist"
+                                  : "Add to Wishlist"
+                              }
                             >
-                              Book Now
-                            </Link>
+                              <i
+                                className={
+                                  isInWishlist(p._id)
+                                    ? "fa-solid fa-heart"
+                                    : "fa-regular fa-heart"
+                                }
+                              ></i>
+                            </span>
+                          </div>
+                          <div className="pkg-card-content">
+                            <h3>
+                              <Link to={`/package/${p.slug || p._id}`}>{p.title}</Link>
+                            </h3>
+                            <div className="pkg-meta">
+                              <span>
+                                <i className="fa-regular fa-clock"></i>{" "}
+                                {p.duration || '5D / 4N'}
+                              </span>
+                              <span className="capitalize">
+                                <i className="fa-regular fa-user"></i>{" "}
+                                {p.packageTag || p.regionType}
+                              </span>
+                            </div>
+                            <p className="line-clamp-2">{p.description}</p>
+                            <div className="pkg-inclusions">
+                              {Array.isArray(p.whatsIncluded) && p.whatsIncluded.slice(0, 3).map((inc, i) => (
+                                <span key={i}>{inc}</span>
+                              ))}
+                            </div>
+                            <div className="pkg-card-footer">
+                              <div className="pkg-price">
+                                {isOffer && (
+                                  <span className="original">
+                                    ₹{p.pricePerPerson?.toLocaleString()}
+                                  </span>
+                                )}
+                                <span className="current">
+                                  ₹{finalPrice?.toLocaleString()}
+                                </span>
+                                <span className="per">/ person</span>
+                              </div>
+                              <Link
+                                to={`/package/${p.slug || p._id}`}
+                                className="btn btn-brand btn-sm"
+                              >
+                                View Deal
+                              </Link>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
-                  {/* Pagination */}
+                  {/* Server-Side Pagination Controls */}
                   {totalPages > 1 && (
                     <div className="pagination">
                       <button
@@ -928,94 +956,83 @@ export default function Packages() {
         </div>
       </section>
 
-      {/* ================= FEATURED PACKAGE BANNER ================= */}
-      <section className="section" style={{ padding: 0 }}>
-        <div className="container">
-          <div className="featured-package reveal">
-            <img
-              src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1200"
-              alt="Golden Triangle"
-            />
-            <div className="ov"></div>
-            <div className="content">
-              <div className="featured-package-grid">
-                <div className="featured-main-info">
-                  <span className="tag">Best Seller</span>
-                  <span className="offer">Limited Time Offer - 20% Off</span>
-                  <h2>Luxury Golden Triangle Tour</h2>
-                  <p style={{ maxWidth: "100%" }}>
-                    Experience the magic of Delhi, Agra, and Jaipur with 5-star
-                    stays, private guides, and exclusive experiences. Book now
-                    and save ₹3,600!
-                  </p>
-                  <Link
-                    to="/contact"
-                    className="btn btn-brand"
-                    style={{ marginTop: "10px" }}
-                  >
-                    <i className="fa-solid fa-calendar-check"></i> Book Now -
-                    ₹14,500
-                  </Link>
-                </div>
+      {/* ================= FEATURED PACKAGE BANNER (MOST BOOKED PACKAGE) ================= */}
+      {mostBookedPackage && (
+        <section className="section" style={{ padding: 0 }}>
+          <div className="container">
+            <div className="featured-package reveal">
+              <img
+                src={mostBookedPackage.image || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1200"}
+                alt={mostBookedPackage.title}
+              />
+              <div className="ov"></div>
+              <div className="content">
+                <div className="featured-package-grid">
+                  <div className="featured-main-info">
+                    <span className="tag">#1 Most Booked</span>
+                    {mostBookedPackage.isOffer && mostBookedPackage.offerPercentage > 0 ? (
+                      <span className="offer">Limited Deal - {mostBookedPackage.offerPercentage}% Off</span>
+                    ) : (
+                      <span className="offer capitalize">{mostBookedPackage.packageTag || 'Top Trending'}</span>
+                    )}
+                    <h2>{mostBookedPackage.title}</h2>
+                    <p style={{ maxWidth: "100%" }}>
+                      {mostBookedPackage.description || "Experience our #1 most requested luxury tour package with handpicked stays, private guide, and customized itinerary."}
+                    </p>
+                    {(() => {
+                      const isOffer = mostBookedPackage.isOffer && mostBookedPackage.offerPercentage > 0;
+                      const finalPrice = isOffer
+                        ? Math.round(mostBookedPackage.pricePerPerson - (mostBookedPackage.pricePerPerson * mostBookedPackage.offerPercentage) / 100)
+                        : mostBookedPackage.pricePerPerson;
 
-                <div className="featured-details-box">
-                  <div className="featured-details-col inclusions">
-                    <h4>
-                      <i className="fa-solid fa-circle-check"></i> Inclusions
-                    </h4>
-                    <ul className="featured-details-list">
-                      <li>
-                        <i className="fa-solid fa-check"></i> 5-Star Hotel Stay
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-check"></i> Private AC SUV
-                        Sedan
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-check"></i> Private Tour Guide
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-check"></i> Daily Buffet
-                        Breakfasts
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-check"></i> Monument Entry
-                        Fees
-                      </li>
-                    </ul>
+                      return (
+                        <Link
+                          to={`/package/${mostBookedPackage.slug || mostBookedPackage._id}`}
+                          className="btn btn-brand"
+                          style={{ marginTop: "10px" }}
+                        >
+                          <i className="fa-solid fa-calendar-check"></i> View Deal - ₹{finalPrice?.toLocaleString('en-IN')} / person
+                        </Link>
+                      );
+                    })()}
                   </div>
-                  <div className="featured-details-col exclusions">
-                    <h4>
-                      <i className="fa-solid fa-circle-xmark"></i> Exclusions
-                    </h4>
-                    <ul className="featured-details-list">
-                      <li>
-                        <i className="fa-solid fa-xmark"></i> Airfare or Train
-                        tickets
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-xmark"></i> Lunch &amp; Dinner
-                        meals
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-xmark"></i> Tips and
-                        Gratuities
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-xmark"></i> Camera fees at
-                        sites
-                      </li>
-                      <li>
-                        <i className="fa-solid fa-xmark"></i> Personal Expenses
-                      </li>
-                    </ul>
+
+                  <div className="featured-details-box">
+                    {Array.isArray(mostBookedPackage.whatsIncluded) && mostBookedPackage.whatsIncluded.length > 0 && (
+                      <div className="featured-details-col inclusions">
+                        <h4>
+                          <i className="fa-solid fa-circle-check"></i> Inclusions
+                        </h4>
+                        <ul className="featured-details-list">
+                          {mostBookedPackage.whatsIncluded.slice(0, 5).map((inc, i) => (
+                            <li key={i}>
+                              <i className="fa-solid fa-check"></i> {inc}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {Array.isArray(mostBookedPackage.whatsExcluded) && mostBookedPackage.whatsExcluded.length > 0 && (
+                      <div className="featured-details-col exclusions">
+                        <h4>
+                          <i className="fa-solid fa-circle-xmark"></i> Exclusions
+                        </h4>
+                        <ul className="featured-details-list">
+                          {mostBookedPackage.whatsExcluded.slice(0, 5).map((exc, i) => (
+                            <li key={i}>
+                              <i className="fa-solid fa-xmark"></i> {exc}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ================= BENEFITS ================= */}
       <section className="section sand tight">

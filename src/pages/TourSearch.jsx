@@ -1,153 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import "./TourSearch.css";
-
-const ALL_TOURS = [
-  {
-    id: "golden-triangle",
-    title: "Golden Triangle Classic Heritage Tour",
-    category: "Golden Triangle",
-    destination: "Delhi, Agra, Jaipur",
-    durationDays: 5,
-    durationText: "5 Days / 4 Nights",
-    priceNum: 18500,
-    price: "₹18,500",
-    rating: "4.9★",
-    reviewsCount: 320,
-    badge: "Bestseller",
-    discountBadge: "20% OFF",
-    image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Taj Mahal Sunrise Visit", "Amber Fort Elephant Ride", "Private Chauffeur & Guide"],
-  },
-  {
-    id: "royal-rajasthan",
-    title: "Royal Rajasthan Forts & Desert Palaces",
-    category: "Rajasthan & Royal",
-    destination: "Jaipur, Udaipur, Jodhpur, Jaisalmer",
-    durationDays: 8,
-    durationText: "8 Days / 7 Nights",
-    priceNum: 34999,
-    price: "₹34,999",
-    rating: "4.9★",
-    reviewsCount: 450,
-    badge: "Heritage",
-    discountBadge: "Flat ₹5,000 OFF",
-    image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Thar Desert Camel Safari", "Udaipur Lake Palace Cruise", "Heritage Hotel Stays"],
-  },
-  {
-    id: "kerala-backwaters",
-    title: "Kerala Backwaters & Houseboat Escapes",
-    category: "Kerala & South India",
-    destination: "Cochin, Munnar, Alleppey, Kovalam",
-    durationDays: 6,
-    durationText: "6 Days / 5 Nights",
-    priceNum: 24500,
-    price: "₹24,500",
-    rating: "4.8★",
-    reviewsCount: 280,
-    badge: "Nature",
-    discountBadge: "15% OFF",
-    image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Luxury Houseboat Night Stay", "Munnar Tea Plantation Tour", "Ayurvedic Spa"],
-  },
-  {
-    id: "ladakh-expedition",
-    title: "Magical Ladakh Himalayan High Passes",
-    category: "Himalayan Escapes",
-    durationDays: 7,
-    destination: "Leh, Nubra Valley, Pangong Tso Lake",
-    durationText: "7 Days / 6 Nights",
-    priceNum: 29999,
-    price: "₹29,999",
-    rating: "5.0★",
-    reviewsCount: 195,
-    badge: "Adventure",
-    discountBadge: "Special Group Rate",
-    image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Khardung La Pass Crossing", "Pangong Lake Camping", "Double Humped Camel Ride"],
-  },
-  {
-    id: "shimla-manali",
-    title: "Shimla & Manali Snow Peak Escapes",
-    category: "Himalayan Escapes",
-    destination: "Chandigarh, Shimla, Manali, Solang",
-    durationDays: 6,
-    durationText: "6 Days / 5 Nights",
-    priceNum: 19999,
-    price: "₹19,999",
-    rating: "4.8★",
-    reviewsCount: 310,
-    badge: "Hills",
-    discountBadge: "10% OFF",
-    image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Solang Valley Adventure", "Rohtang Pass Excursion", "Mall Road Shopping"],
-  },
-  {
-    id: "varanasi-spiritual",
-    title: "Varanasi & Ayodhya Sacred Pilgrimage",
-    category: "Pilgrimage Journeys",
-    destination: "Varanasi, Sarnath, Ayodhya, Prayagraj",
-    durationDays: 4,
-    durationText: "4 Days / 3 Nights",
-    priceNum: 14500,
-    price: "₹14,500",
-    rating: "4.9★",
-    reviewsCount: 510,
-    badge: "Spiritual",
-    discountBadge: "Popular",
-    image: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Private Ganga Aarti Boat Ride", "Ram Mandir Ayodhya Darshan", "Triveni Sangam Bath"],
-  },
-  {
-    id: "corbett-safari",
-    title: "Jim Corbett Tiger Safari & Lake District",
-    category: "Wildlife & Safaris",
-    destination: "Jim Corbett, Nainital, Bhimtal",
-    durationDays: 4,
-    durationText: "4 Days / 3 Nights",
-    priceNum: 16800,
-    price: "₹16,800",
-    rating: "4.7★",
-    reviewsCount: 220,
-    badge: "Wildlife",
-    discountBadge: "15% OFF",
-    image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Jeep Safari in Corbett Jungle", "Nainital Boating", "Resort Stay with Bonfire"],
-  },
-  {
-    id: "kashmir-paradise",
-    title: "Kashmir Paradise Valley & Gulmarg Snow",
-    category: "Himalayan Escapes",
-    destination: "Srinagar, Gulmarg, Pahalgam, Sonmarg",
-    durationDays: 6,
-    durationText: "6 Days / 5 Nights",
-    priceNum: 27500,
-    price: "₹27,500",
-    rating: "4.9★",
-    reviewsCount: 380,
-    badge: "Luxury",
-    discountBadge: "Free Shikara Ride",
-    image: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Shikara Ride on Dal Lake", "Gulmarg Gondola Ride", "Betaab Valley Excursion"],
-  },
-  {
-    id: "golden-triangle-ranthambore",
-    title: "Golden Triangle with Ranthambore Tiger Safari",
-    category: "Golden Triangle",
-    destination: "Delhi, Agra, Ranthambore, Jaipur",
-    durationDays: 7,
-    durationText: "7 Days / 6 Nights",
-    priceNum: 26900,
-    price: "₹26,900",
-    rating: "4.9★",
-    reviewsCount: 175,
-    badge: "Combined Deal",
-    discountBadge: "20% OFF",
-    image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=800",
-    highlights: ["Ranthambore Tiger Jeep Safari", "Taj Mahal Guided Tour", "Jaipur Pink City Walk"],
-  },
-];
+import { BASE_URL } from "../api/http.js";
 
 export default function TourSearch() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -162,6 +16,39 @@ export default function TourSearch() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedDuration, setSelectedDuration] = useState(initialDuration);
   const [sortBy, setSortBy] = useState("recommended");
+
+  // Dynamic Destinations State
+  const [destinations, setDestinations] = useState([]);
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch all active destinations & categories from backend
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [destRes, catRes] = await Promise.all([
+          fetch(`${BASE_URL}/api/destination?status=active&limit=100`),
+          fetch(`${BASE_URL}/api/destinations-category`)
+        ]);
+        const destData = await destRes.json();
+        const catData = await catRes.json();
+
+        if (destData.success && Array.isArray(destData.data)) {
+          setDestinations(destData.data);
+        }
+        if (catData.success && Array.isArray(catData.data)) {
+          setCategoriesList(catData.data);
+        }
+      } catch (err) {
+        console.error('Error fetching destinations for TourSearch:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Keep local states in sync when URL changes
   useEffect(() => {
@@ -192,30 +79,27 @@ export default function TourSearch() {
     setSearchParams(new URLSearchParams());
   };
 
-  // Filter & Sort Logic
-  const filteredTours = ALL_TOURS.filter((tour) => {
+  // Filter & Sort Logic for Destinations
+  const filteredDestinations = destinations.filter((dest) => {
     const q = initialQuery.toLowerCase().trim();
     const matchesQuery =
       !q ||
-      tour.title.toLowerCase().includes(q) ||
-      tour.destination.toLowerCase().includes(q) ||
-      tour.category.toLowerCase().includes(q);
+      dest.title?.toLowerCase().includes(q) ||
+      dest.description?.toLowerCase().includes(q) ||
+      dest.nearestAirport?.toLowerCase().includes(q) ||
+      dest.bestTimeToVisit?.toLowerCase().includes(q) ||
+      dest.destinationsCategory?.title?.toLowerCase().includes(q);
 
     const matchesCategory =
-      initialCategory === "All" || tour.category === initialCategory;
+      initialCategory === "All" ||
+      dest.destinationsCategory?._id === initialCategory ||
+      dest.destinationsCategory?.title === initialCategory;
 
-    const matchesDuration =
-      initialDuration === "All" ||
-      (initialDuration === "short" && tour.durationDays <= 4) ||
-      (initialDuration === "medium" && tour.durationDays >= 5 && tour.durationDays <= 7) ||
-      (initialDuration === "long" && tour.durationDays >= 8);
-
-    return matchesQuery && matchesCategory && matchesDuration;
+    return matchesQuery && matchesCategory;
   }).sort((a, b) => {
-    if (sortBy === "price-low") return a.priceNum - b.priceNum;
-    if (sortBy === "price-high") return b.priceNum - a.priceNum;
-    if (sortBy === "rating") return parseFloat(b.rating) - parseFloat(a.rating);
-    return 0; // recommended default
+    if (sortBy === "recommended") return 0;
+    if (sortBy === "title") return a.title.localeCompare(b.title);
+    return 0;
   });
 
   return (
@@ -224,24 +108,24 @@ export default function TourSearch() {
       <section className="search-page-hero">
         <div className="container text-center">
           <span className="search-hero-badge">
-            <i className="fa-solid fa-compass"></i> Explore All India Tours
+            <i className="fa-solid fa-compass"></i> Explore All Travel Destinations
           </span>
           <h1>
-            Find Your Dream <span className="highlight-gold">Travel Package</span>
+            Find Your Dream <span className="highlight-gold">Destination</span>
           </h1>
           <p className="search-hero-desc">
-            Search top-rated private itineraries, heritage stays, and custom holiday deals.
+            Discover top-rated destinations, heritage cities, hill stations, and international wonderlands.
           </p>
 
           {/* Search Box Form */}
           <form className="search-bar-box" onSubmit={handleSearchSubmit}>
             <div className="search-bar-grid">
               <div className="search-input-field">
-                <label><i className="fa-solid fa-location-dot"></i> Destination / Package</label>
+                <label><i className="fa-solid fa-location-dot"></i> Search Destination</label>
                 <div className="search-input-inner">
                   <input
                     type="text"
-                    placeholder="Search by city, fort, backwaters..."
+                    placeholder="Search by city, region, airport, fort..."
                     value={queryInput}
                     onChange={(e) => setQueryInput(e.target.value)}
                   />
@@ -258,7 +142,7 @@ export default function TourSearch() {
               </div>
 
               <div className="search-select-field">
-                <label><i className="fa-solid fa-layer-group"></i> Category</label>
+                <label><i className="fa-solid fa-tags"></i> Category</label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => {
@@ -267,34 +151,17 @@ export default function TourSearch() {
                   }}
                 >
                   <option value="All">All Categories</option>
-                  <option value="Golden Triangle">Golden Triangle</option>
-                  <option value="Rajasthan & Royal">Rajasthan &amp; Royal</option>
-                  <option value="Kerala & South India">Kerala &amp; South India</option>
-                  <option value="Himalayan Escapes">Himalayan Escapes</option>
-                  <option value="Pilgrimage Journeys">Pilgrimage &amp; Spiritual</option>
-                  <option value="Wildlife & Safaris">Wildlife &amp; Safaris</option>
+                  {categoriesList.map((cat) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.title}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              <div className="search-select-field">
-                <label><i className="fa-regular fa-clock"></i> Duration</label>
-                <select
-                  value={selectedDuration}
-                  onChange={(e) => {
-                    setSelectedDuration(e.target.value);
-                    applyFilters(queryInput, selectedCategory, e.target.value);
-                  }}
-                >
-                  <option value="All">Any Duration</option>
-                  <option value="short">1 - 4 Days</option>
-                  <option value="medium">5 - 7 Days</option>
-                  <option value="long">8+ Days</option>
-                </select>
-              </div>
-
-              <div className="search-submit-field">
+              <div className="search-btn-field">
                 <button type="submit" className="btn-search-main">
-                  <i className="fa-solid fa-magnifying-glass"></i> Search Tours
+                  <i className="fa-solid fa-magnifying-glass"></i> Search
                 </button>
               </div>
             </div>
@@ -302,40 +169,33 @@ export default function TourSearch() {
         </div>
       </section>
 
-      {/* Main Results Container */}
-      <section className="search-results-section">
+      {/* Main Results Section */}
+      <section className="section search-results-section">
         <div className="container">
-          {/* Results Summary Bar */}
-          <div className="results-toolbar">
+          <div className="results-header-bar">
             <div className="results-count-info">
               <h3>
-                {filteredTours.length} {filteredTours.length === 1 ? "Tour" : "Tours"} Found
-                {initialQuery && <span className="query-highlight"> for "{initialQuery}"</span>}
+                {loading ? 'Searching Destinations...' : `${filteredDestinations.length} Destinations Available`}
               </h3>
-              {(initialQuery || initialCategory !== "All" || initialDuration !== "All") && (
-                <div className="active-filters-pills">
+              {(initialQuery || initialCategory !== "All") && (
+                <div className="active-filter-chips">
+                  <span>Filtered By:</span>
                   {initialQuery && (
-                    <span className="filter-pill">
-                      Keyword: "{initialQuery}"
-                      <button onClick={() => applyFilters("", selectedCategory, selectedDuration)}>
-                        <i className="fa-solid fa-xmark"></i>
-                      </button>
+                    <span className="chip">
+                      "{initialQuery}"
+                      <i
+                        className="fa-solid fa-xmark"
+                        onClick={() => applyFilters("", selectedCategory, selectedDuration)}
+                      ></i>
                     </span>
                   )}
                   {initialCategory !== "All" && (
-                    <span className="filter-pill">
-                      Category: {initialCategory}
-                      <button onClick={() => applyFilters(queryInput, "All", selectedDuration)}>
-                        <i className="fa-solid fa-xmark"></i>
-                      </button>
-                    </span>
-                  )}
-                  {initialDuration !== "All" && (
-                    <span className="filter-pill">
-                      Duration: {initialDuration}
-                      <button onClick={() => applyFilters(queryInput, selectedCategory, "All")}>
-                        <i className="fa-solid fa-xmark"></i>
-                      </button>
+                    <span className="chip">
+                      {categoriesList.find(c => c._id === initialCategory)?.title || initialCategory}
+                      <i
+                        className="fa-solid fa-xmark"
+                        onClick={() => applyFilters(queryInput, "All", selectedDuration)}
+                      ></i>
                     </span>
                   )}
                   <button className="btn-clear-all" onClick={handleClearFilters}>
@@ -344,65 +204,64 @@ export default function TourSearch() {
                 </div>
               )}
             </div>
-
-            <div className="sort-wrapper">
-              <label><i className="fa-solid fa-arrow-down-short-wide"></i> Sort By:</label>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                <option value="recommended">Recommended</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Top Rated (Stars)</option>
-              </select>
-            </div>
           </div>
 
-          {/* Results Tour Cards Grid */}
-          {filteredTours.length > 0 ? (
+          {/* Results Destination Cards Grid */}
+          {loading ? (
+            <div style={{ textAlign: "center", padding: "60px 20px" }}>
+              <i className="fa-solid fa-circle-notch fa-spin text-2xl text-[#002D71]"></i>
+              <p style={{ marginTop: "12px", color: "#666" }}>Loading destinations...</p>
+            </div>
+          ) : filteredDestinations.length > 0 ? (
             <div className="tours-search-grid">
-              {filteredTours.map((tour) => (
-                <div key={tour.id} className="search-card-item">
+              {filteredDestinations.map((dest) => (
+                <div key={dest._id} className="search-card-item">
                   <div className="card-thumb-wrap">
-                    <img src={tour.image} alt={tour.title} className="card-img" />
-                    <span className="card-badge">{tour.badge}</span>
-                    {tour.discountBadge && (
-                      <span className="card-discount-badge">{tour.discountBadge}</span>
-                    )}
+                    <img 
+                      src={dest.image || dest.mainImage || "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=800"} 
+                      alt={dest.title} 
+                      className="card-img" 
+                    />
+                    <span className="card-badge">{dest.destinationsCategory?.title || 'Destination'}</span>
                   </div>
 
                   <div className="card-content-body">
                     <div className="card-category-row">
-                      <span className="card-cat">{tour.category}</span>
+                      <span className="card-cat">{dest.destinationsCategory?.title || 'Explore'}</span>
                       <span className="card-rating">
-                        <i className="fa-solid fa-star"></i> {tour.rating} ({tour.reviewsCount})
+                        <i className="fa-solid fa-star"></i> 4.9 (50+)
                       </span>
                     </div>
 
-                    <h3 className="card-title">{tour.title}</h3>
+                    <h3 className="card-title">
+                      <Link to={`/destination/${dest.slug || dest._id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        {dest.title}
+                      </Link>
+                    </h3>
+
+                    <p className="line-clamp-2 text-xs text-gray-600 mb-3" style={{ color: '#555', fontSize: '0.85rem', lineHeight: '1.4' }}>
+                      {dest.description || 'Explore rich heritage, landmarks, and culture with custom holiday plans.'}
+                    </p>
 
                     <div className="card-meta-list">
-                      <span>
-                        <i className="fa-solid fa-location-dot"></i> {tour.destination}
-                      </span>
-                      <span>
-                        <i className="fa-regular fa-clock"></i> {tour.durationText}
-                      </span>
+                      {dest.nearestAirport && (
+                        <span>
+                          <i className="fa-solid fa-plane"></i> {dest.nearestAirport}
+                        </span>
+                      )}
+                      {dest.ideaDuration && (
+                        <span>
+                          <i className="fa-regular fa-clock"></i> {dest.ideaDuration}
+                        </span>
+                      )}
                     </div>
 
-                    <ul className="card-highlights">
-                      {tour.highlights.map((item, idx) => (
-                        <li key={idx}>
-                          <i className="fa-solid fa-check"></i> {item}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="card-bottom-bar">
+                    <div className="card-bottom-bar" style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid #eee' }}>
                       <div className="card-price-box">
-                        <span className="price-label">Starting From</span>
-                        <span className="price-val">{tour.price}</span>
-                        <span className="price-sub">per person</span>
+                        <span className="price-label">Ideal Stay</span>
+                        <span className="price-val" style={{ fontSize: '0.95rem' }}>{dest.ideaDuration || '3 - 5 Days'}</span>
                       </div>
-                      <Link to="/packages" className="btn-view-package">
+                      <Link to={`/destination/${dest.slug || dest._id}`} className="btn-view-package">
                         View Details <i className="fa-solid fa-arrow-right"></i>
                       </Link>
                     </div>
@@ -413,25 +272,10 @@ export default function TourSearch() {
           ) : (
             <div className="no-tours-found">
               <i className="fa-solid fa-compass-slash no-icon"></i>
-              <h2>No Tour Packages Found</h2>
-              <p>We couldn't find any tours matching your search filters.</p>
-              <div className="suggested-tags">
-                <span>Try popular searches:</span>
-                <button onClick={() => applyFilters("Golden Triangle", "All", "All")}>
-                  Golden Triangle
-                </button>
-                <button onClick={() => applyFilters("Rajasthan", "All", "All")}>
-                  Rajasthan
-                </button>
-                <button onClick={() => applyFilters("Kerala", "All", "All")}>
-                  Kerala
-                </button>
-                <button onClick={() => applyFilters("Ladakh", "All", "All")}>
-                  Ladakh
-                </button>
-              </div>
+              <h2>No Destinations Found</h2>
+              <p>We couldn't find any destinations matching your search filters.</p>
               <button className="btn-reset-search" onClick={handleClearFilters}>
-                View All Available Tour Packages
+                View All Available Destinations
               </button>
             </div>
           )}

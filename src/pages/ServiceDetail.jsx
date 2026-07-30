@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import './ServiceDetail.css';
+import { BASE_URL } from '../api/http.js';
 
 const servicesData = {
   'group-tours': {
@@ -379,6 +380,8 @@ export default function ServiceDetail() {
     );
   }
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -386,14 +389,46 @@ export default function ServiceDetail() {
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.phone) {
       setFormError('Please fill in all required fields.');
       return;
     }
     setFormError('');
-    setFormSubmitted(true);
+    setSubmitting(true);
+
+    try {
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        travelDate: formData.date,
+        groupSize: formData.guests || '2',
+        message: formData.message,
+        serviceName: service ? service.title : 'Service Inquiry'
+      };
+
+      const res = await fetch(`${BASE_URL}/api/inquiry`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setFormSubmitted(true);
+      } else {
+        setFormError(data.message || 'Failed to submit inquiry.');
+      }
+    } catch (err) {
+      console.error('Error submitting service inquiry:', err);
+      setFormError('Server error. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -579,7 +614,15 @@ export default function ServiceDetail() {
                       ></textarea>
                     </div>
 
-                    <button type="submit" className="btn btn-brand w-full">Submit Inquiry</button>
+                    <button type="submit" disabled={submitting} className="btn btn-brand w-full">
+                      {submitting ? (
+                        <>
+                          <i className="fa-solid fa-spinner fa-spin"></i> Submitting...
+                        </>
+                      ) : (
+                        'Submit Inquiry'
+                      )}
+                    </button>
                   </form>
                 )}
               </div>

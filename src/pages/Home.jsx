@@ -62,6 +62,24 @@ export default function Home() {
     fetchIntlDestinations();
   }, []);
 
+  // Destination Categories State for Hero Search Card
+  const [destCategoriesList, setDestCategoriesList] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/destinations-category`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setDestCategoriesList(data.data);
+        }
+      } catch (err) {
+        console.error('Error fetching destination categories for hero search:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   // Traveler Gallery State
   const [activeGallerySets, setActiveGallerySets] = useState([]);
 
@@ -81,6 +99,25 @@ export default function Home() {
       }
     };
     fetchActiveGalleries();
+  }, []);
+
+  // Offer Packages State
+  const [offerPackages, setOfferPackages] = useState([]);
+
+  useEffect(() => {
+    const fetchOfferPackages = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/package?status=active`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          const offersOnly = data.data.filter((p) => p.isOffer === true);
+          setOfferPackages(offersOnly);
+        }
+      } catch (err) {
+        console.error('Error fetching offer packages for Home page:', err);
+      }
+    };
+    fetchOfferPackages();
   }, []);
 
   // Hero Slider State
@@ -562,22 +599,11 @@ export default function Home() {
                       onChange={(e) => setSelectedCategory(e.target.value)}
                     >
                       <option value="All">All Categories</option>
-                      <option value="Golden Triangle">Golden Triangle</option>
-                      <option value="Rajasthan & Royal">
-                        Rajasthan &amp; Royal
-                      </option>
-                      <option value="Kerala & South India">
-                        Kerala &amp; South India
-                      </option>
-                      <option value="Himalayan Escapes">
-                        Himalayan Escapes
-                      </option>
-                      <option value="Pilgrimage Journeys">
-                        Pilgrimage &amp; Spiritual
-                      </option>
-                      <option value="Wildlife & Safaris">
-                        Wildlife &amp; Safaris
-                      </option>
+                      {destCategoriesList.map((cat) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.title}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -675,52 +701,84 @@ export default function Home() {
           </div>
 
           <div className="offers-grid">
-            {offersData.map((offer) => (
-              <div key={offer.id} className="offer-card">
-                <div className="offer-image-wrap">
-                  <img
-                    src={offer.image}
-                    alt={offer.title}
-                    className="offer-image"
-                  />
-                  <div className="offer-image-overlay"></div>
-                  <span className="offer-badge">{offer.badge}</span>
-                  <div className="offer-icon-floating">
-                    <i className={offer.icon}></i>
-                  </div>
-                </div>
-                <div className="offer-card-body">
-                  <div className="offer-tag">{offer.tag}</div>
-                  <h3 className="offer-title">{offer.title}</h3>
-                  <p className="offer-desc">{offer.desc}</p>
-
-                  <div className="offer-footer">
-                    <div className="promo-box">
-                      <span className="promo-label">PROMO CODE</span>
-                      <span className="promo-code">{offer.code}</span>
-                    </div>
-                    <button
-                      className={`btn-claim ${copiedCode === offer.code ? "copied" : ""}`}
-                      onClick={() => handleCopyCode(offer.code)}
-                      title="Click to copy promo code"
-                    >
-                      {copiedCode === offer.code ? (
-                        <>
-                          <i className="fa-solid fa-check"></i> Copied!
-                        </>
-                      ) : (
-                        <>
-                          <i className="fa-regular fa-copy"></i>Copy
-                        </>
-                      )}
-                    </button>
-                  </div>
-                  <div className="offer-validity">
-                    <i className="fa-regular fa-clock"></i> {offer.validity}
-                  </div>
-                </div>
+            {offerPackages.length === 0 ? (
+              <div style={{ textStyle: 'center', gridColumn: '1 / -1', padding: '40px 20px', textAlign: 'center', color: '#666' }}>
+                <i className="fa-solid fa-tags" style={{ fontSize: '2rem', color: '#DA9F27', marginBottom: '12px', display: 'block' }}></i>
+                <p>No special offer packages currently active. Check back soon!</p>
               </div>
-            ))}
+            ) : (
+              offerPackages.map((p) => {
+                const isOffer = p.isOffer && p.offerPercentage > 0;
+                const originalPrice = p.pricePerPerson;
+                const finalPrice = isOffer 
+                  ? Math.round(originalPrice - (originalPrice * p.offerPercentage) / 100) 
+                  : originalPrice;
+
+                return (
+                  <div key={p._id} className="offer-card">
+                    <div className="offer-image-wrap">
+                      <img
+                        src={p.image || "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&q=80&w=800"}
+                        alt={p.title}
+                        className="offer-image"
+                      />
+                      <div className="offer-image-overlay"></div>
+                      <span className="offer-badge">{isOffer ? `${p.offerPercentage}% OFF` : 'SPECIAL DEAL'}</span>
+                      <div className="offer-icon-floating">
+                        <i className="fa-solid fa-plane-departure"></i>
+                      </div>
+                    </div>
+                    <div className="offer-card-body">
+                      <div className="offer-tag" style={{ textTransform: 'uppercase' }}>{p.packageTag || p.regionType || 'SPECIAL TOUR'}</div>
+                      <h3 className="offer-title">
+                        <Link to={`/package/${p.slug || p._id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                          {p.title}
+                        </Link>
+                      </h3>
+                      <p className="offer-desc line-clamp-2">{p.offerDescription || p.description}</p>
+
+                      <div className="offer-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px' }}>
+                        <div className="promo-box" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', background: 'transparent', padding: 0, border: 'none' }}>
+                          <span className="promo-label" style={{ fontSize: '0.68rem', fontWeight: '700', letterSpacing: '0.05em', color: '#DA9F27', marginBottom: '2px' }}>OFFER PRICE</span>
+                          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                            {isOffer && (
+                              <span style={{ textDecoration: 'line-through', fontSize: '0.8rem', color: '#888', fontWeight: '500' }}>
+                                ₹{originalPrice?.toLocaleString('en-IN')}
+                              </span>
+                            )}
+                            <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#002D71', fontFamily: 'var(--disp, sans-serif)' }}>
+                              ₹{finalPrice?.toLocaleString('en-IN')}
+                            </span>
+                          </div>
+                        </div>
+                        <Link
+                          to={`/package/${p.slug || p._id}`}
+                          className="btn-claim"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            textDecoration: 'none',
+                            backgroundColor: '#002D71',
+                            color: '#fff',
+                            padding: '10px 18px',
+                            borderRadius: '8px',
+                            fontWeight: '700',
+                            fontSize: '0.85rem',
+                            transition: 'all 0.3s ease'
+                          }}
+                        >
+                          <i className="fa-solid fa-calendar-check"></i> Book Now
+                        </Link>
+                      </div>
+                      <div className="offer-validity" style={{ marginTop: '12px' }}>
+                        <i className="fa-regular fa-clock"></i> {p.duration || 'Limited Time Offer'}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
 
           <div className="offers-banner">
@@ -983,296 +1041,69 @@ export default function Home() {
         {/* Swiper Container */}
         <div className="swiper mySwiper reveal container">
           <div className="swiper-wrapper">
-            {/* Slide 1 */}
-            <div className="swiper-slide">
-              <div className="pkg-card">
-                <img
-                  src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=700"
-                  alt="Golden Triangle tour"
-                />
-                <div className="ov"></div>
-                <div className="top">
-                  <span className="badge">Best Seller</span>
-                  <button
-                    className={`fav-btn ${isInWishlist(1) ? "liked" : ""}`}
-                    onClick={() =>
-                      toggleWishlist({
-                        id: 1,
-                        title: "Golden Triangle Tour",
-                        price: "₹14,500",
-                        image:
-                          "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=700",
-                      })
-                    }
-                    title={
-                      isInWishlist(1)
-                        ? "Remove from Wishlist"
-                        : "Add to Wishlist"
-                    }
-                  >
-                    <i
-                      className={
-                        isInWishlist(1)
-                          ? "fa-solid fa-heart"
-                          : "fa-regular fa-heart"
-                      }
-                      style={{ color: isInWishlist(1) ? "#EF4444" : "#FFFFFF" }}
-                    ></i>
-                  </button>
-                </div>
-                <div className="bottom">
-                  <div className="meta">
-                    <span>
-                      <i className="fa-regular fa-clock"></i> 5D / 4N
-                    </span>
-                    <span>
-                      <i className="fa-solid fa-hotel"></i> 4★ Hotels
-                    </span>
-                  </div>
-                  <h3>Golden Triangle Tour</h3>
-                  <div className="row">
-                    <div className="price">
-                      ₹14,500 <span>/ person</span>
+            {offerPackages.map((pkg, idx) => {
+              const finalPrice = pkg.isOffer && pkg.offerPercentage > 0 
+                ? Math.round(pkg.pricePerPerson - (pkg.pricePerPerson * pkg.offerPercentage) / 100)
+                : pkg.pricePerPerson;
+
+              return (
+                <div key={pkg._id || idx} className="swiper-slide font-sans">
+                  <div className="pkg-card">
+                    <img
+                      src={pkg.image || "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=700"}
+                      alt={pkg.title}
+                    />
+                    <div className="ov"></div>
+                    <div className="top">
+                      <span className="badge" style={{ backgroundColor: pkg.isOffer ? '#DA9F27' : '#002D71', color: '#FFFFFF', fontWeight: 'bold' }}>
+                        {pkg.isOffer && pkg.offerPercentage > 0 ? `${pkg.offerPercentage}% OFF` : (pkg.packageTag || 'Special')}
+                      </span>
+                      <button
+                        className={`fav-btn ${isInWishlist(pkg._id) ? "liked" : ""}`}
+                        onClick={() =>
+                          toggleWishlist({
+                            id: pkg._id,
+                            title: pkg.title,
+                            price: `₹${finalPrice}`,
+                            image: pkg.image,
+                          })
+                        }
+                        title={isInWishlist(pkg._id) ? "Remove from Wishlist" : "Add to Wishlist"}
+                      >
+                        <i
+                          className={isInWishlist(pkg._id) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
+                          style={{ color: isInWishlist(pkg._id) ? "#EF4444" : "#FFFFFF" }}
+                        ></i>
+                      </button>
                     </div>
-                    <Link to="/package/1" className="go">
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Slide 2 */}
-            <div className="swiper-slide">
-              <div className="pkg-card">
-                <img
-                  src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=700"
-                  alt="Shimla Manali escape"
-                />
-                <div className="ov"></div>
-                <div className="top">
-                  <span className="badge">Honeymoon</span>
-                  <button
-                    className={`fav-btn ${isInWishlist(2) ? "liked" : ""}`}
-                    onClick={() =>
-                      toggleWishlist({
-                        id: 2,
-                        title: "Shimla Manali Escape",
-                        price: "₹18,900",
-                        image:
-                          "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=700",
-                      })
-                    }
-                    title={
-                      isInWishlist(2)
-                        ? "Remove from Wishlist"
-                        : "Add to Wishlist"
-                    }
-                  >
-                    <i
-                      className={
-                        isInWishlist(2)
-                          ? "fa-solid fa-heart"
-                          : "fa-regular fa-heart"
-                      }
-                      style={{ color: isInWishlist(2) ? "#EF4444" : "#FFFFFF" }}
-                    ></i>
-                  </button>
-                </div>
-                <div className="bottom">
-                  <div className="meta">
-                    <span>
-                      <i className="fa-regular fa-clock"></i> 6D / 5N
-                    </span>
-                    <span>
-                      <i className="fa-solid fa-hotel"></i> 5★ Resorts
-                    </span>
-                  </div>
-                  <h3>Shimla Manali Escape</h3>
-                  <div className="row">
-                    <div className="price">
-                      ₹18,900 <span>/ person</span>
+                    <div className="bottom">
+                      <div className="meta">
+                        <span>
+                          <i className="fa-regular fa-clock"></i> {pkg.duration || '5D / 4N'}
+                        </span>
+                        <span className="capitalize">
+                          <i className="fa-solid fa-tag"></i> {pkg.packageTag || 'Tour'}
+                        </span>
+                      </div>
+                      <h3 className="line-clamp-1">{pkg.title}</h3>
+                      <div className="row">
+                        <div className="price">
+                          {pkg.isOffer && pkg.offerPercentage > 0 && (
+                            <span style={{ textDecoration: 'line-through', color: '#9CA3AF', fontSize: '0.85rem', marginRight: '6px' }}>
+                              ₹{pkg.pricePerPerson?.toLocaleString('en-IN')}
+                            </span>
+                          )}
+                          ₹{finalPrice?.toLocaleString('en-IN')} <span>/ person</span>
+                        </div>
+                        <Link to={`/package/${pkg.slug || pkg._id}`} className="go">
+                          <i className="fa-solid fa-arrow-right"></i>
+                        </Link>
+                      </div>
                     </div>
-                    <Link to="/package/2" className="go">
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
                   </div>
                 </div>
-              </div>
-            </div>
-            {/* Slide 3 */}
-            <div className="swiper-slide">
-              <div className="pkg-card">
-                <img
-                  src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=700"
-                  alt="Rajasthan heritage tour"
-                />
-                <div className="ov"></div>
-                <div className="top">
-                  <span className="badge">Royal</span>
-                  <button
-                    className={`fav-btn ${isInWishlist(3) ? "liked" : ""}`}
-                    onClick={() =>
-                      toggleWishlist({
-                        id: 3,
-                        title: "Rajasthan Heritage Trail",
-                        price: "₹22,400",
-                        image:
-                          "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=700",
-                      })
-                    }
-                    title={
-                      isInWishlist(3)
-                        ? "Remove from Wishlist"
-                        : "Add to Wishlist"
-                    }
-                  >
-                    <i
-                      className={
-                        isInWishlist(3)
-                          ? "fa-solid fa-heart"
-                          : "fa-regular fa-heart"
-                      }
-                      style={{ color: isInWishlist(3) ? "#EF4444" : "#FFFFFF" }}
-                    ></i>
-                  </button>
-                </div>
-                <div className="bottom">
-                  <div className="meta">
-                    <span>
-                      <i className="fa-regular fa-clock"></i> 7D / 6N
-                    </span>
-                    <span>
-                      <i className="fa-solid fa-hotel"></i> Palace Stays
-                    </span>
-                  </div>
-                  <h3>Rajasthan Heritage Trail</h3>
-                  <div className="row">
-                    <div className="price">
-                      ₹22,400 <span>/ person</span>
-                    </div>
-                    <Link to="/package/3" className="go">
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Slide 4 */}
-            <div className="swiper-slide">
-              <div className="pkg-card">
-                <img
-                  src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=700"
-                  alt="Kerala backwaters houseboat"
-                />
-                <div className="ov"></div>
-                <div className="top">
-                  <span className="badge">Coastal</span>
-                  <button
-                    className={`fav-btn ${isInWishlist(4) ? "liked" : ""}`}
-                    onClick={() =>
-                      toggleWishlist({
-                        id: 4,
-                        title: "Kerala Backwater Trail",
-                        price: "₹19,600",
-                        image:
-                          "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=700",
-                      })
-                    }
-                    title={
-                      isInWishlist(4)
-                        ? "Remove from Wishlist"
-                        : "Add to Wishlist"
-                    }
-                  >
-                    <i
-                      className={
-                        isInWishlist(4)
-                          ? "fa-solid fa-heart"
-                          : "fa-regular fa-heart"
-                      }
-                      style={{ color: isInWishlist(4) ? "#EF4444" : "#FFFFFF" }}
-                    ></i>
-                  </button>
-                </div>
-                <div className="bottom">
-                  <div className="meta">
-                    <span>
-                      <i className="fa-regular fa-clock"></i> 6D / 5N
-                    </span>
-                    <span>
-                      <i className="fa-solid fa-hotel"></i> Houseboats
-                    </span>
-                  </div>
-                  <h3>Kerala Backwater Trail</h3>
-                  <div className="row">
-                    <div className="price">
-                      ₹19,600 <span>/ person</span>
-                    </div>
-                    <Link to="/package/4" className="go">
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Slide 5 */}
-            <div className="swiper-slide">
-              <div className="pkg-card">
-                <img
-                  src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=700"
-                  alt="Ladakh high altitude circuit"
-                />
-                <div className="ov"></div>
-                <div className="top">
-                  <span className="badge">New</span>
-                  <button
-                    className={`fav-btn ${isInWishlist(5) ? "liked" : ""}`}
-                    onClick={() =>
-                      toggleWishlist({
-                        id: 5,
-                        title: "Ladakh High-Altitude Circuit",
-                        price: "₹27,300",
-                        image:
-                          "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=700",
-                      })
-                    }
-                    title={
-                      isInWishlist(5)
-                        ? "Remove from Wishlist"
-                        : "Add to Wishlist"
-                    }
-                  >
-                    <i
-                      className={
-                        isInWishlist(5)
-                          ? "fa-solid fa-heart"
-                          : "fa-regular fa-heart"
-                      }
-                      style={{ color: isInWishlist(5) ? "#EF4444" : "#FFFFFF" }}
-                    ></i>
-                  </button>
-                </div>
-                <div className="bottom">
-                  <div className="meta">
-                    <span>
-                      <i className="fa-regular fa-clock"></i> 8D / 7N
-                    </span>
-                    <span>
-                      <i className="fa-solid fa-hotel"></i> Boutique Camps
-                    </span>
-                  </div>
-                  <h3>Ladakh High-Altitude Circuit</h3>
-                  <div className="row">
-                    <div className="price">
-                      ₹27,300 <span>/ person</span>
-                    </div>
-                    <Link to="/package/5" className="go">
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
           <div className="swiper-button-next"></div>
           <div className="swiper-button-prev"></div>

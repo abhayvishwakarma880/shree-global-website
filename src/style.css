@@ -1190,7 +1190,7 @@ nav.mainnav>ul>li:hover .mega {
 
 /* Right Side Ultra-Transparent Blurred Glass Search Card */
 .hero-search-card {
-  background: rgba(0, 0, 0, 0.219);
+  background: rgba(0, 0, 0, 0.456);
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(0px);
   border: 1.5px solid rgba(255, 255, 255, 0.2);
@@ -4771,9 +4771,15 @@ footer {
 
 .offers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 28px;
   margin-bottom: 50px;
+}
+
+@media (min-width: 1024px) {
+  .offers-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .offer-card {
@@ -4786,6 +4792,8 @@ footer {
   position: relative;
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   box-shadow: 0 10px 30px -15px rgba(1, 45, 116, 0.08);
+  width: 100%;
+  max-width: 420px;
 }
 
 .offer-card:hover {

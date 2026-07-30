@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { BASE_URL } from '../api/http.js';
 import './PackageDetail.css';
 
 const packagesData = {
@@ -230,7 +231,8 @@ const defaultPackageData = {
 
 export default function PackageDetail() {
   const { id } = useParams();
-  const pkg = packagesData[id] || { ...defaultPackageData, id: id || 99 };
+  const [pkgData, setPkgData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -242,16 +244,147 @@ export default function PackageDetail() {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const fetchPackageDetail = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`${BASE_URL}/api/package/${id}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          const apiPkg = data.data;
+          const isOffer = apiPkg.isOffer && apiPkg.offerPercentage > 0;
+          const originalPrice = isOffer ? apiPkg.pricePerPerson : null;
+          const price = isOffer 
+            ? Math.round(apiPkg.pricePerPerson - (apiPkg.pricePerPerson * apiPkg.offerPercentage) / 100)
+            : apiPkg.pricePerPerson;
+
+          setPkgData({
+            id: apiPkg._id,
+            name: apiPkg.title,
+            category: apiPkg.packageTag || apiPkg.regionType || 'Tour',
+            regionType: apiPkg.regionType,
+            duration: apiPkg.duration || '5 Days / 4 Nights',
+            price,
+            originalPrice,
+            isOffer,
+            offerPercentage: apiPkg.offerPercentage,
+            offerDescription: apiPkg.offerDescription,
+            rating: 4.9,
+            reviews: 48,
+            image: apiPkg.image || 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=1200',
+            description: apiPkg.description || 'Experience an unforgettable journey with Shree Global Holidays.',
+            highlights: Array.isArray(apiPkg.tourHighlight) && apiPkg.tourHighlight.length > 0
+              ? apiPkg.tourHighlight
+              : defaultPackageData.highlights,
+            inclusions: Array.isArray(apiPkg.whatsIncluded) && apiPkg.whatsIncluded.length > 0
+              ? apiPkg.whatsIncluded
+              : defaultPackageData.inclusions,
+            exclusions: Array.isArray(apiPkg.whatsExcluded) && apiPkg.whatsExcluded.length > 0
+              ? apiPkg.whatsExcluded
+              : defaultPackageData.exclusions,
+            itinerary: Array.isArray(apiPkg.dayWiseItinerary) && apiPkg.dayWiseItinerary.length > 0
+              ? apiPkg.dayWiseItinerary.map((day, idx) => ({
+                  day: day.dayNumber || idx + 1,
+                  title: day.title || `Day ${idx + 1}`,
+                  desc: day.description || ''
+                }))
+              : defaultPackageData.itinerary,
+            destinations: Array.isArray(apiPkg.destinationId) ? apiPkg.destinationId : []
+          });
+        } else {
+          setPkgData(packagesData[id] || { ...defaultPackageData, id: id || 99 });
+        }
+      } catch (err) {
+        console.error('Error fetching package detail:', err);
+        setPkgData(packagesData[id] || { ...defaultPackageData, id: id || 99 });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPackageDetail();
+  }, [id]);
+
+  const pkg = pkgData || packagesData[id] || { ...defaultPackageData, id: id || 99 };
+
+  // Dynamic Related Packages State (Filter by packageTag, max 3, hide if none)
+  const [relatedPackages, setRelatedPackages] = useState([]);
+
+  useEffect(() => {
+    const currentTag = pkg.category || pkg.packageTag || 'family';
+    const currentId = pkg.id || pkg._id || id;
+
+    const fetchRelatedPackages = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/package?status=active&packageTag=${encodeURIComponent(currentTag)}&limit=10`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          const filtered = data.data.filter((p) => 
+            String(p._id) !== String(currentId) && 
+            p.slug !== id && 
+            String(p.packageTag || '').toLowerCase() === String(currentTag).toLowerCase()
+          );
+          setRelatedPackages(filtered.slice(0, 3));
+        } else {
+          setRelatedPackages([]);
+        }
+      } catch (err) {
+        console.error('Error fetching related packages:', err);
+        setRelatedPackages([]);
+      }
+    };
+
+    fetchRelatedPackages();
+  }, [pkg, id]);
+
+  const [submitting, setSubmitting] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Mimic API post
-    console.log('Query submitted:', formData, 'Package:', pkg.name);
+
+    if (!formData.name || !formData.email || !formData.phone) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const payload = {
+        packageId: pkg.id || pkg._id || id,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        travelDate: formData.date,
+        travelers: formData.travelers,
+        details: formData.message
+      };
+
+      const res = await fetch(`${BASE_URL}/api/package-booking`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        alert(data.message || 'Failed to submit booking inquiry');
+      }
+    } catch (err) {
+      console.error('Error submitting package booking:', err);
+      alert('Error submitting booking inquiry. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -334,7 +467,7 @@ export default function PackageDetail() {
             </div>
 
             {/* RIGHT COLUMN: BOOKING SIDEBAR */}
-            <div className="pkg-detail-sidebar reveal">
+            <div className="pkg-detail-sidebar">
               <div className="booking-sticky-card">
                 <div className="price-header">
                   <div className="price-label">Tour Cost</div>
@@ -429,8 +562,16 @@ export default function PackageDetail() {
                         ></textarea>
                       </div>
 
-                      <button type="submit" className="btn btn-brand btn-book-submit">
-                        <i className="fa-regular fa-paper-plane"></i> Get Free Plan
+                      <button type="submit" disabled={submitting} className="btn btn-brand btn-book-submit">
+                        {submitting ? (
+                          <>
+                            <i className="fa-solid fa-spinner fa-spin"></i> Submitting...
+                          </>
+                        ) : (
+                          <>
+                            <i className="fa-regular fa-paper-plane"></i> Get Free Plan
+                          </>
+                        )}
                       </button>
                     </form>
                   ) : (
@@ -461,36 +602,42 @@ export default function PackageDetail() {
         </div>
       </section>
 
-      {/* ================= RELATED PACKAGES SECTION ================= */}
-      <section className="section sand tight">
-        <div className="container">
-          <div className="kicker-row reveal">
-            <div>
-              <div className="eyebrow">More to Explore</div>
-              <h2>You Might Also <span className="italic">Like</span></h2>
+      {/* ================= RELATED PACKAGES SECTION (DYNAMIC BASED ON TAG) ================= */}
+      {relatedPackages.length > 0 && (
+        <section className="section sand tight">
+          <div className="container">
+            <div className="kicker-row reveal">
+              <div>
+                <div className="eyebrow">More to Explore</div>
+                <h2>You Might Also <span className="italic">Like</span></h2>
+              </div>
             </div>
-          </div>
-          
-          <div className="pkg-detail-related-grid reveal">
-            {Object.values(packagesData)
-              .filter((p) => p.id !== pkg.id)
-              .slice(0, 3)
-              .map((p) => (
-                <div key={p.id} className="related-pkg-card">
-                  <img src={p.image} alt={p.name} />
-                  <div className="content">
-                    <span className="cat">{p.category}</span>
-                    <h4><Link to={`/package/${p.id}`}>{p.name}</Link></h4>
-                    <div className="meta-footer">
-                      <span><i className="fa-regular fa-clock"></i> {p.duration.split(' ')[0]} Days</span>
-                      <strong className="text-green">₹{p.price.toLocaleString()}</strong>
+            
+            <div className="pkg-detail-related-grid reveal">
+              {relatedPackages.map((p) => {
+                const isOffer = p.isOffer && p.offerPercentage > 0;
+                const finalPrice = isOffer 
+                  ? Math.round(p.pricePerPerson - (p.pricePerPerson * p.offerPercentage) / 100)
+                  : (p.pricePerPerson || p.price);
+
+                return (
+                  <div key={p._id || p.id} className="related-pkg-card">
+                    <img src={p.image || "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=600"} alt={p.title || p.name} />
+                    <div className="content">
+                      <span className="cat" style={{ textTransform: 'capitalize' }}>{p.packageTag || p.category || 'Tour'}</span>
+                      <h4><Link to={`/package/${p.slug || p._id}`}>{p.title || p.name}</Link></h4>
+                      <div className="meta-footer">
+                        <span><i className="fa-regular fa-clock"></i> {p.duration || '5D/4N'}</span>
+                        <strong className="text-green">₹{finalPrice?.toLocaleString('en-IN')}</strong>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 }

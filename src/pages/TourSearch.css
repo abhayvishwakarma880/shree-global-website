@@ -60,7 +60,7 @@
 
 .search-bar-grid {
   display: grid;
-  grid-template-columns: 2fr 1.2fr 1fr 1.2fr;
+  grid-template-columns: 2.2fr 1.5fr 1fr;
   gap: 16px;
   align-items: flex-end;
 }

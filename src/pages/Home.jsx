@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Lightbox from "../components/Lightbox";
 import { useWishlist } from "../context/WishlistContext";
+import { submitContactApi } from "../api/contactApi.js";
 
 export default function Home() {
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -34,6 +35,52 @@ export default function Home() {
     }
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(""), 2500);
+  };
+
+  // Contact Form State
+  const [contactForm, setContactForm] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    budget: "",
+    details: "",
+  });
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState("");
+  const [contactLoading, setContactLoading] = useState(false);
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactError("");
+    setContactLoading(true);
+
+    try {
+      const response = await submitContactApi({
+        name: contactForm.fullName,
+        email: contactForm.email,
+        phone: contactForm.phone,
+        budget: contactForm.budget,
+        details: contactForm.details,
+      });
+
+      if (response.success) {
+        setContactSuccess(true);
+        setContactForm({
+          fullName: "",
+          email: "",
+          phone: "",
+          budget: "",
+          details: "",
+        });
+        setTimeout(() => setContactSuccess(false), 6000);
+      } else {
+        setContactError(response.message || "Failed to submit inquiry.");
+      }
+    } catch (err) {
+      setContactError(err.message || "Server error. Please try again.");
+    } finally {
+      setContactLoading(false);
+    }
   };
 
   const offersData = [
@@ -1926,25 +1973,67 @@ export default function Home() {
             <div className="contact-form">
               <h4>What's your dream trip?</h4>
               <p className="sub">Fill this in and we'll take it from here.</p>
-              <form onSubmit={handleFormSubmit}>
+
+              {contactSuccess && (
+                <div style={{ background: '#e6f4ea', color: '#137333', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.88rem', fontWeight: 600 }}>
+                  <i className="fa-solid fa-circle-check"></i> Thank you! Your inquiry has been submitted.
+                </div>
+              )}
+
+              {contactError && (
+                <div style={{ background: '#fce8e6', color: '#c5221f', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.88rem', fontWeight: 600 }}>
+                  <i className="fa-solid fa-circle-exclamation"></i> {contactError}
+                </div>
+              )}
+
+              <form onSubmit={handleContactSubmit}>
                 <div className="f-row">
-                  <input type="text" placeholder="Full Name" required />
-                  <input type="email" placeholder="Email Address" required />
+                  <input
+                    type="text"
+                    placeholder="Full Name *"
+                    required
+                    value={contactForm.fullName}
+                    onChange={(e) => setContactForm({ ...contactForm, fullName: e.target.value })}
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email Address"
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                  />
                 </div>
                 <div className="f-row">
-                  <input type="tel" placeholder="Phone Number" required />
-                  <select>
-                    <option>Select Budget</option>
-                    <option>Standard</option>
-                    <option>Luxury</option>
+                  <input
+                    type="tel"
+                    placeholder="Phone Number *"
+                    required
+                    value={contactForm.phone}
+                    onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                  />
+                  <select
+                    value={contactForm.budget}
+                    onChange={(e) => setContactForm({ ...contactForm, budget: e.target.value })}
+                  >
+                    <option value="">Select Budget</option>
+                    <option value="Standard">Standard (₹10,000 - ₹20,000)</option>
+                    <option value="Premium">Premium (₹20,000 - ₹40,000)</option>
+                    <option value="Luxury">Luxury (₹40,000 - ₹75,000)</option>
+                    <option value="Ultra Luxury">Ultra Luxury (₹75,000+)</option>
                   </select>
                 </div>
                 <textarea
                   placeholder="Destinations, dates, travelers, vehicle preference…"
-                  required
+                  value={contactForm.details}
+                  onChange={(e) => setContactForm({ ...contactForm, details: e.target.value })}
                 ></textarea>
-                <button type="submit" className="btn btn-brand">
-                  <i className="fa-solid fa-arrow-right"></i> Get Free Quote
+                <button type="submit" className="btn btn-brand" disabled={contactLoading}>
+                  {contactLoading ? (
+                    <span>Submitting...</span>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-arrow-right"></i> Get Free Quote
+                    </>
+                  )}
                 </button>
               </form>
             </div>

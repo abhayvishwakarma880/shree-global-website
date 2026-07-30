@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { submitContactApi } from '../api/contactApi.js';
 import './Contact.css';
 
 export default function Contact() {
@@ -11,24 +12,46 @@ export default function Contact() {
     message: ''
   });
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Contact form submitted:', formData);
-    setSuccess(true);
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      budget: '',
-      message: ''
-    });
-    setTimeout(() => setSuccess(false), 5000);
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const response = await submitContactApi({
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        budget: formData.budget,
+        details: formData.message
+      });
+
+      if (response.success) {
+        setSuccess(true);
+        setFormData({
+          fullName: '',
+          email: '',
+          phone: '',
+          budget: '',
+          message: ''
+        });
+        setTimeout(() => setSuccess(false), 6000);
+      } else {
+        setError(response.message || 'Failed to submit inquiry.');
+      }
+    } catch (err) {
+      setError(err.message || 'Server connection error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -38,7 +61,6 @@ export default function Contact() {
         <div className="contact-hero-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=1920')" }}></div>
         <div className="contact-hero-scrim"></div>
         <div className="contact-hero-content">
-          {/* <span className="sub-badge"><i className="fa-solid fa-headset"></i> Contact Us</span> */}
           <h1>Let's Start <span className="italic">Planning</span></h1>
           <p>Have questions or ready to book? Reach out to our travel specialists today.</p>
           <div className="contact-breadcrumb">
@@ -66,7 +88,7 @@ export default function Contact() {
             <div className="icon"><i className="fa-regular fa-envelope"></i></div>
             <h4>Email Us</h4>
             <p>Send your tour inquiries</p>
-            <a href="mailto:info@shreeglobalholidays.com">info@shreeglobal.com</a>
+            <a href="mailto:info@shreeglobal.com">info@shreeglobal.com</a>
           </div>
           <div className="contact-info-card">
             <div className="icon"><i className="fa-solid fa-location-dot"></i></div>
@@ -90,8 +112,14 @@ export default function Contact() {
               </div>
 
               {success && (
-                <div style={{ background: 'var(--green-light)', color: 'var(--green-dk)', padding: '12px 16px', borderRadius: 'var(--r-s)', marginBottom: '20px', fontSize: '0.9rem', fontWeight: 600 }}>
+                <div style={{ background: 'var(--green-light, #e6f4ea)', color: 'var(--green-dk, #137333)', padding: '12px 16px', borderRadius: '8px', marginBottom: '20px', fontSize: '0.9rem', fontWeight: 600 }}>
                   <i className="fa-solid fa-circle-check"></i> Thank you! Your request has been received. Our team will get back to you shortly.
+                </div>
+              )}
+
+              {error && (
+                <div style={{ background: '#fce8e6', color: '#c5221f', padding: '12px 16px', borderRadius: '8px', marginBottom: '20px', fontSize: '0.9rem', fontWeight: 600 }}>
+                  <i className="fa-solid fa-circle-exclamation"></i> {error}
                 </div>
               )}
 
@@ -109,14 +137,13 @@ export default function Contact() {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Email Address <span className="required">*</span></label>
+                    <label>Email Address</label>
                     <input 
                       type="email" 
                       id="email" 
                       placeholder="Your email address" 
                       value={formData.email}
                       onChange={handleChange}
-                      required 
                     />
                   </div>
                 </div>
@@ -137,10 +164,10 @@ export default function Contact() {
                     <label>Budget Range</label>
                     <select id="budget" value={formData.budget} onChange={handleChange}>
                       <option value="">Select your budget</option>
-                      <option value="standard">Standard (₹10,000 - ₹20,000)</option>
-                      <option value="premium">Premium (₹20,000 - ₹40,000)</option>
-                      <option value="luxury">Luxury (₹40,000 - ₹75,000)</option>
-                      <option value="ultra">Ultra Luxury (₹75,000+)</option>
+                      <option value="Standard">Standard (₹10,000 - ₹20,000)</option>
+                      <option value="Premium">Premium (₹20,000 - ₹40,000)</option>
+                      <option value="Luxury">Luxury (₹40,000 - ₹75,000)</option>
+                      <option value="Ultra Luxury">Ultra Luxury (₹75,000+)</option>
                     </select>
                   </div>
                 </div>
@@ -155,8 +182,14 @@ export default function Contact() {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-brand">
-                  <i className="fa-regular fa-paper-plane"></i> Get Free Quote
+                <button type="submit" className="btn btn-brand" disabled={isLoading}>
+                  {isLoading ? (
+                    <span>Submitting...</span>
+                  ) : (
+                    <>
+                      <i className="fa-regular fa-paper-plane"></i> Get Free Quote
+                    </>
+                  )}
                 </button>
 
                 <p className="form-note">

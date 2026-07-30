@@ -1,49 +1,88 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Destinations.css';
-
-const allDestinations = [
-  { id: 1, name: 'Ladakh', region: 'north', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=600', rating: 4.9, tours: 8, price: 27300, description: 'Land of high passes, Buddhist monasteries, and breathtaking landscapes.', badge: 'Himalayan' },
-  { id: 2, name: 'Manali', region: 'north', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=600', rating: 4.7, tours: 6, price: 18900, description: 'Valley of Gods with pine forests, snow-capped peaks, and adventure sports.', badge: 'Adventure' },
-  { id: 3, name: 'Shimla', region: 'north', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&q=80&w=600', rating: 4.6, tours: 5, price: 16500, description: 'Queen of Hills with colonial charm, scenic views, and toy train rides.', badge: 'Heritage' },
-  { id: 4, name: 'Jaipur', region: 'west', subregion: 'desert', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=600', rating: 4.8, tours: 12, price: 14500, description: 'Pink City with magnificent forts, palaces, and vibrant bazaars.', badge: 'Royal' },
-  { id: 5, name: 'Udaipur', region: 'west', subregion: 'desert', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=600', rating: 4.9, tours: 9, price: 19500, description: 'City of Lakes with romantic palaces, boat rides, and sunset views.', badge: 'Romantic' },
-  { id: 6, name: 'Jodhpur', region: 'west', subregion: 'desert', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&q=80&w=600', rating: 4.7, tours: 7, price: 16800, description: 'Blue City with the majestic Mehrangarh Fort and blue-painted houses.', badge: 'Heritage' },
-  { id: 7, name: 'Kerala', region: 'south', subregion: 'coastal', image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=600', rating: 4.9, tours: 14, price: 19600, description: "God's Own Country with backwaters, beaches, and lush greenery.", badge: 'Backwaters' },
-  { id: 8, name: 'Goa', region: 'south', subregion: 'coastal', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=80&w=600', rating: 4.5, tours: 10, price: 15200, description: 'Beach paradise with Portuguese heritage, nightlife, and seafood.', badge: 'Beach' },
-  { id: 9, name: 'Varanasi', region: 'east', subregion: 'cultural', image: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=600', rating: 4.6, tours: 6, price: 12800, description: 'Spiritual capital with ancient ghats, Ganga Aarti, and timeless rituals.', badge: 'Spiritual' },
-  { id: 10, name: 'Rishikesh', region: 'north', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=600', rating: 4.7, tours: 4, price: 11200, description: 'Yoga capital with serene Ganges, adventure sports, and ashrams.', badge: 'Adventure' },
-  { id: 11, name: 'Agra', region: 'north', subregion: 'cultural', image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=600', rating: 4.8, tours: 10, price: 15800, description: 'Home of the Taj Mahal, Mughal heritage, and rich history.', badge: 'Iconic' },
-  { id: 12, name: 'Jaisalmer', region: 'west', subregion: 'desert', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=80&w=600', rating: 4.6, tours: 5, price: 18200, description: 'Golden City with sand dunes, camel safaris, and ancient havelis.', badge: 'Desert' },
-  { id: 13, name: 'Darjeeling', region: 'east', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&q=80&w=600', rating: 4.5, tours: 4, price: 14200, description: 'Queen of Hills with tea gardens, toy train, and Himalayan views.', badge: 'Tea' },
-  { id: 14, name: 'Coorg', region: 'south', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=600', rating: 4.7, tours: 4, price: 16500, description: 'Scotland of India with coffee plantations, waterfalls, and misty hills.', badge: 'Nature' },
-  { id: 15, name: 'Kashmir', region: 'north', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=600', rating: 4.8, tours: 7, price: 22400, description: 'Paradise on Earth with beautiful valleys, gardens, and houseboats.', badge: 'Paradise' },
-  { id: 16, name: 'Mysore', region: 'south', subregion: 'cultural', image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=600', rating: 4.6, tours: 4, price: 13800, description: 'City of Palaces with rich heritage, gardens, and grand Dasara festival.', badge: 'Heritage' },
-  { id: 17, name: 'Shillong', region: 'east', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=600', rating: 4.4, tours: 3, price: 15200, description: 'Scotland of the East with waterfalls, caves, and lush landscapes.', badge: 'Nature' },
-  { id: 18, name: 'Gangtok', region: 'east', subregion: 'himalayan', image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=600', rating: 4.6, tours: 4, price: 17800, description: 'Mountain city with monasteries, views of Kanchenjunga, and Tibetan culture.', badge: 'Mountain' },
-  { id: 19, name: 'Pushkar', region: 'west', subregion: 'desert', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=600', rating: 4.5, tours: 3, price: 12500, description: 'Holy city with sacred lake, camel fair, and spiritual atmosphere.', badge: 'Spiritual' },
-  { id: 20, name: 'Kaziranga', region: 'east', subregion: 'cultural', image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&q=80&w=600', rating: 4.7, tours: 3, price: 18500, description: 'Wildlife paradise with one-horned rhinos, elephants, and rich biodiversity.', badge: 'Wildlife' }
-];
+import { BASE_URL } from '../api/http';
 
 export default function Destinations() {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState('all');
+  const [categories, setCategories] = useState([]);
+  const [destinations, setDestinations] = useState([]);
   const [searchInputVal, setSearchInputVal] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [view, setView] = useState('grid');
   const [wishlist, setWishlist] = useState([]);
   const [faqOpenIndex, setFaqOpenIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 6,
+    totalPages: 1,
+    totalCount: 0
+  });
 
-  const itemsPerPage = 6;
   const isInitialMount = useRef(true);
 
+  // Fetch Destination Categories for Filter Buttons
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/destinations-category?status=active&limit=100`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setCategories(data.data);
+        }
+      } catch (err) {
+        console.error('Error fetching destination categories:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Fetch Destinations from Backend API
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      setIsLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.append('status', 'active');
+        params.append('page', currentPage);
+        params.append('limit', 6);
+
+        if (searchQuery.trim()) {
+          params.append('search', searchQuery.trim());
+        }
+
+        if (filter && filter !== 'all') {
+          params.append('category', filter);
+        }
+
+        const res = await fetch(`${BASE_URL}/api/destination?${params.toString()}`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setDestinations(data.data);
+          if (data.pagination) {
+            setPagination(data.pagination);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching destinations:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDestinations();
+  }, [currentPage, filter, searchQuery]);
+
+  // Smooth scroll on page change
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
-    const element = document.querySelector('.destinations-grid') || document.querySelector('.dest-layout');
+    const element = document.querySelector('.dest-grid') || document.querySelector('.filter-section');
     if (element) {
       const yOffset = -90;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -56,10 +95,9 @@ export default function Destinations() {
   // React to hash route modifications
   useEffect(() => {
     if (location.hash) {
-      const region = location.hash.replace('#', '');
-      const validRegions = ['north', 'south', 'east', 'west', 'himalayan', 'coastal'];
-      if (validRegions.includes(region)) {
-        setFilter(region);
+      const hashVal = location.hash.replace('#', '');
+      if (hashVal) {
+        setFilter(hashVal);
         setCurrentPage(1);
       }
     }
@@ -86,37 +124,12 @@ export default function Destinations() {
     setFaqOpenIndex(faqOpenIndex === index ? -1 : index);
   };
 
-  // Filter & Search Logic
-  const filteredDestinations = allDestinations.filter((dest) => {
-    // 1. Filter by region / subregion
-    if (filter !== 'all') {
-      if (dest.region !== filter && dest.subregion !== filter) return false;
-    }
-    // 2. Filter by search query
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      return (
-        dest.name.toLowerCase().includes(q) ||
-        dest.description.toLowerCase().includes(q) ||
-        dest.region.toLowerCase().includes(q) ||
-        dest.subregion.toLowerCase().includes(q) ||
-        dest.badge.toLowerCase().includes(q)
-      );
-    }
-    return true;
-  });
-
-  // Pagination calculations
-  const totalPages = Math.ceil(filteredDestinations.length / itemsPerPage);
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const pageItems = filteredDestinations.slice(startIdx, startIdx + itemsPerPage);
-
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < pagination.totalPages) setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -126,13 +139,13 @@ export default function Destinations() {
         <div className="dest-hero-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1920')" }}></div>
         <div className="dest-hero-scrim"></div>
         <div className="dest-hero-content">
-          <div className="eyebrow on-dark" style={{ justifyContent: 'center', marginBottom: '16px' }}>Explore India</div>
-          <h1>Discover <span className="italic">20+</span> Incredible Destinations</h1>
-          <p>From the snowy peaks of Ladakh to the backwaters of Kerala — find your perfect escape</p>
+          <div className="eyebrow on-dark" style={{ justifyContent: 'center', marginBottom: '16px' }}>Explore India & World</div>
+          <h1>Discover Incredible Destinations</h1>
+          <p>From majestic mountains to serene backwaters — find your perfect holiday destination</p>
           <div className="dest-search-box">
             <input 
               type="text" 
-              placeholder="Search destinations, regions, activities..." 
+              placeholder="Search destinations, regions, categories..." 
               value={searchInputVal}
               onChange={(e) => setSearchInputVal(e.target.value)}
               onKeyPress={handleKeyPress}
@@ -149,7 +162,7 @@ export default function Destinations() {
       <div className="container">
         <div className="dest-stats-strip">
           <div className="dest-stat-item">
-            <span className="number">20+</span>
+            <span className="number">{pagination.totalCount || destinations.length}+</span>
             <span className="label">Destinations</span>
           </div>
           <div className="dest-stat-item">
@@ -173,36 +186,38 @@ export default function Destinations() {
           <div className="kicker-row reveal">
             <div>
               <div className="eyebrow">Find Your Destination</div>
-              <h2>Explore by <span className="italic">Region</span></h2>
+              <h2>Explore by <span className="italic">Category</span></h2>
             </div>
-            <p>Filter destinations by region, or browse all 20+ incredible places across India.</p>
+            <p>Filter destinations by category, or search your favorite travel spot across India.</p>
           </div>
 
           <div className="filter-section reveal">
             <div className="filter-buttons">
-              {[
-                { label: 'All', value: 'all' },
-                { label: 'North India', value: 'north' },
-                { label: 'South India', value: 'south' },
-                { label: 'East India', value: 'east' },
-                { label: 'West India', value: 'west' },
-                { label: 'Himalayan', value: 'himalayan' },
-                { label: 'Coastal', value: 'coastal' }
-              ].map((btn) => (
-                <button 
-                  key={btn.value}
-                  className={`filter-btn ${filter === btn.value ? 'active' : ''}`}
+              <button
+                className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+                onClick={() => {
+                  setFilter('all');
+                  setCurrentPage(1);
+                }}
+              >
+                All
+              </button>
+
+              {categories.map((cat) => (
+                <button
+                  key={cat._id}
+                  className={`filter-btn ${filter === cat._id ? 'active' : ''}`}
                   onClick={() => {
-                    setFilter(btn.value);
+                    setFilter(cat._id);
                     setCurrentPage(1);
                   }}
                 >
-                  {btn.label}
+                  {cat.title}
                 </button>
               ))}
             </div>
             <div className="filter-results">
-              <span><strong>{filteredDestinations.length}</strong> destinations found</span>
+              <span><strong>{pagination.totalCount}</strong> destinations found</span>
             </div>
           </div>
 
@@ -231,49 +246,74 @@ export default function Destinations() {
       {/* ================= DESTINATIONS GRID ================= */}
       <section className="section" style={{ padding: '10px' }}>
         <div className="container">
-          <div className={`dest-grid reveal ${view === 'list' ? 'list-view' : ''}`}>
-            {pageItems.map((d) => (
-              <div key={d.id} className="dest-card">
-                <div className="dest-card-image">
-                  <Link to={`/destination/${d.id}`}>
-                    <img src={d.image} alt={d.name} loading="lazy" />
-                  </Link>
-                  <span className="dest-card-badge">{d.badge}</span>
-                  <span className="dest-card-rating"><i className="fa-solid fa-star"></i> {d.rating}</span>
-                  <span 
-                    className={`dest-card-wishlist ${wishlist.includes(d.id) ? 'liked' : ''}`}
-                    onClick={() => toggleWishlist(d.id)}
-                    style={{ background: wishlist.includes(d.id) ? '#e74c3c' : 'rgba(255,255,255,0.2)' }}
-                  >
-                    <i className={wishlist.includes(d.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i>
-                  </span>
-                </div>
-                <div className="dest-card-content">
-                  <h3><Link to={`/destination/${d.id}`}>{d.name}</Link></h3>
-                  <div className="dest-card-meta">
-                    <span>
-                      <i className="fa-solid fa-location-dot"></i> 
-                      {d.region.charAt(0).toUpperCase() + d.region.slice(1)}
+          {isLoading ? (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: '#666' }}>
+              <i className="fa-solid fa-spinner fa-spin" style={{ fontSize: '2rem', marginBottom: '12px', color: '#002D71' }}></i>
+              <p style={{ fontWeight: 600 }}>Loading Destinations...</p>
+            </div>
+          ) : destinations.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: '#666' }}>
+              <i className="fa-solid fa-location-dot" style={{ fontSize: '2.5rem', marginBottom: '12px', color: '#DA9F27' }}></i>
+              <h3>No Destinations Found</h3>
+              <p style={{ fontSize: '0.9rem', marginTop: '6px' }}>Try searching with a different keyword or category filter.</p>
+            </div>
+          ) : (
+            <div className={`dest-grid reveal ${view === 'list' ? 'list-view' : ''}`}>
+              {destinations.map((d) => (
+                <div key={d._id} className="dest-card">
+                  <div className="dest-card-image">
+                    <Link to={`/destination/${d.slug || d._id}`}>
+                      <img 
+                        src={d.image || 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=600'} 
+                        alt={d.title} 
+                        loading="lazy" 
+                      />
+                    </Link>
+                    <span className="dest-card-badge">{d.destinationsCategory?.title || 'Destination'}</span>
+                    <span 
+                      className={`dest-card-wishlist ${wishlist.includes(d._id) ? 'liked' : ''}`}
+                      onClick={() => toggleWishlist(d._id)}
+                      style={{ background: wishlist.includes(d._id) ? '#e74c3c' : 'rgba(255,255,255,0.2)' }}
+                    >
+                      <i className={wishlist.includes(d._id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i>
                     </span>
-                    <span><i className="fa-regular fa-clock"></i> {d.tours} tours</span>
                   </div>
-                  <p>{d.description}</p>
-                  <div className="dest-card-footer">
-                    <span className="dest-card-price">₹{d.price.toLocaleString()} <span>/ person</span></span>
-                    <Link to={`/destination/${d.id}`} className="dest-card-link">Explore <i className="fa-solid fa-arrow-right"></i></Link>
+                  <div className="dest-card-content">
+                    <h3><Link to={`/destination/${d.slug || d._id}`}>{d.title}</Link></h3>
+                    <div className="dest-card-meta">
+                      <span>
+                        <i className="fa-solid fa-location-dot"></i> 
+                        {d.nearestAirport || d.destinationsCategory?.title || 'India'}
+                      </span>
+                      {d.ideaDuration && (
+                        <span><i className="fa-regular fa-clock"></i> {d.ideaDuration}</span>
+                      )}
+                    </div>
+                    <p>
+                      {d.description || (d.about ? d.about.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...' : 'Explore amazing holiday packages and top attractions.')}
+                    </p>
+                    <div className="dest-card-footer">
+                      <span className="dest-card-price">
+                        {d.pricePerPerson ? `₹${Number(d.pricePerPerson).toLocaleString('en-IN')}` : 'On Request'}
+                        {d.pricePerPerson ? <span> / person</span> : ''}
+                      </span>
+                      <Link to={`/destination/${d.slug || d._id}`} className="dest-card-link">
+                        Explore <i className="fa-solid fa-arrow-right"></i>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
-          {totalPages > 1 && (
+          {pagination.totalPages > 1 && (
             <div className="pagination reveal">
               <button className="arrow" onClick={handlePrevPage} disabled={currentPage === 1}>
                 <i className="fa-solid fa-chevron-left"></i>
               </button>
-              {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
+              {Array.from({ length: pagination.totalPages }, (_, idx) => idx + 1).map((page) => (
                 <button 
                   key={page}
                   className={currentPage === page ? 'active' : ''}
@@ -282,7 +322,7 @@ export default function Destinations() {
                   {page}
                 </button>
               ))}
-              <button className="arrow" onClick={handleNextPage} disabled={currentPage === totalPages}>
+              <button className="arrow" onClick={handleNextPage} disabled={currentPage === pagination.totalPages}>
                 <i className="fa-solid fa-chevron-right"></i>
               </button>
             </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import shreeGlobalLogo from '../assets/shreeGlobalLogo.jpeg';
 import { useWishlist } from '../context/WishlistContext';
+import { BASE_URL } from '../api/http';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -12,6 +13,7 @@ export default function Header() {
   const [headerSearch, setHeaderSearch] = useState('');
   const [wishlistDrawerOpen, setWishlistDrawerOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [megaMenuCategories, setMegaMenuCategories] = useState([]);
 
   const { wishlist, wishlistCount, removeFromWishlist } = useWishlist();
   const location = useLocation();
@@ -29,6 +31,22 @@ export default function Header() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fetch starting 4 destination categories for mega menu
+  useEffect(() => {
+    const fetchMegaMenu = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/destinations-category/mega-menu`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setMegaMenuCategories(data.data);
+        }
+      } catch (err) {
+        console.error('Error fetching mega menu categories:', err);
+      }
+    };
+    fetchMegaMenu();
   }, []);
 
   // Close menus on route change
@@ -100,42 +118,33 @@ export default function Header() {
                 </Link>
                 <div className="mega">
                   <div className="mega-inner">
-                    <div className="mega-col">
-                      <h5>North &amp; Himalayas</h5>
-                      <ul>
-                        <li><Link to="/destination/2"><span className="dot"></span>Manali &amp; Shimla</Link></li>
-                        <li><Link to="/destination/1"><span className="dot"></span>Ladakh &amp; Leh</Link></li>
-                        <li><Link to="/destination/10"><span className="dot"></span>Rishikesh</Link></li>
-                        <li><Link to="/destination/15"><span className="dot"></span>Kashmir Valley</Link></li>
-                      </ul>
-                    </div>
-                    <div className="mega-col">
-                      <h5>Heritage &amp; Royal</h5>
-                      <ul>
-                        <li><Link to="/destination/4"><span className="dot"></span>Jaipur — Pink City</Link></li>
-                        <li><Link to="/destination/5"><span className="dot"></span>Udaipur Lakes</Link></li>
-                        <li><Link to="/destination/11"><span className="dot"></span>Agra &amp; Taj Mahal</Link></li>
-                        <li><Link to="/destination/6"><span className="dot"></span>Jodhpur — Blue City</Link></li>
-                      </ul>
-                    </div>
-                    <div className="mega-col">
-                      <h5>Coast &amp; South</h5>
-                      <ul>
-                        <li><Link to="/destination/7"><span className="dot"></span>Kerala Backwaters</Link></li>
-                        <li><Link to="/destination/8"><span className="dot"></span>Goa Beaches</Link></li>
-                        <li><Link to="/destination/9"><span className="dot"></span>Varanasi Ghats</Link></li>
-                        <li><Link to="/destinations#south"><span className="dot"></span>Andaman Islands</Link></li>
-                      </ul>
-                    </div>
-                    <div className="mega-col">
-                      <h5>International</h5>
-                      <ul>
-                        <li><Link to="/destinations#international"><span className="dot"></span>Dubai &amp; Abu Dhabi</Link></li>
-                        <li><Link to="/destinations#international"><span className="dot"></span>Bali, Indonesia</Link></li>
-                        <li><Link to="/destinations#international"><span className="dot"></span>Thailand</Link></li>
-                        <li><Link to="/destinations#international"><span className="dot"></span>Singapore</Link></li>
-                      </ul>
-                    </div>
+                    {megaMenuCategories.length > 0 ? (
+                      megaMenuCategories.map((cat) => (
+                        <div className="mega-col" key={cat._id}>
+                          <h5>{cat.title}</h5>
+                          <ul>
+                            {cat.destinations && cat.destinations.length > 0 ? (
+                              cat.destinations.map((dest) => (
+                                <li key={dest._id}>
+                                  <Link to={`/destination/${dest.slug || dest._id}`}>
+                                    <span className="dot"></span>
+                                    {dest.title}
+                                  </Link>
+                                </li>
+                              ))
+                            ) : (
+                              <li>
+                                <span style={{ fontSize: '0.8rem', color: '#999' }}>No destinations</span>
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="mega-col">
+                        <h5>Loading Destinations...</h5>
+                      </div>
+                    )}
                   </div>
                 </div>
               </li>

@@ -3,9 +3,85 @@ import { Link, useNavigate } from "react-router-dom";
 import Lightbox from "../components/Lightbox";
 import { useWishlist } from "../context/WishlistContext";
 import { submitContactApi } from "../api/contactApi.js";
+import { BASE_URL } from "../api/http.js";
 
 export default function Home() {
   const { toggleWishlist, isInWishlist } = useWishlist();
+
+  // Top Destinations State for Bento Grid
+  const [topDestinations, setTopDestinations] = useState([]);
+  // International Destinations State
+  const [intlDestinations, setIntlDestinations] = useState([]);
+
+  useEffect(() => {
+    const fetchTopDestinations = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/destination?status=active&limit=6`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data)) {
+          setTopDestinations(data.data);
+        }
+      } catch (err) {
+        console.error('Error fetching top destinations for Home page:', err);
+      }
+    };
+
+    const fetchIntlDestinations = async () => {
+      try {
+        // 1. Fetch categories to find International category _id
+        const catRes = await fetch(`${BASE_URL}/api/destinations-category?status=active&limit=100`);
+        const catData = await catRes.json();
+        let intlCatId = '';
+        if (catData.success && Array.isArray(catData.data)) {
+          const intlCat = catData.data.find(c => c.title.toLowerCase().includes('international'));
+          if (intlCat) {
+            intlCatId = intlCat._id;
+          }
+        }
+
+        // 2. Fetch destinations filtered by International category
+        let url = `${BASE_URL}/api/destination?status=active&limit=20`;
+        if (intlCatId) {
+          url += `&category=${intlCatId}`;
+        }
+
+        const destRes = await fetch(url);
+        const destData = await destRes.json();
+        if (destData.success && Array.isArray(destData.data)) {
+          const filtered = intlCatId
+            ? destData.data
+            : destData.data.filter(d => d.destinationsCategory?.title?.toLowerCase().includes('international'));
+          setIntlDestinations(filtered);
+        }
+      } catch (err) {
+        console.error('Error fetching international destinations:', err);
+      }
+    };
+
+    fetchTopDestinations();
+    fetchIntlDestinations();
+  }, []);
+
+  // Traveler Gallery State
+  const [activeGallerySets, setActiveGallerySets] = useState([]);
+
+  useEffect(() => {
+    const fetchActiveGalleries = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/gallery?status=active`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          const validSets = data.data.filter(set => Array.isArray(set.images) && set.images.length === 6);
+          if (validSets.length > 0) {
+            setActiveGallerySets(validSets);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching active gallery sets for Home page:', err);
+      }
+    };
+    fetchActiveGalleries();
+  }, []);
 
   // Hero Slider State
   const [heroActiveIndex, setHeroActiveIndex] = useState(0);
@@ -155,38 +231,26 @@ export default function Home() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const galleryItems = [
-    {
-      src: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1200",
-      title: "Taj Mahal at Sunrise",
-      caption: "Agra, Uttar Pradesh",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&q=80&w=1200",
-      title: "Havelis of Jaisalmer",
-      caption: "Golden City, Rajasthan",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=80&w=1200",
-      title: "Rajasthan Camel Safari",
-      caption: "Thar Desert, Rajasthan",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1200",
-      title: "Kerala Houseboat",
-      caption: "Alleppey, Kerala",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=1200",
-      title: "Varanasi Ganga Aarti",
-      caption: "Varanasi, Uttar Pradesh",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200",
-      title: "Himalayan Trekking",
-      caption: "Himachal Pradesh",
-    },
+  const defaultGalleryImages = [
+    "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200"
   ];
+
+  const gallerySetsToRender = activeGallerySets.length > 0 
+    ? activeGallerySets 
+    : [{ _id: 'default', images: defaultGalleryImages }];
+
+  const galleryItems = gallerySetsToRender.flatMap((set, setIdx) =>
+    set.images.map((imgUrl, imgIdx) => ({
+      src: imgUrl,
+      title: `Traveler Moment #${setIdx * 6 + imgIdx + 1}`,
+      caption: 'Shree Global Holidays Traveler Memories'
+    }))
+  );
 
   // Refs for Swiper cleanup
   const packageSwiperRef = useRef(null);
@@ -279,25 +343,7 @@ export default function Home() {
           },
         });
 
-        // International Travel Swiper
-        intlSwiperRef.current = new window.Swiper(".intlSwiper", {
-          slidesPerView: 1,
-          spaceBetween: 20,
-          loop: true,
-          autoplay: {
-            delay: 4500,
-            disableOnInteraction: false,
-          },
-          pagination: {
-            el: ".intl-pagination",
-            clickable: true,
-          },
-          breakpoints: {
-            640: { slidesPerView: 2, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 24 },
-            1280: { slidesPerView: 4, spaceBetween: 24 },
-          },
-        });
+        // International Travel Swiper initialization handled in dedicated useEffect
       }
     }, 100);
 
@@ -329,6 +375,40 @@ export default function Home() {
       }
     };
   }, []);
+
+  // Dedicated useEffect for International Swiper to ensure proper slide recalculation
+  useEffect(() => {
+    if (!window.Swiper) return;
+    const timer = setTimeout(() => {
+      const el = document.querySelector(".intlSwiper");
+      if (!el) return;
+
+      if (intlSwiperRef.current && typeof intlSwiperRef.current.destroy === "function") {
+        intlSwiperRef.current.destroy(true, true);
+      }
+
+      intlSwiperRef.current = new window.Swiper(".intlSwiper", {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+          delay: 4500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".intl-pagination",
+          clickable: true,
+        },
+        breakpoints: {
+          640: { slidesPerView: 2, spaceBetween: 20 },
+          1024: { slidesPerView: 3, spaceBetween: 24 },
+          1280: { slidesPerView: 4, spaceBetween: 24 },
+        },
+      });
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [intlDestinations]);
 
   const openGalleryImage = (e, index) => {
     e.preventDefault();
@@ -688,80 +768,22 @@ export default function Home() {
           </div>
 
           <div className="bento reveal">
-            <Link to="/destinations#north" className="b1">
-              <img
-                src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=900"
-                alt="Taj Mahal"
-              />
-              <div className="ov"></div>
-              <div className="info">
-                <span className="tag">Bestseller</span>
-                <h3>New Delhi &amp; Agra</h3>
-                <span className="meta">
-                  Capital city · Home of the Taj Mahal
-                </span>
-              </div>
-            </Link>
-            <Link to="/destinations#west" className="b2">
-              <img
-                src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=900"
-                alt="Jaipur city palace"
-              />
-              <div className="ov"></div>
-              <div className="info">
-                <span className="tag">Heritage</span>
-                <h3>Jaipur — Pink City</h3>
-                <span className="meta">Forts, palaces &amp; royal culture</span>
-              </div>
-            </Link>
-            <Link to="/destinations#north" className="b3">
-              <img
-                src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&q=80&w=700"
-                alt="Kashmir valley Shikara"
-              />
-              <div className="ov"></div>
-              <div className="info">
-                <span className="tag">Paradise</span>
-                <h3>Kashmir Valley</h3>
-                <span className="meta">Gulmarg, Pahalgam &amp; Dal Lake</span>
-              </div>
-            </Link>
-            <Link to="/destinations#south" className="b4">
-              <img
-                src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=700"
-                alt="Kerala backwaters"
-              />
-              <div className="ov"></div>
-              <div className="info">
-                <span className="tag">Backwaters</span>
-                <h3>Kerala</h3>
-                <span className="meta">Houseboats &amp; coastline</span>
-              </div>
-            </Link>
-            <Link to="/destinations#east" className="b5">
-              <img
-                src="https://images.unsplash.com/photo-1561361058-c24cecae35ca?auto=format&fit=crop&q=80&w=700"
-                alt="Varanasi ghats"
-              />
-              <div className="ov"></div>
-              <div className="info">
-                <span className="tag">Spiritual</span>
-                <h3>Varanasi</h3>
-                <span className="meta">Ganga Aarti &amp; ghats</span>
-              </div>
-            </Link>
-            <Link to="/destinations#north" className="b6">
-              <img
-                src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=900"
-                alt="Ladakh"
-              />
-              <div className="ov"></div>
-              <div className="info">
-                <span className="tag">High Altitude</span>
-                <h3>Ladakh &amp; Leh</h3>
-                <span className="meta">Monasteries &amp; mountain passes</span>
-              </div>
-            </Link>
+            {topDestinations.map((d, idx) => (
+              <Link key={d._id} to={`/destination/${d.slug || d._id}`} className={`b${idx + 1}`}>
+                <img
+                  src={d.image || 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=900'}
+                  alt={d.title}
+                />
+                <div className="ov"></div>
+                <div className="info">
+                  <span className="tag">{d.destinationsCategory?.title || 'Destination'}</span>
+                  <h3>{d.title}</h3>
+                  <span className="meta">
+                    {d.description || d.nearestAirport || d.ideaDuration || 'Explore destination details'}
+                  </span>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -784,150 +806,36 @@ export default function Home() {
 
           <div className="swiper intlSwiper reveal">
             <div className="swiper-wrapper">
-              {/* Dubai */}
-              <div className="swiper-slide">
-                <Link to="/destination/13" className="intl-dest-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=700"
-                    alt="Dubai skyline"
-                  />
-                  <div className="intl-overlay"></div>
-                  <div className="intl-info">
-                    <span
-                      className="intl-badge"
-                      style={{ background: "var(--cyan)" }}
-                    >
-                      🇦🇪 UAE
-                    </span>
-                    <h3>Dubai &amp; Abu Dhabi</h3>
-                    <span className="intl-meta">
-                      Burj Khalifa · Desert Safari · Luxury Shopping
-                    </span>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Bali */}
-              <div className="swiper-slide">
-                <Link to="/destination/14" className="intl-dest-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=700"
-                    alt="Bali rice terraces"
-                  />
-                  <div className="intl-overlay"></div>
-                  <div className="intl-info">
-                    <span
-                      className="intl-badge"
-                      style={{ background: "var(--green)" }}
-                    >
-                      🇮🇩 Indonesia
-                    </span>
-                    <h3>Bali</h3>
-                    <span className="intl-meta">
-                      Rice Terraces · Temples · Beach Clubs
-                    </span>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Thailand */}
-              <div className="swiper-slide">
-                <Link to="/destination/15" className="intl-dest-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?auto=format&fit=crop&q=80&w=700"
-                    alt="Thailand temples"
-                  />
-                  <div className="intl-overlay"></div>
-                  <div className="intl-info">
-                    <span
-                      className="intl-badge"
-                      style={{ background: "#e05c1a" }}
-                    >
-                      🇹🇭 Thailand
-                    </span>
-                    <h3>Thailand</h3>
-                    <span className="intl-meta">
-                      Bangkok · Chiang Mai · Phuket Islands
-                    </span>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Singapore */}
-              <div className="swiper-slide">
-                <Link to="/destination/16" className="intl-dest-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=700"
-                    alt="Singapore skyline"
-                  />
-                  <div className="intl-overlay"></div>
-                  <div className="intl-info">
-                    <span
-                      className="intl-badge"
-                      style={{ background: "#b5163e" }}
-                    >
-                      🇸🇬 Singapore
-                    </span>
-                    <h3>Singapore</h3>
-                    <span className="intl-meta">
-                      Marina Bay · Gardens · Universal Studios
-                    </span>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Maldives */}
-              <div className="swiper-slide">
-                <Link to="/destination/17" className="intl-dest-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&q=80&w=700"
-                    alt="Maldives Overwater Bungalows"
-                  />
-                  <div className="intl-overlay"></div>
-                  <div className="intl-info">
-                    <span
-                      className="intl-badge"
-                      style={{ background: "#00a8ff" }}
-                    >
-                      🇲🇻 Maldives
-                    </span>
-                    <h3>Maldives</h3>
-                    <span className="intl-meta">
-                      Overwater Villas · Coral Reefs · Sunset Cruises
-                    </span>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Switzerland */}
-              <div className="swiper-slide">
-                <Link to="/destination/18" className="intl-dest-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&q=80&w=700"
-                    alt="Swiss Alps"
-                  />
-                  <div className="intl-overlay"></div>
-                  <div className="intl-info">
-                    <span
-                      className="intl-badge"
-                      style={{ background: "#e74c3c" }}
-                    >
-                      🇨🇭 Switzerland
-                    </span>
-                    <h3>Switzerland</h3>
-                    <span className="intl-meta">
-                      Swiss Alps · Jungfraujoch · Scenic Trains
-                    </span>
-                  </div>
-                </Link>
-              </div>
+              {intlDestinations.map((d) => (
+                <div className="swiper-slide" key={d._id}>
+                  <Link to={`/destination/${d.slug || d._id}`} className="intl-dest-card">
+                    <img
+                      src={d.image || 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=700'}
+                      alt={d.title}
+                    />
+                    <div className="intl-overlay"></div>
+                    <div className="intl-info">
+                      <span
+                        className="intl-badge"
+                        style={{ background: 'var(--cyan)' }}
+                      >
+                        ✈️ {d.destinationsCategory?.title || 'International'}
+                      </span>
+                      <h3>{d.title}</h3>
+                      <span className="intl-meta">
+                        {d.description || d.nearestAirport || d.ideaDuration || 'Explore international tour details'}
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              ))}
             </div>
 
             <div className="swiper-pagination intl-pagination"></div>
           </div>
 
           <div className="intl-cta reveal">
-            <Link to="/packages" className="btn-intl">
+            <Link to="/destinations" className="btn-intl">
               View All International Packages{" "}
               <i className="fa-solid fa-arrow-right"></i>
             </Link>
@@ -1607,12 +1515,91 @@ export default function Home() {
             </div>
             <p>Shree Global Holidays to be featured in our journal.</p>
           </div>
-          <div className="gallery-strip reveal">
-            {galleryItems.map((item, idx) => (
-              <a key={idx} href="#" onClick={(e) => openGalleryImage(e, idx)}>
-                <img src={item.src} alt={item.title} />
-              </a>
-            ))}
+          {/* Multi-Row 6-Photo Collage Layout */}
+          <div className="flex flex-col gap-12 mt-10">
+            {gallerySetsToRender.map((set, setIdx) => {
+              const images = set.images;
+              const baseIndex = setIdx * 6;
+
+              return (
+                <div 
+                  key={set._id || setIdx} 
+                  className="traveler-moments-collage reveal grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5"
+                >
+                  {/* Slot 1: Tall Left */}
+                  <div className="md:col-span-1 h-80 rounded-2xl overflow-hidden relative group shadow-sm hover:shadow-xl transition-all">
+                    <a href="#" onClick={(e) => openGalleryImage(e, baseIndex + 0)} className="block w-full h-full">
+                      <img
+                        src={images[0]}
+                        alt="Moment 1"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </a>
+                  </div>
+
+                  {/* Column 2: Slot 2 (Top Mid 1) & Slot 3 (Bottom Mid 1) */}
+                  <div className="flex flex-col justify-between h-80">
+                    <div className="rounded-2xl overflow-hidden h-[calc(50%-10px)] relative group shadow-sm hover:shadow-xl transition-all">
+                      <a href="#" onClick={(e) => openGalleryImage(e, baseIndex + 1)} className="block w-full h-full">
+                        <img
+                          src={images[1]}
+                          alt="Moment 2"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      </a>
+                    </div>
+                    <div className="rounded-2xl overflow-hidden h-[calc(50%-10px)] relative group shadow-sm hover:shadow-xl transition-all">
+                      <a href="#" onClick={(e) => openGalleryImage(e, baseIndex + 2)} className="block w-full h-full">
+                        <img
+                          src={images[2]}
+                          alt="Moment 3"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Column 3: Slot 4 (Top Mid 2) & Slot 5 (Bottom Mid 2) */}
+                  <div className="flex flex-col justify-between h-80">
+                    <div className="rounded-2xl overflow-hidden h-[calc(50%-10px)] relative group shadow-sm hover:shadow-xl transition-all">
+                      <a href="#" onClick={(e) => openGalleryImage(e, baseIndex + 3)} className="block w-full h-full">
+                        <img
+                          src={images[3]}
+                          alt="Moment 4"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      </a>
+                    </div>
+                    <div className="rounded-2xl overflow-hidden h-[calc(50%-10px)] relative group shadow-sm hover:shadow-xl transition-all">
+                      <a href="#" onClick={(e) => openGalleryImage(e, baseIndex + 4)} className="block w-full h-full">
+                        <img
+                          src={images[4]}
+                          alt="Moment 5"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Slot 6: Tall Right */}
+                  <div className="md:col-span-1 h-80 rounded-2xl overflow-hidden relative group shadow-sm hover:shadow-xl transition-all">
+                    <a href="#" onClick={(e) => openGalleryImage(e, baseIndex + 5)} className="block w-full h-full">
+                      <img
+                        src={images[5]}
+                        alt="Moment 6"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import './DestinationDetail.css';
+import shreeGlobalLogo from '../assets/shreeGlobalLogo.jpeg';
 import { useWishlist } from '../context/WishlistContext';
+import { BASE_URL } from '../api/http';
 
 const destinationsDetailData = {
   1: {
@@ -242,24 +244,108 @@ export default function DestinationDetail() {
     travelers: '2 Adults'
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
-
-  const dest = destinationsDetailData[id] || {
-    ...defaultDestination,
-    id: id || 1,
-    name: isNaN(id) ? id : `Destination ${id}`
-  };
+  const [apiDest, setApiDest] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (id) {
+      const fetchDestDetail = async () => {
+        try {
+          const res = await fetch(`${BASE_URL}/api/destination/${id}`);
+          const data = await res.json();
+          if (data.success && data.data) {
+            setApiDest(data.data);
+          }
+        } catch (err) {
+          console.error('Error fetching destination detail:', err);
+        }
+      };
+      fetchDestDetail();
+    }
   }, [id]);
 
-  const handleInquirySubmit = (e) => {
+  const dest = apiDest
+    ? {
+        id: apiDest._id,
+        name: apiDest.title,
+        badge: apiDest.destinationsCategory?.title || 'Featured Destination',
+        tagline: apiDest.description || 'Explore top attractions and curated travel experiences',
+        heroImage: apiDest.image || 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=1600',
+        rating: 4.8,
+        reviewsCount: 120,
+        toursCount: 5,
+        price: apiDest.pricePerPerson || 18500,
+        region: apiDest.destinationsCategory?.title || 'India',
+        subregion: 'Domestic',
+        bestTime: apiDest.bestTimeToVisit || 'Throughout the Year',
+        idealDuration: apiDest.ideaDuration || '3 - 6 Days',
+        nearestAirport: apiDest.nearestAirport || 'Nearest Airport',
+        description: apiDest.description || '',
+        about: apiDest.about || '',
+        highlights: Array.isArray(apiDest.keyHighlight) && apiDest.keyHighlight.length > 0 ? apiDest.keyHighlight : defaultDestination.highlights,
+        attractions: Array.isArray(apiDest.topPlaceToVisit) && apiDest.topPlaceToVisit.length > 0
+          ? apiDest.topPlaceToVisit.map((p) => ({
+              name: p.title || 'Attraction',
+              desc: p.description || '',
+              img: p.image || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=600'
+            }))
+          : defaultDestination.attractions,
+        packages: defaultDestination.packages
+      }
+    : (destinationsDetailData[id] || {
+        ...defaultDestination,
+        id: id || 1,
+        name: isNaN(id) ? id : `Destination ${id}`
+      });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInquirySubmit = async (e) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
-      setFormData({ name: '', phone: '', email: '', date: '', travelers: '2 Adults' });
-    }, 4000);
+    if (!formData.name || !formData.phone || !formData.date || !formData.travelers) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const destId = apiDest?._id || dest?.id || id;
+    if (!destId) {
+      alert('Destination information is missing');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`${BASE_URL}/api/destination-contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          destinationId: destId,
+          name: formData.name,
+          phone: formData.phone,
+          travelDate: formData.date,
+          numberOfTravel: formData.travelers
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setFormSubmitted(true);
+        setTimeout(() => {
+          setFormSubmitted(false);
+          setFormData({ name: '', phone: '', email: '', date: '', travelers: '2 Adults' });
+        }, 5000);
+      } else {
+        alert(data.message || 'Failed to submit inquiry. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error submitting destination inquiry:', err);
+      alert('Error submitting inquiry. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -315,6 +401,14 @@ export default function DestinationDetail() {
                   <i className="fa-solid fa-compass"></i> About {dest.name}
                 </h3>
                 <p className="dest-description-text">{dest.description}</p>
+
+                {dest.about && (
+                  <div
+                    className="dest-rich-about"
+                    style={{ marginTop: '16px', lineHeight: '1.7', color: '#444' }}
+                    dangerouslySetInnerHTML={{ __html: dest.about }}
+                  />
+                )}
 
                 {/* Quick Info Grid */}
                 <div className="dest-quick-info-grid">

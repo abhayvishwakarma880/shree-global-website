@@ -405,7 +405,7 @@ export default function PackageDetail() {
           <div className="pkg-detail-meta">
             <span><i className="fa-regular fa-clock"></i> {pkg.duration}</span>
             <span><i className="fa-solid fa-star text-gold"></i> {pkg.rating} ({pkg.reviews} Reviews)</span>
-            <span><i className="fa-solid fa-shield-halved"></i> 100% Verified</span>
+            {/* <span><i className="fa-solid fa-shield-halved"></i> 100% Verified</span> */}
           </div>
         </div>
       </section>

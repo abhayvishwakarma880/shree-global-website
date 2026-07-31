@@ -842,36 +842,6 @@ export default function Packages() {
                             <span className="pkg-rating">
                               <i className="fa-solid fa-star"></i> 4.9 (48)
                             </span>
-                            <span
-                              className={`pkg-wishlist ${isInWishlist(p._id) ? "liked" : ""}`}
-                              onClick={() =>
-                                toggleWishlist({
-                                  id: p._id,
-                                  title: p.title,
-                                  price: `₹${finalPrice.toLocaleString()}`,
-                                  image: p.image,
-                                })
-                              }
-                              style={{
-                                background: isInWishlist(p._id)
-                                  ? "#EF4444"
-                                  : "rgba(255,255,255,0.25)",
-                                cursor: "pointer",
-                              }}
-                              title={
-                                isInWishlist(p._id)
-                                  ? "Remove from Wishlist"
-                                  : "Add to Wishlist"
-                              }
-                            >
-                              <i
-                                className={
-                                  isInWishlist(p._id)
-                                    ? "fa-solid fa-heart"
-                                    : "fa-regular fa-heart"
-                                }
-                              ></i>
-                            </span>
                           </div>
                           <div className="pkg-card-content">
                             <h3>
@@ -1103,8 +1073,8 @@ export default function Packages() {
             <Link to="/contact" className="btn btn-brand">
               <i className="fa-regular fa-paper-plane"></i> Get Free Quote
             </Link>
-            <a href="tel:+919811022334" className="btn btn-line">
-              <i className="fa-solid fa-phone"></i> +91 98110 22334
+            <a href="tel:+919335649404" className="btn btn-line">
+              <i className="fa-solid fa-phone"></i> +91 93356 49404
             </a>
           </div>
         </div>

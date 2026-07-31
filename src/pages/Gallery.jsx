@@ -155,7 +155,7 @@ export default function Gallery() {
           <h2>Ready to <span className="italic">create your own</span> memories?</h2>
           <div className="actions">
             <Link to="/contact" className="btn btn-brand"><i className="fa-regular fa-paper-plane"></i> Get Free Quote</Link>
-            <a href="tel:+919811022334" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
+            <a href="tel:+919335649404" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
           </div>
         </div>
       </section>

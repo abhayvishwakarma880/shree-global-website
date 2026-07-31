@@ -587,7 +587,7 @@ export default function DestinationDetail() {
 
                 <div className="direct-call-box">
                   <span>Or Call Directly:</span>
-                  <a href="tel:+919811022334"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
+                  <a href="tel:+919335649404"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
                 </div>
               </div>
 

@@ -270,13 +270,6 @@ export default function Destinations() {
                       />
                     </Link>
                     <span className="dest-card-badge">{d.destinationsCategory?.title || 'Destination'}</span>
-                    <span 
-                      className={`dest-card-wishlist ${wishlist.includes(d._id) ? 'liked' : ''}`}
-                      onClick={() => toggleWishlist(d._id)}
-                      style={{ background: wishlist.includes(d._id) ? '#e74c3c' : 'rgba(255,255,255,0.2)' }}
-                    >
-                      <i className={wishlist.includes(d._id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i>
-                    </span>
                   </div>
                   <div className="dest-card-content">
                     <h3><Link to={`/destination/${d.slug || d._id}`}>{d.title}</Link></h3>
@@ -393,7 +386,7 @@ export default function Destinations() {
           <h2>Let's plan your <span className="italic">Indian adventure</span></h2>
           <div className="actions">
             <Link to="/contact" className="btn btn-brand"><i className="fa-regular fa-paper-plane"></i> Get a Free Itinerary</Link>
-            <a href="tel:+919811022334" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
+            <a href="tel:+919335649404" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
           </div>
         </div>
       </section>

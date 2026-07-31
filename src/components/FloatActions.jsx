@@ -19,7 +19,7 @@ export default function FloatActions() {
   return (
     <div className="float-actions">
       <a 
-        href="https://wa.me/919811022334" 
+        href="https://wa.me/919335649404" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="float-btn whatsapp" 
@@ -28,7 +28,7 @@ export default function FloatActions() {
         <i className="fa-brands fa-whatsapp"></i>
       </a>
       <a 
-        href="tel:+919811022334" 
+        href="tel:+919335649404" 
         className="float-btn call" 
         aria-label="Call"
       >

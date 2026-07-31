@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Lightbox from "../components/Lightbox";
 import { useWishlist } from "../context/WishlistContext";
 import { submitContactApi } from "../api/contactApi.js";
+import { getBlogsApi } from "../api/blogApi.js";
 import { BASE_URL } from "../api/http.js";
 
 export default function Home() {
@@ -118,6 +119,27 @@ export default function Home() {
       }
     };
     fetchOfferPackages();
+  }, []);
+
+  // Home Blogs State (API integration)
+  const [homeBlogs, setHomeBlogs] = useState([]);
+  const [isBlogsLoading, setIsBlogsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHomeBlogs = async () => {
+      try {
+        setIsBlogsLoading(true);
+        const response = await getBlogsApi('all', '', 1, 6);
+        if (response.success && Array.isArray(response.data)) {
+          setHomeBlogs(response.data);
+        }
+      } catch (err) {
+        console.error('Error fetching blogs for Home page:', err);
+      } finally {
+        setIsBlogsLoading(false);
+      }
+    };
+    fetchHomeBlogs();
   }, []);
 
   // Hero Slider State
@@ -506,39 +528,48 @@ export default function Home() {
           />
         </svg>
 
-        <div className="hero-side-label">Since 2010 · New Delhi</div>
+        <div className="hero-side-label">Since 2005 · Lucknow</div>
 
         <div className="hero-body">
           <div className="hero-grid">
             <div className="hero-copy">
-              <div className="eyebrow on-dark">Handcrafted Indian Journeys</div>
+              <div className="eyebrow on-dark">Welcome to Shree Global Holidays</div>
               <h1>
-                Travel deeper into <span className="italic">India's</span> story
+                Explore the World <span className="italic">with Confidence</span>
               </h1>
-              <p>
-                Private guides, heritage stays and a premium fleet — itineraries
-                built around the way you actually like to travel.
+              <h2 style={{ fontSize: '1.2rem', color: '#DA9F27', margin: '8px 0 16px', fontWeight: 600 }}>
+                Your Journey Begins Here — <span style={{ fontStyle: 'italic', opacity: 0.9 }}>"Travel Beyond Expectations."</span>
+              </h2>
+              <p style={{ fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '24px', opacity: 0.9 }}>
+                For over 20 years, Shree Global Holidays has been creating unforgettable travel experiences for families, couples, corporate travelers, students, and groups. From weekend getaways to luxury international vacations, we deliver seamless travel solutions tailored to your dreams.
               </p>
-              <div className="hero-actions">
-                <a href="#packages" className="btn btn-brand">
-                  <i className="fa-regular fa-compass"></i> View Packages
-                </a>
-                <a href="#contact" className="btn btn-line">
-                  <i className="fa-regular fa-message"></i> Talk to an Expert
+              <div className="hero-actions" style={{ flexWrap: 'wrap', gap: '12px' }}>
+                <Link to="/contact" className="btn btn-brand">
+                  <i className="fa-regular fa-paper-plane"></i> Plan Your Holiday
+                </Link>
+               
+                <a 
+                  href="https://wa.me/919335649404" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn" 
+                  style={{ background: '#25D366', color: '#FFF', border: 'none' }}
+                >
+                  <i className="fa-brands fa-whatsapp"></i> WhatsApp Us
                 </a>
               </div>
               <div className="hero-stats">
+                <div>
+                  <strong>20+ Years</strong>
+                  <span>Excellence</span>
+                </div>
                 <div>
                   <strong>4.9★</strong>
                   <span>Google Rating</span>
                 </div>
                 <div>
-                  <strong>8,000+</strong>
-                  <span>Travelers</span>
-                </div>
-                <div>
-                  <strong>100+</strong>
-                  <span>Destinations</span>
+                  <strong>15,000+</strong>
+                  <span>Happy Travelers</span>
                 </div>
                 <div>
                   <strong>24×7</strong>
@@ -929,86 +960,74 @@ export default function Home() {
             <div className="eyebrow highlight-eyebrow">
               <i className="fa-solid fa-shield-halved"></i> Why Choose Us
             </div>
-            <h2 style={{ marginBottom: "22px" }}>
-              Built by people who{" "}
-              <span className="italic">actually road-trip</span> this country
+            <h2 style={{ marginBottom: "16px" }}>
+              Why Choose <span className="italic">Shree Global Holidays?</span>
             </h2>
-            <p>
-              We're a New Delhi–based team that's spent over fifteen years
-              mapping India by road — the shortcuts, the right season for every
-              pass, the guesthouse owners worth knowing. Every itinerary is
-              drawn from that ground knowledge, not a template.
+            <p style={{ marginBottom: "22px", fontSize: "0.95rem", lineHeight: 1.6 }}>
+              Shree Global Holidays is committed to delivering personalized travel experiences with professionalism, transparency, and exceptional customer service.
             </p>
-            <div className="about-strengths">
-              <div className="strength-item">
-                <div className="strength-icon">
-                  <i className="fa-solid fa-route"></i>
-                </div>
-                <div>
-                  <h4>15+ Years Ground Expertise</h4>
-                  <p>
-                    Every route is personally mapped and verified by our travel
-                    team.
-                  </p>
-                </div>
+
+            <div className="why-choose-list grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">20+ Years of Experience</span>
               </div>
-              <div className="strength-item">
-                <div className="strength-icon">
-                  <i className="fa-solid fa-car-rear"></i>
-                </div>
-                <div>
-                  <h4>Premium Verified Fleet</h4>
-                  <p>
-                    Meticulously maintained, sanitised luxury SUVs and sedans.
-                  </p>
-                </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">10,000+ Happy Travellers</span>
               </div>
-              <div className="strength-item">
-                <div className="strength-icon">
-                  <i className="fa-solid fa-user-shield"></i>
-                </div>
-                <div>
-                  <h4>Professional Chauffeurs</h4>
-                  <p>
-                    Experienced local drivers who double as friendly trip
-                    guides.
-                  </p>
-                </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">Customized Holiday Planning</span>
               </div>
-              <div className="strength-item">
-                <div className="strength-icon">
-                  <i className="fa-solid fa-clock-rotate-left"></i>
-                </div>
-                <div>
-                  <h4>24/7 Live Assistance</h4>
-                  <p>
-                    Dedicated round-the-clock concierge support during your
-                    travel.
-                  </p>
-                </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">Best Value Packages</span>
+              </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">Visa &amp; Documentation Experts</span>
+              </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">Dedicated Travel Consultants</span>
+              </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">24×7 Customer Support</span>
+              </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">Trusted Global Travel Partners</span>
+              </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">Safe &amp; Secure Bookings</span>
+              </div>
+              <div className="why-badge flex items-center gap-2.5 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60">
+                <i className="fa-solid fa-circle-check text-[#DA9F27] text-base"></i>
+                <span className="text-xs sm:text-sm font-semibold text-[#002D71]">Transparent Pricing</span>
               </div>
             </div>
+
             <div className="stat-row">
               <div>
-                <strong>15+</strong>
-                <span>Years on the road</span>
+                <strong>20+ Years</strong>
+                <span>Experience</span>
+              </div>
+              <div>
+                <strong>10,000+</strong>
+                <span>Happy Travelers</span>
               </div>
               <div>
                 <strong>100+</strong>
-                <span>Destinations </span>
+                <span>Destinations</span>
               </div>
               <div>
-                <strong>8,000+</strong>
-                <span>Travelers guided</span>
-              </div>
-              <div>
-                <strong>49</strong>
-                <span>Vehicles in fleet</span>
+                <strong>24×7</strong>
+                <span>Support Service</span>
               </div>
             </div>
-            {/* <Link to="/contact" className="btn btn-dark">
-              <i className="fa-regular fa-compass"></i> Start Planning
-            </Link> */}
           </div>
         </div>
       </section>
@@ -1058,23 +1077,6 @@ export default function Home() {
                       <span className="badge" style={{ backgroundColor: pkg.isOffer ? '#DA9F27' : '#002D71', color: '#FFFFFF', fontWeight: 'bold' }}>
                         {pkg.isOffer && pkg.offerPercentage > 0 ? `${pkg.offerPercentage}% OFF` : (pkg.packageTag || 'Special')}
                       </span>
-                      <button
-                        className={`fav-btn ${isInWishlist(pkg._id) ? "liked" : ""}`}
-                        onClick={() =>
-                          toggleWishlist({
-                            id: pkg._id,
-                            title: pkg.title,
-                            price: `₹${finalPrice}`,
-                            image: pkg.image,
-                          })
-                        }
-                        title={isInWishlist(pkg._id) ? "Remove from Wishlist" : "Add to Wishlist"}
-                      >
-                        <i
-                          className={isInWishlist(pkg._id) ? "fa-solid fa-heart" : "fa-regular fa-heart"}
-                          style={{ color: isInWishlist(pkg._id) ? "#EF4444" : "#FFFFFF" }}
-                        ></i>
-                      </button>
                     </div>
                     <div className="bottom">
                       <div className="meta">
@@ -1746,8 +1748,8 @@ export default function Home() {
             <a href="#contact" className="btn btn-brand">
               <i className="fa-regular fa-paper-plane"></i> Get a Free Itinerary
             </a>
-            <a href="tel:+919811022334" className="btn btn-line">
-              <i className="fa-solid fa-phone"></i> +91 98110 22334
+            <a href="tel:+919335649404" className="btn btn-line">
+              <i className="fa-solid fa-phone"></i> +91 93356 49404
             </a>
           </div>
         </div>
@@ -1934,87 +1936,67 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="blog-grid reveal">
-            {[
-              {
-                img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=800&h=500",
-                cat: "Destination Guide",
-                date: "15 Jan 2026",
-                time: "6 min read",
-                title:
-                  "The Ultimate Golden Triangle Itinerary: Delhi, Agra & Jaipur",
-                desc: "Everything you need to know before exploring India's most iconic circuit — from the best time to visit to hidden gems.",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&q=80&w=800&h=500",
-                cat: "Adventure",
-                date: "8 Jan 2026",
-                time: "8 min read",
-                title:
-                  "Ladakh on Two Wheels: A Motorcycle Adventure Through the High Himalayas",
-                desc: "Conquering the world's highest motorable passes — a first-hand account of riding through Ladakh's breathtaking landscape.",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=800&h=500",
-                cat: "Luxury Travel",
-                date: "2 Jan 2026",
-                time: "5 min read",
-                title:
-                  "Houseboat Heaven: Experiencing Kerala's Backwaters in Style",
-                desc: "From traditional rice boats to luxury cruises — here's how to do Kerala's backwaters like a true connoisseur.",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&q=80&w=800&h=500",
-                cat: "Heritage",
-                date: "28 Dec 2025",
-                time: "7 min read",
-                title:
-                  "Inside Rajasthan's Royal Palaces: A Guide to India's Living Heritage",
-                desc: "Step into the world of maharajas — exploring the forts, palaces and stories that make Rajasthan truly regal.",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=800&h=500",
-                cat: "Spiritual",
-                date: "20 Dec 2025",
-                time: "5 min read",
-                title:
-                  "The Magic of Varanasi: Witnessing the Ganga Aarti at Dawn",
-                desc: "An immersive experience of spirituality, culture and timeless rituals along the banks of the holy Ganges.",
-              },
-              {
-                img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800&h=500",
-                cat: "Trekking",
-                date: "15 Dec 2025",
-                time: "9 min read",
-                title: "Top 5 Himalayan Treks for Every Fitness Level",
-                desc: "From easy day hikes to challenging multi-day expeditions — find the perfect Himalayan trek for your ability.",
-              },
-            ].map((post, idx) => (
-              <article key={idx} className="blog-card">
-                <Link to="/blog" className="blog-img">
-                  <img src={post.img} alt={post.title} />
-                  <span className="blog-category">{post.cat}</span>
-                </Link>
-                <div className="blog-body">
-                  <div className="blog-meta">
-                    <span>
-                      <i className="fa-regular fa-calendar"></i> {post.date}
-                    </span>
-                    <span>
-                      <i className="fa-regular fa-clock"></i> {post.time}
-                    </span>
-                  </div>
-                  <h3>
-                    <Link to="/blog">{post.title}</Link>
-                  </h3>
-                  <p>{post.desc}</p>
-                  <Link to="/blog" className="blog-readmore">
-                    Read More <i className="fa-solid fa-arrow-right"></i>
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
+          {isBlogsLoading ? (
+            <div style={{ textAlign: "center", padding: "60px 0", color: "#002D71" }}>
+              <i className="fa-solid fa-spinner fa-spin fa-2x"></i>
+              <p style={{ marginTop: "12px", fontWeight: 600 }}>Loading travel stories...</p>
+            </div>
+          ) : homeBlogs.length > 0 ? (
+            <div className="blog-grid reveal">
+              {homeBlogs.map((post) => {
+                const categoryTitle = post.category?.title || "Travel Guide";
+                const formattedDate = post.createdAt
+                  ? new Date(post.createdAt).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "";
+                const blogLink = `/blog/${post.slug || post._id}`;
+                const excerpt = post.details
+                  ? post.details.replace(/<[^>]*>?/gm, "").substring(0, 110) + "..."
+                  : "";
+
+                return (
+                  <article key={post._id} className="blog-card">
+                    <Link to={blogLink} className="blog-img">
+                      <img
+                        src={
+                          post.image ||
+                          "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=800"
+                        }
+                        alt={post.title}
+                      />
+                      <span className="blog-category">{categoryTitle}</span>
+                    </Link>
+                    <div className="blog-body">
+                      <div className="blog-meta">
+                        {formattedDate && (
+                          <span>
+                            <i className="fa-regular fa-calendar"></i> {formattedDate}
+                          </span>
+                        )}
+                        <span>
+                          <i className="fa-regular fa-clock"></i> {post.readMinutes || 5} min read
+                        </span>
+                      </div>
+                      <h3>
+                        <Link to={blogLink}>{post.title}</Link>
+                      </h3>
+                      <p>{excerpt}</p>
+                      <Link to={blogLink} className="blog-readmore">
+                        Read More <i className="fa-solid fa-arrow-right"></i>
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div style={{ textAlign: "center", padding: "40px 0", color: "#666" }}>
+              <p>No travel articles available at the moment.</p>
+            </div>
+          )}
 
           <div
             className="blog-cta reveal"

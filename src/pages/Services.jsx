@@ -52,106 +52,136 @@ export default function Services() {
           </div>
 
           <div className="services-grid reveal">
-            {/* Service 1 */}
+            {/* Service 1: Domestic Holidays */}
             <div className="service-card">
-              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=800')" }}></div>
               <div className="card-hover-overlay"></div>
-              <div className="icon-wrap"><i className="fa-solid fa-people-group"></i></div>
+              <div className="icon-wrap"><i className="fa-solid fa-map-location-dot"></i></div>
               <span className="number-badge">01</span>
-              <h3>Group Tours</h3>
-              <p>Specially curated itineraries for families, friends, and social groups looking to explore destinations together.</p>
-              <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Custom group itineraries</li>
-                <li><i className="fa-solid fa-check"></i> Tour managers &amp; local guides</li>
-                <li><i className="fa-solid fa-check"></i> Shared transport arrangements</li>
-                <li><i className="fa-solid fa-check"></i> Special group rates &amp; inclusions</li>
-              </ul>
-              <Link to="/service/group-tours" className="btn btn-dark btn-sm">Explore Details</Link>
+              <h3>Domestic Holidays</h3>
+              <p>Discover India's breathtaking destinations with customized itineraries.</p>
+              <Link to="/packages" className="btn btn-dark btn-sm">Explore Packages</Link>
             </div>
 
-            {/* Service 2 */}
+            {/* Service 2: International Holidays */}
             <div className="service-card">
-              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=800')" }}></div>
               <div className="card-hover-overlay"></div>
-              <div className="icon-wrap"><i className="fa-solid fa-handshake"></i></div>
+              <div className="icon-wrap"><i className="fa-solid fa-earth-americas"></i></div>
               <span className="number-badge">02</span>
-              <h3>MICE</h3>
-              <p>End-to-end corporate event planning, logistics, venue sourcing, and execution tailored to your business objectives.</p>
-              <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Venue sourcing &amp; negotiation</li>
-                <li><i className="fa-solid fa-check"></i> State-of-the-art AV setup</li>
-                <li><i className="fa-solid fa-check"></i> Delegate travel &amp; stays</li>
-                <li><i className="fa-solid fa-check"></i> Gala dinners &amp; team-building</li>
-              </ul>
-              <Link to="/service/mice" className="btn btn-dark btn-sm">Explore Details</Link>
+              <h3>International Holidays</h3>
+              <p>Explore the world's most beautiful countries with expertly planned vacations.</p>
+              <Link to="/destinations" className="btn btn-dark btn-sm">Explore Destinations</Link>
             </div>
 
-            {/* Service 3 */}
-            <div className="service-card">
-              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800')" }}></div>
-              <div className="card-hover-overlay"></div>
-              <div className="icon-wrap"><i className="fa-solid fa-award"></i></div>
-              <span className="number-badge">03</span>
-              <h3>Incentive Tours</h3>
-              <p>Reward your top performers, partners, and employees with curated luxury travel experiences across domestic and international destinations.</p>
-              <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Ultra-luxury accommodations</li>
-                <li><i className="fa-solid fa-check"></i> Exclusive local experiences</li>
-                <li><i className="fa-solid fa-check"></i> Branded merchandise &amp; themes</li>
-                <li><i className="fa-solid fa-check"></i> Seamless transfer logistics</li>
-              </ul>
-              <Link to="/service/incentive-tours" className="btn btn-dark btn-sm">Explore Details</Link>
-            </div>
-
-            {/* Service 4 */}
+            {/* Service 3: Visa Assistance */}
             <div className="service-card">
               <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544016768-982d1554f0b9?auto=format&fit=crop&q=80&w=800')" }}></div>
               <div className="card-hover-overlay"></div>
               <div className="icon-wrap"><i className="fa-solid fa-passport"></i></div>
-              <span className="number-badge">04</span>
+              <span className="number-badge">03</span>
               <h3>Visa Assistance</h3>
-              <p>Hassle-free visa documentation, application guidance, appointment booking, and submission services for major destinations.</p>
-              <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Document checklist verification</li>
-                <li><i className="fa-solid fa-check"></i> Appointment slot booking</li>
-                <li><i className="fa-solid fa-check"></i> Embassy updates &amp; follow-ups</li>
-                <li><i className="fa-solid fa-check"></i> High visa success rate</li>
-              </ul>
+              <p>Professional visa documentation and application support for major destinations.</p>
               <Link to="/service/visa-assistance" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
 
-            {/* Service 5 */}
+            {/* Service 4: Flight Booking */}
+            <div className="service-card">
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-plane-departure"></i></div>
+              <span className="number-badge">04</span>
+              <h3>Flight Booking</h3>
+              <p>Domestic and international air ticketing with the best available fares.</p>
+              <Link to="/contact" className="btn btn-dark btn-sm">Inquire Flights</Link>
+            </div>
+
+            {/* Service 5: Hotel Reservations */}
+            <div className="service-card">
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-hotel"></i></div>
+              <span className="number-badge">05</span>
+              <h3>Hotel Reservations</h3>
+              <p>Budget, premium, boutique, luxury, and resort stays worldwide.</p>
+              <Link to="/contact" className="btn btn-dark btn-sm">Book Stays</Link>
+            </div>
+
+            {/* Service 6: Honeymoon Packages */}
+            <div className="service-card">
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-heart"></i></div>
+              <span className="number-badge">06</span>
+              <h3>Honeymoon Packages</h3>
+              <p>Romantic holidays designed for unforgettable memories.</p>
+              <Link to="/packages" className="btn btn-dark btn-sm">View Packages</Link>
+            </div>
+
+            {/* Service 7: Family Holidays */}
+            <div className="service-card">
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-people-roof"></i></div>
+              <span className="number-badge">07</span>
+              <h3>Family Holidays</h3>
+              <p>Stress-free vacations designed for every generation.</p>
+              <Link to="/packages" className="btn btn-dark btn-sm">View Packages</Link>
+            </div>
+
+            {/* Service 8: Group Tours */}
+            <div className="service-card">
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-users"></i></div>
+              <span className="number-badge">08</span>
+              <h3>Group Tours</h3>
+              <p>Corporate groups, schools, colleges, social clubs, and customized group departures.</p>
+              <Link to="/service/group-tours" className="btn btn-dark btn-sm">Explore Details</Link>
+            </div>
+
+            {/* Service 9: Corporate Travel & MICE */}
+            <div className="service-card">
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-briefcase"></i></div>
+              <span className="number-badge">09</span>
+              <h3>Corporate Travel &amp; MICE</h3>
+              <p>Meetings, conferences, incentive tours, exhibitions, and business travel solutions.</p>
+              <Link to="/service/mice" className="btn btn-dark btn-sm">Explore Details</Link>
+            </div>
+
+            {/* Service 10: Cruise Holidays */}
             <div className="service-card">
               <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1599640842229-0064a523595e?auto=format&fit=crop&q=80&w=800')" }}></div>
               <div className="card-hover-overlay"></div>
               <div className="icon-wrap"><i className="fa-solid fa-ship"></i></div>
-              <span className="number-badge">05</span>
-              <h3>Cruise Management</h3>
-              <p>Book luxury ocean cruises and river cruises worldwide, complete with pre/post-cruise stays and shore excursions.</p>
-              <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> Top global cruise partnerships</li>
-                <li><i className="fa-solid fa-check"></i> Customized cabin selections</li>
-                <li><i className="fa-solid fa-check"></i> Shore excursions planning</li>
-                <li><i className="fa-solid fa-check"></i> Group bookings &amp; charters</li>
-              </ul>
+              <span className="number-badge">10</span>
+              <h3>Cruise Holidays</h3>
+              <p>Luxury cruise vacations across Asia, Europe, the Middle East, and beyond.</p>
               <Link to="/service/cruise-management" className="btn btn-dark btn-sm">Explore Details</Link>
             </div>
 
-            {/* Service 6 */}
+            {/* Service 11: Travel Insurance */}
             <div className="service-card">
               <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800')" }}></div>
               <div className="card-hover-overlay"></div>
               <div className="icon-wrap"><i className="fa-solid fa-shield-halved"></i></div>
-              <span className="number-badge">06</span>
-              <h3>Crisis Management</h3>
-              <p>24/7 travel emergency support, itinerary rerouting, medical coordination, and contingency planning to keep you safe.</p>
-              <ul className="features-list">
-                <li><i className="fa-solid fa-check"></i> 24/7 dedicated helpline</li>
-                <li><i className="fa-solid fa-check"></i> Emergency flight rebooking</li>
-                <li><i className="fa-solid fa-check"></i> Local coordination support</li>
-                <li><i className="fa-solid fa-check"></i> Travel insurance facilitation</li>
-              </ul>
-              <Link to="/service/crisis-management" className="btn btn-dark btn-sm">Explore Details</Link>
+              <span className="number-badge">11</span>
+              <h3>Travel Insurance</h3>
+              <p>Comprehensive travel protection for complete peace of mind.</p>
+              <Link to="/contact" className="btn btn-dark btn-sm">Get Insurance</Link>
+            </div>
+
+            {/* Service 12: Airport Transfers & Car Rentals */}
+            <div className="service-card">
+              <div className="card-bg" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800')" }}></div>
+              <div className="card-hover-overlay"></div>
+              <div className="icon-wrap"><i className="fa-solid fa-car-side"></i></div>
+              <span className="number-badge">12</span>
+              <h3>Airport Transfers &amp; Car Rentals</h3>
+              <p>Comfortable and reliable transportation worldwide.</p>
+              <Link to="/contact" className="btn btn-dark btn-sm">Book Transport</Link>
             </div>
           </div>
         </div>
@@ -281,7 +311,7 @@ export default function Services() {
           <h2>Ready to <span className="italic">experience</span> India with us?</h2>
           <div className="actions">
             <Link to="/contact" className="btn btn-brand"><i className="fa-regular fa-paper-plane"></i> Get Free Quote</Link>
-            <a href="tel:+919811022334" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
+            <a href="tel:+919335649404" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
           </div>
         </div>
       </section>

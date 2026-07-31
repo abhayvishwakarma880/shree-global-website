@@ -76,25 +76,25 @@ export default function Contact() {
             <div className="icon"><i className="fa-solid fa-phone"></i></div>
             <h4>Call Us</h4>
             <p>Speak to our travel expert</p>
-            <a href="tel:+919811022334">+91 98110 22334</a>
+            <a href="tel:+919335649404">+91 93356 49404</a>
           </div>
           <div className="contact-info-card">
             <div className="icon"><i className="fa-brands fa-whatsapp"></i></div>
             <h4>WhatsApp Us</h4>
             <p>Immediate support chat</p>
-            <a href="https://wa.me/919811022334" target="_blank" rel="noreferrer">+91 98110 22334</a>
+            <a href="https://wa.me/919335649404" target="_blank" rel="noreferrer">+91 93356 49404</a>
           </div>
           <div className="contact-info-card">
             <div className="icon"><i className="fa-regular fa-envelope"></i></div>
             <h4>Email Us</h4>
             <p>Send your tour inquiries</p>
-            <a href="mailto:info@shreeglobal.com">info@shreeglobal.com</a>
+            <a href="mailto:shreeglobalholidays@gmail.com">shreeglobalholidays@gmail.com</a>
           </div>
           <div className="contact-info-card">
             <div className="icon"><i className="fa-solid fa-location-dot"></i></div>
             <h4>Visit Office</h4>
-            <p>Connaught Place</p>
-            <a href="#map">Get Directions</a>
+            <p>Gomti Nagar, Lucknow, UP</p>
+            <a target='_blank' href="https://maps.app.goo.gl/dZV3PVSJiNL6B6c19">Get Directions</a>
           </div>
         </div>
       </div>

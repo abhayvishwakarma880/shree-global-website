@@ -636,8 +636,8 @@ export default function ServiceDetail() {
                 <h4>Need Immediate Help?</h4>
                 <p>Speak to our senior tour advisors for custom group planning or corporate travel inquiries.</p>
                 <div className="contact-details">
-                  <a href="tel:+919811022334" className="phone-link"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
-                  <a href="mailto:info@shreeglobalholidays.com" className="email-link"><i className="fa-solid fa-envelope"></i> info@shreeglobal.com</a>
+                  <a href="tel:+919335649404" className="phone-link"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
+                  <a href="mailto:shreeglobalholidays@gmail.com" className="email-link"><i className="fa-solid fa-envelope"></i> shreeglobalholidays@gmail.com</a>
                 </div>
               </div>
 

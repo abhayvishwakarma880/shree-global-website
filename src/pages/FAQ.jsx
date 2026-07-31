@@ -231,8 +231,8 @@ export default function FAQ() {
             <h3><i className="fa-regular fa-comment-dots"></i> Still Have Questions?</h3>
             <p>Our travel experts are here to help you with any queries about your Indian journey.</p>
             <div className="contact-options">
-              <a href="tel:+919811022334"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
-              <a href="https://wa.me/919811022334" target="_blank" rel="noreferrer"><i className="fa-brands fa-whatsapp"></i> WhatsApp</a>
+              <a href="tel:+919335649404"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
+              <a href="https://wa.me/919335649404" target="_blank" rel="noreferrer"><i className="fa-brands fa-whatsapp"></i> WhatsApp</a>
               <Link to="/contact"><i className="fa-regular fa-envelope"></i> Email Us</Link>
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function FAQ() {
           <h2>Ready to <span className="italic">explore India</span> with us?</h2>
           <div className="actions">
             <Link to="/contact" className="btn btn-brand"><i className="fa-regular fa-paper-plane"></i> Get Free Quote</Link>
-            <a href="tel:+919811022334" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
+            <a href="tel:+919335649404" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
           </div>
         </div>
       </section>

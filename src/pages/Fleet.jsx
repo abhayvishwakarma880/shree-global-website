@@ -177,13 +177,6 @@ export default function Fleet() {
                     <img src={v.image} alt={v.name} loading="lazy" />
                     <span className={`badge ${v.badge === 'Featured' ? 'featured' : ''}`}>{v.badge}</span>
                     <span className="seat-count"><i className="fa-regular fa-user"></i> {v.seats}</span>
-                    <span 
-                      className={`wishlist ${wishlist.includes(v.id) ? 'liked' : ''}`}
-                      onClick={() => toggleWishlist(v.id)}
-                      style={{ background: wishlist.includes(v.id) ? '#e74c3c' : 'rgba(255,255,255,0.2)' }}
-                    >
-                      <i className={wishlist.includes(v.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}></i>
-                    </span>
                   </div>
                   <div className="content">
                     <h3>{v.name}</h3>
@@ -273,7 +266,7 @@ export default function Fleet() {
           <h2>Book your <span className="italic">premium vehicle</span> today</h2>
           <div className="actions">
             <Link to="/contact" className="btn btn-brand"><i className="fa-regular fa-paper-plane"></i> Get a Quote</Link>
-            <a href="tel:+919811022334" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 98110 22334</a>
+            <a href="tel:+919335649404" className="btn btn-line"><i className="fa-solid fa-phone"></i> +91 93356 49404</a>
           </div>
         </div>
       </section>

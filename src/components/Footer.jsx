@@ -11,7 +11,7 @@ export default function Footer() {
             <img src={shreeGlobalLogo} alt="Shree Global Holidays" className="mark" />
           </Link>
           <div className="footer-social">
-            <a href="https://wa.me/919811022334" target='_blank' rel="noopener noreferrer" aria-label="WhatsApp"><i className="fa-brands fa-whatsapp"></i></a>
+            <a href="https://wa.me/919335649404" target='_blank' rel="noopener noreferrer" aria-label="WhatsApp"><i className="fa-brands fa-whatsapp"></i></a>
             <a href="https://www.facebook.com/shreeglobalholidays/" target='_blank' rel="noopener noreferrer" aria-label="Facebook"><i className="fa-brands fa-facebook-f"></i></a>
             <a href="https://www.instagram.com/shreeglobalholidays/" target='_blank' rel="noopener noreferrer" aria-label="Instagram"><i className="fa-brands fa-instagram"></i></a>
             <a href="https://x.com/GlobalShree" target='_blank' rel="noopener noreferrer" aria-label="Twitter"><i className="fa-brands fa-x-twitter"></i></a>
@@ -46,7 +46,7 @@ export default function Footer() {
             <li><Link to="/faq">FAQ</Link></li>
             <li><Link to="/cancellation">Cancellation Policy</Link></li>
             <li><Link to="/insurance">Travel Insurance</Link></li>
-            <li><a href="tel:+919811022334">24×7 Helpline</a></li>
+            <li><a href="tel:+919335649404">24×7 Helpline</a></li>
           </ul>
         </div>
 
@@ -60,7 +60,7 @@ export default function Footer() {
 
         <div className="footer-col footer-nl">
           <h5>Find Us</h5>
-          <p>Visit our office in Connaught Place, New Delhi</p>
+          <p>Gomti Nagar, Lucknow, Uttar Pradesh</p>
           
           <div className="footer-map">
             <iframe 

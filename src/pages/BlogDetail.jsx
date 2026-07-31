@@ -101,7 +101,7 @@ export default function BlogDetail() {
               <span>By {blog.authorName || 'Shree Global Team'}</span>
             </span>
             <span><i className="fa-regular fa-calendar"></i> {formatDate(blog.createdAt)}</span>
-            <span><i className="fa-regular fa-clock"></i> {blog.readMinutes || 5} min read</span>
+            {/* <span><i className="fa-regular fa-clock"></i> {blog.readMinutes || 5} min read</span> */}
           </div>
         </div>
       </section>

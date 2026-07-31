@@ -556,12 +556,15 @@ export default function DestinationDetail() {
                     </div>
                     <div className="form-group">
                       <label>Expected Travel Date</label>
-                      <input
-                        type="date"
-                        required
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      />
+                      <div className="date-input-wrapper">
+                        <input
+                          type="date"
+                          required
+                          value={formData.date}
+                          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        />
+                        <i className="fa-regular fa-calendar date-icon"></i>
+                      </div>
                     </div>
                     <div className="form-group">
                       <label>Number of Travelers</label>

@@ -581,13 +581,16 @@ export default function ServiceDetail() {
                     <div className="form-row-2">
                       <div className="form-group">
                         <label htmlFor="date">Travel Date</label>
-                        <input 
-                          type="date" 
-                          id="date" 
-                          name="date" 
-                          value={formData.date} 
-                          onChange={handleInputChange} 
-                        />
+                        <div className="date-input-wrapper">
+                          <input 
+                            type="date" 
+                            id="date" 
+                            name="date" 
+                            value={formData.date} 
+                            onChange={handleInputChange} 
+                          />
+                          <i className="fa-regular fa-calendar date-icon"></i>
+                        </div>
                       </div>
                       <div className="form-group">
                         <label htmlFor="guests">Group Size</label>

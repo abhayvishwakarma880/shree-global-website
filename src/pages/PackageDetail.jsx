@@ -528,13 +528,16 @@ export default function PackageDetail() {
                       <div className="form-grid">
                         <div className="form-group">
                           <label>Travel Date</label>
-                          <input 
-                            type="date" 
-                            name="date" 
-                            required 
-                            value={formData.date}
-                            onChange={handleInputChange}
-                          />
+                          <div className="date-input-wrapper">
+                            <input 
+                              type="date" 
+                              name="date" 
+                              required 
+                              value={formData.date}
+                              onChange={handleInputChange}
+                            />
+                            <i className="fa-regular fa-calendar date-icon"></i>
+                          </div>
                         </div>
                         <div className="form-group">
                           <label>Travelers</label>

@@ -401,28 +401,29 @@ header.scrolled .logo .mark {
     background: transparent;
     border: none;
     box-shadow: none;
-    align-self: center;
-    margin-top: 0;
+    align-self: flex-start;
+    margin-top: -4px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
 
   header.scrolled .logo {
     top: 0;
     padding: 0;
     background: transparent;
-    margin-top: 0;
-    align-self: center;
+    margin-top: 2px;
+    align-self: flex-start;
   }
 
   .logo .mark {
-    height: 48px;
-    object-position: center;
+    height: 95px;
+    max-width: 210px;
+    object-position: top left;
   }
 
   header.scrolled .logo .mark {
-    height: 42px;
-    object-position: center;
+    height: 68px;
+    object-position: top left;
   }
 
   .header-actions .btn {
@@ -3041,6 +3042,15 @@ nav.mainnav>ul>li:hover .mega {
     font-size: 1rem;
   }
 
+  .logo .mark {
+    height: 85px;
+    max-width: 185px;
+  }
+
+  header.scrolled .logo .mark {
+    height: 62px;
+  }
+
   .tel {
     display: none !important;
   }
@@ -3943,12 +3953,17 @@ footer {
   }
 
   .mega-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     padding: 10px 0;
     gap: 20px;
   }
 
-  .mega-col {
+  .mega-col,
+  .mega-col:nth-child(1),
+  .mega-col:nth-child(2),
+  .mega-col:nth-child(3),
+  .mega-col:nth-child(4) {
+    grid-column: span 1 !important;
     border-right: none;
     padding: 0;
   }
@@ -5071,4 +5086,45 @@ footer {
   color: var(--gold) !important;
   font-weight: 700 !important;
   opacity: 1 !important;
+}
+
+/* ================= DATE INPUT STYLING & CALENDAR ICON ================= */
+.date-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.date-input-wrapper input[type="date"] {
+  width: 100%;
+  padding-right: 34px !important;
+}
+
+.date-input-wrapper .date-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--navy);
+  font-size: 0.88rem;
+  opacity: 0.85;
+}
+
+/* Hide WebKit native picker down-arrow / icon indicator on mobile while preserving tap to open datepicker */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+  display: none;
+  -webkit-appearance: none;
 }

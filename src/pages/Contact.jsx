@@ -201,7 +201,7 @@ export default function Contact() {
             {/* Map */}
             <div className="contact-map-wrap" id="map">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.234567890123!2d77.216721!3d28.613939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce24e8d8b8b8b%3A0x8b8b8b8b8b8b8b8b!2sConnaught%20Place%2C%20New%20Delhi!5e0!3m2!1sen!2sin!4v1700000000000" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56957.571755852114!2d80.96827803772744!3d26.844778981718093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfd49fc60a843%3A0x92fc72e19b623f6a!2sGomti%20Nagar%2C%20Lucknow%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1785504327353!5m2!1sen!2sin" 
                 allowFullScreen="" 
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
@@ -213,7 +213,7 @@ export default function Contact() {
       </section>
 
       {/* ================= OFFICE LOCATIONS ================= */}
-      <section className="section sand tight">
+      {/* <section className="section sand tight">
         <div className="container">
           <div className="kicker-row reveal">
             <div>
@@ -241,7 +241,7 @@ export default function Contact() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ================= BUSINESS HOURS ================= */}
       <section className="section">
@@ -276,7 +276,7 @@ export default function Contact() {
               <h4>24×7 Support</h4>
               <div className="day">
                 <span>Emergency Helpline</span>
-                <span className="time">📞 +91 98110 22334</span>
+                <span className="time">📞 +91 93356 49404</span>
               </div>
               <div className="day">
                 <span>WhatsApp Support</span>

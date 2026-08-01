@@ -64,7 +64,7 @@ export default function Footer() {
           
           <div className="footer-map">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d911289.6458478066!2d80.942513!3d26.848692!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfd991f32b16b%3A0x93ccba8909978be7!2sLucknow%2C%20Uttar%20Pradesh%2C%20India!5e0!3m2!1sen!2sus!4v1785215005860!5m2!1sen!2sus" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56957.571755852114!2d80.96827803772744!3d26.844778981718093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfd49fc60a843%3A0x92fc72e19b623f6a!2sGomti%20Nagar%2C%20Lucknow%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1785504327353!5m2!1sen!2sin" 
               allowFullScreen={true} 
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
@@ -76,10 +76,10 @@ export default function Footer() {
 
       <div className="container footer-bottom">
 
-        <div className="designer-info">
-          Designed & Developed by <a target='_blank' rel="noopener noreferrer" href="https://codecrafter.co.in/"><img src={whitelogo} alt="Code Crafter" /></a>
+        <div className="designer-info" >
+          Designed & Developed by <a target='_blank' rel="noopener noreferrer" href="https://codecrafter.co.in/"><img src={whitelogo} alt="Code Crafter" style={{height:"30px"}} /></a>
         </div>
-        <span>© 2026 Shree Global Holidays. All rights reserved.</span>
+        <span>© 2013 Shree Global Holidays. All rights reserved.</span>
         {/* <div className="payment-badges">
           <i className="fa-brands fa-cc-visa"></i>
           <i className="fa-brands fa-cc-mastercard"></i>

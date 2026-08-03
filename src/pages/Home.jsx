@@ -379,28 +379,30 @@ export default function Home() {
         });
 
         // Testimonials Swiper
-        testimonialSwiperRef.current = new window.Swiper(".testimonialSwiper", {
-          slidesPerView: 1,
-          spaceBetween: 0,
-          loop: true,
-          autoplay: {
-            delay: 6000,
-            disableOnInteraction: false,
-          },
-          pagination: {
-            el: ".test-pagination",
-            clickable: true,
-          },
-          navigation: {
-            nextEl: ".test-next",
-            prevEl: ".test-prev",
-          },
-          effect: "fade",
-          fadeEffect: { crossFade: true },
-          breakpoints: {
-            1024: { slidesPerView: 1, spaceBetween: 0 },
-          },
-        });
+        if (document.querySelector(".testimonialSwiper")) {
+          testimonialSwiperRef.current = new window.Swiper(".testimonialSwiper", {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            autoplay: {
+              delay: 6000,
+              disableOnInteraction: false,
+            },
+            pagination: {
+              el: ".test-pagination",
+              clickable: true,
+            },
+            navigation: {
+              nextEl: ".test-next",
+              prevEl: ".test-prev",
+            },
+            effect: "fade",
+            fadeEffect: { crossFade: true },
+            breakpoints: {
+              1024: { slidesPerView: 1, spaceBetween: 0 },
+            },
+          });
+        }
 
         // International Travel Swiper initialization handled in dedicated useEffect
       }
@@ -468,6 +470,13 @@ export default function Home() {
 
     return () => clearTimeout(timer);
   }, [intlDestinations]);
+
+  // Ensure Elfsight Google Reviews widget initializes on mount/navigation
+  useEffect(() => {
+    if (window.ElfsightApp && typeof window.ElfsightApp.init === "function") {
+      window.ElfsightApp.init();
+    }
+  }, []);
 
   const openGalleryImage = (e, index) => {
     e.preventDefault();
@@ -868,7 +877,7 @@ export default function Home() {
                   <span className="tag">{d.destinationsCategory?.title || 'Destination'}</span>
                   <h3>{d.title}</h3>
                   <span className="meta">
-                    {d.description || d.nearestAirport || d.ideaDuration || 'Explore destination details'}
+                    {d.description ? d.description.replace(/<[^>]*>?/gm, '') : (d.nearestAirport || d.ideaDuration || 'Explore destination details')}
                   </span>
                 </div>
               </Link>
@@ -912,7 +921,7 @@ export default function Home() {
                       </span>
                       <h3>{d.title}</h3>
                       <span className="intl-meta">
-                        {d.description || d.nearestAirport || d.ideaDuration || 'Explore international tour details'}
+                        {d.description ? d.description.replace(/<[^>]*>?/gm, '') : (d.nearestAirport || d.ideaDuration || 'Explore international tour details')}
                       </span>
                     </div>
                   </Link>
@@ -1449,285 +1458,16 @@ export default function Home() {
               </h2>
             </div>
             <p>
-              Real experiences from real travelers — unfiltered and straight
-              from the road.
+              Real experiences from real travelers — verified directly on Google Reviews.
             </p>
           </div>
 
-          {/* Google Reviews Trust Strip */}
-          <div className="google-reviews-strip reveal">
-            <div className="gr-logo">
-              <svg
-                viewBox="0 0 533.5 544.3"
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-              >
-                <path
-                  d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
-                  fill="#4285f4"
-                />
-                <path
-                  d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z"
-                  fill="#34a853"
-                />
-                <path
-                  d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z"
-                  fill="#fbbc04"
-                />
-                <path
-                  d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
-                  fill="#ea4335"
-                />
-              </svg>
-              <div className="gr-text">
-                <span className="gr-label">Google Reviews</span>
-                <div className="gr-stars">
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                  <i className="fa-solid fa-star"></i>
-                </div>
-              </div>
-            </div>
-            <div className="gr-score">
-              <span className="gr-rating">4.9</span>
-              <span className="gr-count">
-                Based on <strong>1,200+</strong> Google Reviews
-              </span>
-            </div>
-            <Link to="/reviews" className="gr-cta">
-              <i className="fa-brands fa-google"></i> See All Reviews
-            </Link>
-          </div>
-
-          {/* Testimonial Cards Grid */}
-          <div className="test-cards-grid reveal">
-            {/* Card 1 */}
-            <div className="test-card">
-              <div className="test-card-header">
-                <div className="test-avatar-wrap">
-                  <img
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200&h=200"
-                    alt="Ritu Malhotra"
-                    className="test-avatar"
-                  />
-                  <div className="test-verified-badge" title="Verified Review">
-                    <i className="fa-brands fa-google"></i>
-                  </div>
-                </div>
-                <div className="test-person-info">
-                  <strong>Ritu Malhotra</strong>
-                  <span className="test-date">October 2024</span>
-                  <div className="test-stars">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Golden Triangle —
-                Delhi · Agra · Jaipur
-              </div>
-              <p className="test-body">
-                "Our Golden Triangle trip was planned down to the hour —
-                punctual driver, gorgeous heritage hotels, and a guide who
-                clearly loved the history he was sharing. Absolutely worth every
-                rupee!"
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="test-card">
-              <div className="test-card-header">
-                <div className="test-avatar-wrap">
-                  <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
-                    alt="Vikram Singh"
-                    className="test-avatar"
-                  />
-                  <div className="test-verified-badge" title="Verified Review">
-                    <i className="fa-brands fa-google"></i>
-                  </div>
-                </div>
-                <div className="test-person-info">
-                  <strong>Vikram Singh</strong>
-                  <span className="test-date">August 2024</span>
-                  <div className="test-stars">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Ladakh
-                High-Altitude Circuit
-              </div>
-              <p className="test-body">
-                "The Ladakh trip was life-changing! Our driver knew every twist
-                and turn of those mountain roads. The campsites were
-                breathtaking and the local guides were incredibly
-                knowledgeable."
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="test-card">
-              <div className="test-card-header">
-                <div className="test-avatar-wrap">
-                  <img
-                    src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200&h=200"
-                    alt="Priya Sharma"
-                    className="test-avatar"
-                  />
-                  <div className="test-verified-badge" title="Verified Review">
-                    <i className="fa-brands fa-google"></i>
-                  </div>
-                </div>
-                <div className="test-person-info">
-                  <strong>Priya Sharma</strong>
-                  <span className="test-date">November 2024</span>
-                  <div className="test-stars">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Kerala Backwaters —
-                Alleppey
-              </div>
-              <p className="test-body">
-                "The houseboat experience in Alleppey was magical! The team
-                arranged everything perfectly — from the welcome drink to the
-                sunset cruise. Pure luxury and tranquility."
-              </p>
-            </div>
-
-            {/* Card 4 */}
-            <div className="test-card">
-              <div className="test-card-header">
-                <div className="test-avatar-wrap">
-                  <img
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200"
-                    alt="Amit Patel"
-                    className="test-avatar"
-                  />
-                  <div className="test-verified-badge" title="Verified Review">
-                    <i className="fa-brands fa-google"></i>
-                  </div>
-                </div>
-                <div className="test-person-info">
-                  <strong>Amit Patel</strong>
-                  <span className="test-date">December 2024</span>
-                  <div className="test-stars">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Rajasthan Heritage
-                — Jaipur · Udaipur
-              </div>
-              <p className="test-body">
-                "Staying in palaces and exploring forts — this was a dream come
-                true! The attention to detail in every heritage hotel was
-                impeccable. Thank you for this royal experience."
-              </p>
-            </div>
-
-            {/* Card 5 */}
-            <div className="test-card">
-              <div className="test-card-header">
-                <div className="test-avatar-wrap">
-                  <img
-                    src="https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&q=80&w=200&h=200"
-                    alt="Sneha Reddy"
-                    className="test-avatar"
-                  />
-                  <div className="test-verified-badge" title="Verified Review">
-                    <i className="fa-brands fa-google"></i>
-                  </div>
-                </div>
-                <div className="test-person-info">
-                  <strong>Sneha Reddy</strong>
-                  <span className="test-date">January 2025</span>
-                  <div className="test-stars">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Varanasi Pilgrimage
-                Tour
-              </div>
-              <p className="test-body">
-                "The Ganga Aarti experience was deeply spiritual. Our guide
-                arranged the best boat and we had a front-row view. Everything
-                was handled with such care and respect."
-              </p>
-            </div>
-
-            {/* Card 6 */}
-            <div className="test-card">
-              <div className="test-card-header">
-                <div className="test-avatar-wrap">
-                  <img
-                    src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&q=80&w=200&h=200"
-                    alt="Rohan Mehta"
-                    className="test-avatar"
-                  />
-                  <div className="test-verified-badge" title="Verified Review">
-                    <i className="fa-brands fa-google"></i>
-                  </div>
-                </div>
-                <div className="test-person-info">
-                  <strong>Rohan Mehta</strong>
-                  <span className="test-date">March 2025</span>
-                  <div className="test-stars">
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                    <i className="fa-solid fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="test-destination-tag">
-                <i className="fa-solid fa-location-dot"></i> Shimla Manali
-                Honeymoon Escape
-              </div>
-              <p className="test-body">
-                "Planned our honeymoon with Shree Global and it was absolutely
-                perfect. Every detail was taken care of — from the candle-light
-                dinners to the cozy mountain resorts. Highly recommend!"
-              </p>
-            </div>
-          </div>
-
-          {/* View More CTA */}
-          <div style={{ textAlign: "center", marginTop: "36px" }}>
-            <Link to="/reviews" className="btn btn-dark">
-              <i className="fa-solid fa-star"></i> Read All 1,200+ Reviews
-            </Link>
+          {/* Elfsight Google Reviews Widget */}
+          <div className="reveal" style={{ marginTop: "32px" }}>
+            <div
+              className="elfsight-app-dd156326-2e70-448f-ac87-3434db483b76"
+              data-elfsight-app-lazy="true"
+            ></div>
           </div>
         </div>
       </section>
@@ -1777,15 +1517,14 @@ export default function Home() {
                 </div>
                 <div className="contact-detail-list">
                   <div>
-                    <i className="fa-solid fa-phone"></i> +91 98110 22334
+                    <i className="fa-solid fa-phone"></i> <a href="tel:+919335649404">+91 93356 49404</a>
                   </div>
                   <div>
                     <i className="fa-solid fa-envelope"></i>{" "}
-                    hello@shreeglobal.com
+                    <a href="mailto:shreeglobalholidays@gmail.com">shreeglobalholidays@gmail.com</a>
                   </div>
                   <div>
-                    <i className="fa-solid fa-location-dot"></i> Connaught
-                    Place, New Delhi
+                    <i className="fa-solid fa-location-dot"></i> <a href="https://maps.app.goo.gl/Gd5iBAJ6pZaEdRCj9" target="_blank">Malhaur Railway Station Road, Gomti Nagar, Lucknow 226028</a>
                   </div>
                 </div>
               </div>

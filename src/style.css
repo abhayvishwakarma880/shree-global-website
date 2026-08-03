@@ -1812,7 +1812,12 @@ nav.mainnav>ul>li:hover .mega {
   font-size: .78rem;
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
-  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.35;
 }
 
 .b1 {
@@ -4695,6 +4700,12 @@ footer {
 .intl-dest-card .intl-meta {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.82rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
 }
 
 .intl-section .intl-cta {

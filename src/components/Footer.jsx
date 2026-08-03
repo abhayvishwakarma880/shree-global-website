@@ -60,11 +60,11 @@ export default function Footer() {
 
         <div className="footer-col footer-nl">
           <h5>Find Us</h5>
-          <p>Gomti Nagar, Lucknow, Uttar Pradesh</p>
+          <p>Malhaur Railway Station Road, Gomti Nagar, Lucknow 226028</p>
           
           <div className="footer-map">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56957.571755852114!2d80.96827803772744!3d26.844778981718093!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfd49fc60a843%3A0x92fc72e19b623f6a!2sGomti%20Nagar%2C%20Lucknow%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1785504327353!5m2!1sen!2sin" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.0453671651617!2d81.03045577454037!3d26.870299676672445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399be2bf00000001%3A0xea0be7db85401950!2sShree%20Global%20Holidays!5e0!3m2!1sen!2sin!4v1785761987807!5m2!1sen!2sin" 
               allowFullScreen={true} 
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
